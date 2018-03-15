@@ -1,0 +1,15 @@
+language: script
+
+services:
+  - docker
+
+script:
+- bash -n $(find . -name *.sh)
+- ./.verify-links.sh -v
+
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: echo hi
+    on:
+      all_branches: true
