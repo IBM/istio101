@@ -1,0 +1,92 @@
+# GENERATED FILE. Use with Kubernetes 1.9+
+# TO UPDATE, modify files in install/kubernetes/templates and run install/updateVersion.sh
+apiVersion: v1
+kind: Service
+metadata:
+  name: istio-sidecar-injector
+  namespace: istio-system
+  labels:
+    istio: sidecar-injector
+spec:
+  ports:
+  - name: https-webhook # optional
+    port: 443
+  selector:
+    istio: sidecar-injector
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: istio-sidecar-injector-service-account
+  namespace: istio-system
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: istio-sidecar-injector
+  namespace: istio-system
+  labels:
+    istio: sidecar-injector
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: istio-sidecar-injector
+      labels:
+        istio: sidecar-injector
+    spec:
+      serviceAccountName: istio-sidecar-injector-service-account
+      containers:
+        - name: webhook
+          image: docker.io/istio/sidecar_injector:0.5.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - --tlsCertFile=/etc/istio/certs/cert.pem
+            - --tlsKeyFile=/etc/istio/certs/key.pem
+            - --injectConfig=/etc/istio/inject/config
+            - --meshConfig=/etc/istio/config/mesh
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/istio/config
+            readOnly: true
+          - name: certs
+            mountPath: /etc/istio/certs
+            readOnly: true
+          - name: inject-config
+            mountPath: /etc/istio/inject
+            readOnly: true
+      volumes:
+      - name: config-volume
+        configMap:
+          name: istio
+      - name: certs
+        secret:
+          secretName: sidecar-injector-certs
+      - name: inject-config
+        configMap:
+          name: istio-inject
+          items:
+          - key: config
+            path: config
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: istio-sidecar-injector
+webhooks:
+  - name: sidecar-injector.istio.io
+    clientConfig:
+      service:
+        name: istio-sidecar-injector
+        namespace: istio-system
+        path: "/inject"
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZSVENDQXkyZ0F3SUJBZ0lKQUlpUnlySGdoNjhiTUEwR0NTcUdTSWIzRFFFQkN3VUFNRGt4TnpBMUJnTlYKQkFNTUxtRTFPRFEwWW1RME5tUTJNalExT1RNNVlUTTRNelJqTmpneE1tWTJaV0prTFd0MVltVnlibVYwWlhNdApZMkV3SGhjTk1UZ3dOREF6TWpFd05qVTNXaGNOTkRVd09ERTVNakV3TmpVM1dqQTVNVGN3TlFZRFZRUUREQzVoCk5UZzBOR0prTkRaa05qSTBOVGt6T1dFek9ETTBZelk0TVRKbU5tVmlaQzFyZFdKbGNtNWxkR1Z6TFdOaE1JSUMKSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQWc4QU1JSUNDZ0tDQWdFQStGVTlVMHEzTnRoM0N0K1NlcVhBZFVGRgpCcDJDWGVHM2N4WFdFTzVNZk95NnVBVjBpZnJKOW11bTBjZXBMT1JDZVEyUktEVFk1Wm9KQ1NPblpqMnRIdUZPCjBSRjBZU2RBNXFqNk5zcGVvLytwaExpcmpHMUkzUXJQTGY4eENYRHhybkdXWDJ5akFaSnhEU2hYdWVRaEtydDMKMGhpOGtuY0xFR0ljSkxsTGxsMXE1R05rMUk0QWJCM1J5Wlk2a3ZuYXhmbWkvb1RvRlpGS21xbElYbGk3OWYzUApzOGt2YTZSNmtuekpsQ0lyc2R6ajYzSG0yZy9saldWVk55ckVkQVVlQmhGRTZwZmd5bE5aVmdNcUtHaGxOYWQ1CkFBc285WjN0OHZzUXFidmNiQnJndTE0U1lyLzVMQU53dFQ4NFJVV0JGRHdpTVN6dU1ZUHg4Ti8vZmJ0ZXdKM0cKbnFPTW9JUGJvRjJtZlUxbndTSmM5cmlHZks0UE1uazJwMk1MWE95UTN3UkxhdjZERE5zaGtWQ3plaWdVREdoMwpZZFllQzJzbXJUeWxVb3YvdmFqRFhZaS9LendnMGgrVk5MTzBDYmJEK1NIS3VZa0VUT2hXd1FRVGF4NzhCdlQyCk43dnRwNG9Qc3RkeWx3WXZyMlE4K0hBcEs2aXAxMTJJeitDQTQvbllESWZWYnpzVVNBSmVCZTdPK3d4d0VPaEsKK3dxKzM3KzUxczBGejF6MGFxNjlFbDFDRGpoazVOZjRVRzBwdnBVeHN6a2JMZzBQUzFVUFNnTjM0dkQwWWlqaQp4eWVuamVubDVWQUhkY1kyUzhXVms0MjhPMU9ReDFlVERCdWk0MS9ta3JJSnpZUG5JYW82RUtGb0l2SXk2NVFVCk5vYi95b1Raa1JibG1Ga0syMHNDQXdFQUFhTlFNRTR3SFFZRFZSME9CQllFRkg1ZTFSK3lQNWpoek10WkU2VnAKZnRjRXFiSlZNQjhHQTFVZEl3UVlNQmFBRkg1ZTFSK3lQNWpoek10WkU2VnBmdGNFcWJKVk1Bd0dBMVVkRXdRRgpNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dJQkFMZUR3QnVvb2FmZnNxRVErazFMM1Vmb0pqZmNIdUt5CkhHdFNrL1FkNVBVM1lCVjBFYUt3WUdtR2dhcENUblI1eFB1d05YcEIxdTk2d3ZWMGt2RktmWVptc2R0Z3NUSm0KV0ZCUDZwNzYvRUlXZ2NjNlRKQ201Y2FlQkVzcTRpZ2FKVkV5NmVrb1RwdFVjR1krWDdzeXVOTEVaaDZRUGJJVgpVUWg1STJscTlENFk1eGNlbXo0RjlUajhFRGlGb0VtZGlOMWF4bm5Qb0NvUVZxbE56SkhPaXkwNjRpa1JEM1hwCnpjYSsvOHVtVS9QZmJHdTBFMFY1aEh2SW9xQWRRR3I1MHFmYmZndWk2Q1R0WHlDWXBFMjBrQTg1bGhuQ1c2T1kKQTd1c1BhQ25tVW5sam9TK0M3aVVzWUxvU2hMTGx1UmdVaWJ1emtxbERObEJsblM5WHVjVTVJUS9UOG1QWnlHRwpXU1FsdVBKb0ZIT2EvcFYycmxrdlI4QTEwcndGQXllSG1sWlZ2Nk5Fd2E4dCtDUTRLcktiRWNUMkRodWg3QkUxClZaR2xyOEtDZlQ3ZVVXR2pNaWkyeTlyMi90SS9wRUlTQzVFUy9BWWtoY1pUOFZSMCtOUHhCaS9Nc0NQL1FJN2MKVklRQXdWVDRKVE5DcVBQWVBrSjVYSGZyS2pReCsxTXh6dmVmUWl6d3VDcFFnSFgwMHNMZGdOQldIZWNrVFpMVQpyM2pYM3g5VDRhazVFaTFTbnlZVUdTL3JmM3ZtZjJsbzl6WDBERTRaVWh2TzNDaEpLVnhLRXgrUEdNVGpITllJClVQWkYvYXAyTGlBbS9laktRRU5tQktyQkJMUVdwd3pCYlJjSFBTb3h5b1NjZENlQ211YkNhcEtuZ0k1ZUFKb1gKTlFhZ29McGhuT2VYCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    rules:
+      - operations: [ "CREATE" ]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+    namespaceSelector:
+      matchLabels:
+        istio-injection: enabled
+---
