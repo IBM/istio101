@@ -29,7 +29,7 @@ minikube start \
 
 ### Demo Preparation
 
-Run the following commands from the scripts directory or simply run the [setup script](./setup.sh)
+Run the following commands from the scripts directory or simply run the [setup script](./scripts/setup.sh)
 
 - Deploy Istio control plane (sometimes need to run twice due to CRD create race conditions)
 
