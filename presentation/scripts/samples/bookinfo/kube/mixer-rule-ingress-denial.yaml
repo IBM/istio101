@@ -19,11 +19,10 @@ spec:
 apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
-  name: denyreviewsv3
+  name: denyingress
   namespace: istio-system
 spec:
-  #FIXME match: destination.labels["app"]=="productpage" && request.headers["x-user"] == ""
-  match: request.headers["x-user"] == ""
+  match: destination.labels["istio"] == "ingress" && request.headers["x-user"] == ""
   actions:
   - handler: handler.denier.istio-system
     instances: [ denyrequest.checknothing.istio-system ]

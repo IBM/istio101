@@ -15,19 +15,19 @@ apiVersion: extensions/v1beta1
 metadata:
   name: istio-ca
   namespace: istio-system
-  annotations:
-    sidecar.istio.io/inject: "false"
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         istio: istio-ca
+      annotations:
+        sidecar.istio.io/inject: "false"
     spec:
       serviceAccountName: istio-ca-service-account
       containers:
       - name: istio-ca
-        image: docker.io/istio/istio-ca:0.5.0
+        image: docker.io/istio/istio-ca:0.7.1
         imagePullPolicy: IfNotPresent
         command: ["/usr/local/bin/istio_ca"]
         args:
@@ -39,9 +39,6 @@ spec:
           - --signing-key=/etc/cacerts/ca-key.pem
           - --root-cert=/etc/cacerts/root-cert.pem
           - --cert-chain=/etc/cacerts/cert-chain.pem
-          - --logtostderr
-          - --stderrthreshold
-          - INFO
         volumeMounts:
         - name: cacerts
           mountPath: /etc/cacerts

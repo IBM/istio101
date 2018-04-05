@@ -11,7 +11,7 @@ data:
     template: |-
       initContainers:
       - name: istio-init
-        image: docker.io/istio/proxy_init:0.5.0
+        image: docker.io/istio/proxy_init:0.7.1
         args:
         - "-p"
         - {{ .MeshConfig.ProxyListenPort }}
@@ -22,11 +22,10 @@ data:
           capabilities:
             add:
             - NET_ADMIN
-          privileged: true
         restartPolicy: Always
       containers:
       - name: istio-proxy
-        image: docker.io/istio/proxy:0.5.0
+        image: docker.io/istio/proxy:0.7.1
         args:
         - proxy
         - sidecar
@@ -41,17 +40,17 @@ data:
         - "istio-proxy"
         {{ end -}}
         - --drainDuration
-        - 2s
+        - {{ formatDuration .ProxyConfig.DrainDuration }}
         - --parentShutdownDuration
-        - 3s
+        - {{ formatDuration .ProxyConfig.ParentShutdownDuration }}
         - --discoveryAddress
         - {{ .ProxyConfig.DiscoveryAddress }}
         - --discoveryRefreshDelay
-        - 1s
+        - {{ formatDuration .ProxyConfig.DiscoveryRefreshDelay }}
         - --zipkinAddress
         - {{ .ProxyConfig.ZipkinAddress }}
         - --connectTimeout
-        - 1s
+        - {{ formatDuration .ProxyConfig.ConnectTimeout }}
         - --statsdUdpAddress
         - {{ .ProxyConfig.StatsdUdpAddress }}
         - --proxyAdminPort
