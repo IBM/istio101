@@ -6,7 +6,7 @@ metadata:
   name: guestbook-ingress
 spec:
   rules:
-    - host: linistio3.us-east.containers.mybluemix.net
+    - host: xxxx.us-east.containers.mybluemix.net
       http:
         paths:
           - path: /
