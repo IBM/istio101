@@ -14,5 +14,3 @@ If you are not familar with Kubernetes, we recommend you to follow [Kubernetes 1
 - [Exercise 6 - Traffic Management](exercise-6/README.md)
 - [Exercise 7 - Security](exercise-7/README.md)
 - [Exercise 8 - Policy Enforcement](exercise-8/README.md)
-
-
