@@ -64,7 +64,7 @@ bx cs cluster-get guestbook
 ...
 Ingress subdomain:	guestbook-242887.us-east.containers.mybluemix.net
 ```
-Please modify the `frontdoor-ingress.yaml` `host` attribute with the url accordingly.
+Please modify the `guestbook-frontdoor.yaml` `host` attribute with the url accordingly.
 After that, run
 ```sh
 kubectl apply -f guestbook-frontdoor.yaml
@@ -78,26 +78,18 @@ kubectl get ingress guestbook-ingress  -o yaml
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  creationTimestamp: 2018-04-13T22:52:39Z
-  generation: 1
+#  annotations:
+#    kubernetes.io/ingress.class: istio
   name: guestbook-ingress
-  namespace: istio-system
-  resourceVersion: "31606"
-  selfLink: /apis/extensions/v1beta1/namespaces/istio-system/ingresses/guestbook-ingress
-  uid: 5e2cf0a4-3f6d-11e8-b75a-a28f64b33c83
 spec:
   rules:
-  - host: guestbook.us-east.containers.mybluemix.net
-    http:
-      paths:
-      - backend:
-          serviceName: guestbook
-          servicePort: 3000
-        path: /
-status:
-  loadBalancer:
-    ingress:
-    - ip: 169.61.37.142
+    - host: guestbook.us-south.containers.mybluemix.net
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: guestbook
+              servicePort: 3000
 ```
 The difference is IBM Front door ingress extended the Kubernetes ingress features by providing DNS entry to the service! Now you can now access the app via http://[guestbook].us-east.containers.mybluemix.net
 
