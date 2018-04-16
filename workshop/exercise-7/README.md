@@ -40,24 +40,26 @@ NAME       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 istio-ca   1         1         1            1           1m
 ```
 
-### Verify AuthPolicy Ssetting in ConfigMap
+### Verify AuthPolicy Setting in ConfigMap
 
 ```sh
 kubectl get configmap istio -o yaml -n istio-system | grep authPolicy | head -1
 ```
 
-Istio mutual TLS authentication is enabled if the line `authPolicy: MUTUAL_TLS` is uncommented (i.e., doesn’t have a `#`).
+Istio mutual TLS authentication is enabled if the line `authPolicy: MUTUAL_TLS` isn't commented (i.e., doesn’t have a `#`).
 
 ### Trying out the Authenticated Connection
 
-One way to try out the mutual TLS authentication communication, is to use curl in one service’s envoy proxy to send request to other services. For example, after starting the Helloworld application you can ssh into the Envoy container of Helloworld service, and send request to guestbook service by curl.
+If mTLS is working correctly, the Guestbook application should continue to work correctly, without any user visible impact. Istio will automatically add (and manage) the required certificates and private keys. To confirm their presence in the Envoy containers, do the following:
 
-1. get the Helloworld pod name
+1. get the guesbook pod name
 
 ```sh
-kubectl get pods -l app=guestbook-ui
+kubectl get pods -l app=guestbook
 NAME                            READY     STATUS    RESTARTS   AGE
-guestbook-ui-596d68d88f-qxhzk   2/2       Running   1          1h
+guestbook-5fddf8db9c-5tk5v   2/2       Running   0          23m
+guestbook-5fddf8db9c-6m87p   2/2       Running   0          23m
+guestbook-5fddf8db9c-7nmcb   2/2       Running   0          23m
 ```
 
 Make sure the pod is “Running”.
@@ -65,7 +67,7 @@ Make sure the pod is “Running”.
 1. ssh into the envoy container
 
 ```sh
-kubectl exec -it guestbook-ui-xxxxxxxx -c istio-proxy /bin/bash
+kubectl exec -it guestbook-xxxxxxxx -c istio-proxy /bin/bash
 ```
 
 Make sure to change the pod name into the corresponding one on your system. This command will ssh into istio-proxy container(sidecar) of the pod.
@@ -73,10 +75,10 @@ Make sure to change the pod name into the corresponding one on your system. This
 1. check out the certificate and keys are present
 
 ```sh
-ls /etc/certs/ 
+ls /etc/certs/
 ```
 
-You should see
+You should see the following (plus some others)
 
 ```sh
 cert-chain.pem   key.pem   root-cert.pem
@@ -84,22 +86,40 @@ cert-chain.pem   key.pem   root-cert.pem
 
 Note that `cert-chain.pem` is Envoy’s public certificate (i.e., presented to the peer), and `key.pem` is the corresponding private key. The `root-cert.pem` file is Istio Auth's root certificate, used to verify peers` certificates.
 
-1. send request to the guestbook-ui service
+### Disabling Authentication when Things Go Astray
+
+If, for some reason, mTLS is not functional, the Guestbook application will not operate correctly. This would be evident in its UI (e.g., it would display a [`Waiting for database connection`](waiting_on_database.png) message). In that case, mTLS should be disabled.
+
+mTLS it can be disabled globally or per service. 
+
+* To disable mTLS for all services in the mesh, comment out the `authPolicy` settings in the mesh configuration:
 
 ```sh
-curl https://guestbook-service:8080 -v --key /etc/certs/key.pem --cert /etc/certs/cert-chain.pem --cacert /etc/certs/root-cert.pem -k
-```
-
-From the output there will be some error message `error fetching CN from cert:The requested data were not available`. This is expected.
-Go to the bottom and there you will see the success message.
-
-```sh
-< HTTP/1.1 200 OK
-< x-application-context: helloworld-service
-< content-type: application/json;charset=UTF-8
-< date: Thu, 01 Feb 2018 06:12:46 GMT
+kubectl edit configmap istio -o yaml -n istio-system
 ...
+apiVersion: v1
+data:
+  mesh: |-
+    # Uncomment the following line to enable mutual TLS between proxies
+    # authPolicy: MUTUAL_TLS
+    ...
 ```
+
+* To disable mTLS for connections originating from a specific service, add an `auth.istio.io/<port#>: NONE` annotation to the service definition:
+
+```sh
+kubectl edit service guestbook
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    auth.istio.io/3000: NONE
+  ...
+```
+
+>
+> Note that the annotations can also be used to gradually enable mTLS on individual services, 
+>
 
 ## Further Reading
 
