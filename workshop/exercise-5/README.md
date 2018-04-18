@@ -10,9 +10,9 @@ In the example, when a user visits the guestbook, the http request is sent from 
 
 ## Quizes
 
-1. Does a user need to modify their application to get metrics for their applications?   A: 1. Yes 2. No.
+1. Does a user need to modify their application to get metrics for their applications?   A: 1. Yes 2. No.  (2 is correct)
 
-2. Does a user need to modify their application to get distributed tracing for their application to work properly? A: 1. Yes 2. No.
+2. Does a user need to modify their application to get distributed tracing for their application to work properly? A: 1. Yes 2. No.  (1 is correct)
 
-3. What distributed tracing system does Istio support by default?  A: 1. Zipkin 2. Kibana 3. LogStash 4. Jaeger
+3. What distributed tracing system does Istio support by default?  A: 1. Zipkin 2. Kibana 3. LogStash 4. Jaeger. (1 and 4 are correct)
 
