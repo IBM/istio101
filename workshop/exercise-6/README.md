@@ -123,4 +123,4 @@ Depending on whether a service handles [HTTP](https://istio.io/docs/reference/co
 1. Where are routing rules defined?  Options: (VirtualService, DestinationRule, ExternalService)  Answer: VirtualService
 1. Where are service versions (subsets) defined?  Options: (VirtualService, DestinationRule, ExternalService)  Answer: DestinationRule
 1. Which Istio component is responsible for sending traffic management configurations to Istio sidecars?  Options: (Mixer, Citadel, Pilot, Kubernetes)  Answer: Pilot
-1. What is the name of the proxy that runs in Istio sidecars and routes requests within the service mesh?  Options: (NGINX, Envoy, HAProxy)  Answer: Envoy
+1. What is the name of the default proxy that runs in Istio sidecars and routes requests within the service mesh?  Options: (NGINX, Envoy, HAProxy)  Answer: Envoy
