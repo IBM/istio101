@@ -1,7 +1,7 @@
-# Advanced Istio course (name TBD)
+# TBD Title: Istio course
 [Istio](https://www.ibm.com/cloud/info/istio) is an open platform to connect, secure, and manage a network of microservices, also known as a service mesh, on cloud platforms such as Kubernetes in IBM Cloud Container Service. With Istio, manage network traffic, load balance across microservices, enforce access policies, verify service identity on the service mesh, and more.
 
-In this course, you can see how to install Istio alongside microservices for a simple mock app called Guestbook. The microservices include a product web page, details, reviews, and ratings. When you deploy Guestbook's microservices into an IBM Cloud Container Service cluster where Istio is installed, you inject the Istio Envoy sidecar proxies in the pods of each microservice.
+In this course, you can see how to install Istio alongside microservices for a simple mock app called Guestbook. When you deploy Guestbook's microservices into an IBM Cloud Container Service cluster where Istio is installed, you inject the Istio Envoy sidecar proxies in the pods of each microservice.
 
 **Note**: Some configurations and features of the Istio platform are still under development and are subject to change based on user feedback. Allow a few months for stablilization before you use Istio in production.
 
@@ -16,7 +16,7 @@ After you complete this course, you'll be able to:
 - Enforce policies for your microservices
 
 ## Prerequisites
-You must create a [standard cluster in a Pay-As-You-Go and Subscription account](https://console.bluemix.net/registration/) to complete all the modules in this course. A free cluster in a Trial account does not have access to all the advanced features of this course. 
+You must you must have a Trial, Pay-As-You-Go, or Subscription [IBM Cloud account](https://console.bluemix.net/registration/) to complete all the modules in this course. 
 
 You should have a basic understanding of containers, IBM Cloud Container Service, and Istio. If you have no experience with those, take the following courses:
 1. [Docker essentials: Extend your apps with containers](https://developer.ibm.com/courses/all/docker-essentials-extend-your-apps-with-containers/) 
