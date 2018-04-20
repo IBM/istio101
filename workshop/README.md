@@ -1,4 +1,4 @@
-# TBD Title: Istio course
+# Beyond the Basics: Istio and IBM Cloud Container Service 
 [Istio](https://www.ibm.com/cloud/info/istio) is an open platform to connect, secure, and manage a network of microservices, also known as a service mesh, on cloud platforms such as Kubernetes in IBM Cloud Container Service. With Istio, manage network traffic, load balance across microservices, enforce access policies, verify service identity on the service mesh, and more.
 
 In this course, you can see how to install Istio alongside microservices for a simple mock app called Guestbook. When you deploy Guestbook's microservices into an IBM Cloud Container Service cluster where Istio is installed, you inject the Istio Envoy sidecar proxies in the pods of each microservice.
@@ -19,9 +19,8 @@ After you complete this course, you'll be able to:
 You must you must have a Trial, Pay-As-You-Go, or Subscription [IBM Cloud account](https://console.bluemix.net/registration/) to complete all the modules in this course. 
 
 You should have a basic understanding of containers, IBM Cloud Container Service, and Istio. If you have no experience with those, take the following courses:
-1. [Docker essentials: Extend your apps with containers](https://developer.ibm.com/courses/all/docker-essentials-extend-your-apps-with-containers/) 
-2. [Get started with Kubernetes and IBM Cloud Container Service](https://developer.ibm.com/courses/all/get-started-kubernetes-ibm-cloud-container-service/)
-3. [Get started with Istio and IBM Cloud Container Service](https://developer.ibm.com/courses/all/get-started-istio-ibm-cloud-container-service/)
+1. [Get started with Kubernetes and IBM Cloud Container Service](https://developer.ibm.com/courses/all/get-started-kubernetes-ibm-cloud-container-service/)
+2. [Get started with Istio and IBM Cloud Container Service](https://developer.ibm.com/courses/all/get-started-istio-ibm-cloud-container-service/)
 
 
 ## Workshop setup
