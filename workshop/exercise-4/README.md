@@ -1,4 +1,4 @@
-## Istio Ingress controller 
+## Expose the service mesh with the Istio Ingress controller 
 
 The components deployed on the service mesh by default are not exposed outside the cluster. External access to individual services so far has been provided by creating an external load balancer on each service.
 
@@ -41,36 +41,27 @@ A Kubernetes Ingress rule can be created that routes external requests through t
 
 Now you can access the guestbook via http://169.61.37.141(change it to your EXTERNAL-IP).
 
-## IBM Frontdoor
+## Set up the Istio Ingress controller to work with IBM Cloud Container Service
 **This feature only works for paid accounts.**  
 
-IBM Front Door is IBM container service Ingress controller which is an enhancement of the Kubernetes Ingress Controller. The Front Door provides IBM Cloud users with a secure, reliable and scalable high performance network stack to distribute incoming traffic to their applications running on the IBM Cloud Platform. The additional features are simply configured as additional annotations in the yaml file and are deployed when configured. Some features supported by the Front Door Ingress Controller are:
-* Unique subdomain with a free certificate
-* DNS resolution for the Subdomain
-* SSL (TLS) termination
-* Layer 7 routing
-* Load Balance to an application running on IBM container service
-* Load Balance to an external application (specifying external endpoints)
-* Highly Available Ingress Controller
+To have an IBM-provided DNS for Guestbook, you must set up the Istio Ingress controller to route traffic to the Kubernetes Ingress application load balancer (ALB). 
 
-In this exercise we'll create an Front Door Ingress. 
+The IBM Ingress service provides IBM Cloud users with a secure, reliable, and scalable network stack to distribute incoming traffic to applications on the IBM Cloud. If you want to add more configuration, you simply add annotations in the yaml file. Learn more about [Ingress for IBM Cloud Container Service](https://console.bluemix.net/docs/containers/cs_ingress.html#ingress). 
 
-### Deploy the Front Door Ingress
-
-Let's first check the IBM Ingress secret and subdomain information.
+1. Let's first check the IBM Ingress secret and subdomain information.
 ```sh
 bx cs cluster-get guestbook
 
 ...
 Ingress subdomain:	guestbook-242887.us-east.containers.mybluemix.net
 ```
-Please modify the `guestbook-frontdoor.yaml` `host` attribute with the url accordingly.
+2. Modify the `guestbook-frontdoor.yaml` `host` attribute with the url accordingly.
 After that, run
 ```sh
 kubectl apply -f guestbook-frontdoor.yaml
 ```
 
-To examine the Ingress, run
+3. To examine the Istio Ingress, run
 ```sh
 kubectl get ingress guestbook-ingress  -o yaml
 ```
@@ -91,8 +82,8 @@ spec:
               serviceName: guestbook
               servicePort: 3000
 ```
-The difference is IBM Front door ingress extended the Kubernetes ingress features by providing DNS entry to the service! Now you can now access the app via http://[guestbook].us-east.containers.mybluemix.net
+The difference is IBM Ingress extended the base Ingress features by providing DNS entry to the Istio service! Now you can now access the app via http://[guestbook].us-east.containers.mybluemix.net.
 
 ## References: 
-[Kubenetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)           
+[Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)           
 [Istio Ingress](https://istio.io/docs/tasks/traffic-management/ingress.html)
