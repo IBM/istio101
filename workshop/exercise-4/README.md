@@ -41,8 +41,8 @@ A Kubernetes Ingress rule can be created that routes external requests through t
 
 Now you can access the guestbook via http://169.61.37.141(change it to your EXTERNAL-IP).
 
-## Set up the Istio Ingress controller to work with IBM Cloud Container Service
-**This feature only works for paid accounts.**  
+## Set up the Istio Ingress controller to work with IBM Cloud Container Service (optional)
+**This feature only works for paid accounts. This section is optional.**  
 
 To have an IBM-provided DNS for Guestbook, you must set up the Istio Ingress controller to route traffic to the Kubernetes Ingress application load balancer (ALB). 
 
