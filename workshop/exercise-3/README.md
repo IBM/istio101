@@ -45,10 +45,10 @@ Lastly we check the pods:
 ## Install guestbook app with Istio
 
   ```sh
+ kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml --debug)
  kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml --debug)
- kubectl apply -f <(istioctl kube-inject -f guestbook-v2-deployment.yaml --debug)
   ```
-These commands will inject the Istio envoy sidecar into the guestbook pods, as well as deploying the guestbook app on to the K8s cluster. Here we have two versions of deployments. They will be used by future sections to showcase the Istio traffic routing capabilities.
+These commands will inject the Istio envoy sidecar into the guestbook pods, as well as deploying the guestbook app on to the K8s cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used by future sections to showcase the Istio traffic routing capabilities.
   
 Next, we'll create the guestbook service.
 
