@@ -2,15 +2,23 @@
 
 The Guestbook application consists of a web front end, Redis master for storage, and replicated set of Redis slaves. We will deploy that application on Kubernetes with Istio manual injection.
 
-**Make sure you are under the guestbook-go application folder**
-
+## Clone the repo
+In your terminal, run
+  ```sh
+  git clone https://github.com/IBM/guestbook.git
+  ```
+Then go to the example:
+  ```sh
+  cd v2
+  ```
+  
 ## Create Redis backend
 The Redis backend provides the persistance service to the application. It consists of the master and slave modules. We will create the controllers and service for both master and slave.
   ``` sh
-  kubectl create -f redis-master-controller.json
-  kubectl create -f redis-master-service.json
-  kubectl create -f redis-slave-controller.json
-  kubectl create -f redis-slave-service.json
+  kubectl create -f redis-master-deployment.yaml
+  kubectl create -f redis-master-service.yaml
+  kubectl create -f redis-slave-deployment.yaml
+  kubectl create -f redis-slave-service.yaml
   ```
 To verify the installation, first we check the controllers:
   ```sh
@@ -35,11 +43,12 @@ Lastly we check the pods:
   redis-slave-nslps               1/1       Running   0          5d
   ```
 ## Install guestbook app with Istio
-Simply run the command  
+
   ```sh
  kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml --debug)
+ kubectl apply -f <(istioctl kube-inject -f guestbook-v2-deployment.yaml --debug)
   ```
-It will inject the Istio envoy sidecar into the guestbook pods, as well as deploy the guestbook app on to the K8s cluster.
+These commands will inject the Istio envoy sidecar into the guestbook pods, as well as deploying the guestbook app on to the K8s cluster. Here we have two versions of deployments. They will be used by future sections to showcase the Istio traffic routing capabilities.
   
 Next, we'll create the guestbook service.
 
@@ -58,6 +67,9 @@ To verify the pods are up:
     guestbook-v1-89cd4b7c7-frscs    2/2       Running   0          5d
     guestbook-v1-89cd4b7c7-jn224    2/2       Running   0          5d
     guestbook-v1-89cd4b7c7-m7hmd    2/2       Running   0          5d
+    guestbook-v2-56d98b558c-7fvd5   2/2       Running   0          5d
+    guestbook-v2-56d98b558c-dshkh   2/2       Running   0          5d
+    guestbook-v2-56d98b558c-mzbxk   2/2       Running   0          5d
     
 Notice that each guestbook pods have 2 containers in it. One is the guestbook container, the other is the Envoy proxy sidecar.
 
