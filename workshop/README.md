@@ -16,7 +16,8 @@ After you complete this course, you'll be able to:
 - Enforce policies for your microservices
 
 ## Prerequisites
-You must you must have a Trial, Pay-As-You-Go, or Subscription [IBM Cloud account](https://console.bluemix.net/registration/) to complete all the modules in this course. 
+You must you must have a Trial, Pay-As-You-Go, or Subscription [IBM Cloud account](https://console.bluemix.net/registration/) to complete all the modules in this course.
+Note that Kubernetes 1.9.x is recommended, earlier versions may require changes in manifests.
 
 You should have a basic understanding of containers, IBM Cloud Container Service, and Istio. If you have no experience with those, take the following courses:
 1. [Get started with Kubernetes and IBM Cloud Container Service](https://developer.ibm.com/courses/all/get-started-kubernetes-ibm-cloud-container-service/)
