@@ -84,6 +84,8 @@ The Watson Tone analyzer service will detect the tone in the words and convert t
       bx service key-show my-tone-analyzer-service myKey
     ```
 
+    > Note that you should use `bx target --cf` or `bx target -o ORG -s SPACE` to set the Cloud Foundry Org and Space before calling `bx service create...`
+
 2. Find our the username and password from the prior step and update analyzer-deployment.yaml with the username and password in the env var section.  
 
 3. Deploy the analyzer service.  The analyzer service talks to Watson Tone analyzer to help analyze the tone of a message. 
