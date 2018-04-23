@@ -22,10 +22,10 @@ The Redis backend provides the persistance service to the application. It consis
   ```
 To verify the installation, first we check the controllers:
   ```sh
-  kubectl get rc
-  NAME           DESIRED   CURRENT   READY     AGE
-  redis-master   1         1         1         5d
-  redis-slave    2         2         2         5d
+  kubectl get deployment
+  NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+  redis-master   1         1         1            1           5d
+  redis-slave    2         2         2            2           5d
   ```
 Then we check the service:
   ```sh
