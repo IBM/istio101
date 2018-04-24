@@ -86,15 +86,15 @@ The Watson Tone analyzer service will detect the tone in the words and convert t
 
     > Note that you should use `bx target --cf` or `bx target -o ORG -s SPACE` to set the Cloud Foundry Org and Space before calling `bx service create...`
 
-2. Find our the username and password from the prior step and update analyzer-deployment.yaml with the username and password in the env var section.  
+2. Find our the username and password from the prior step and update analyzer-deployment.yaml with the username and password in the env var section.
 
-3. Deploy the analyzer service.  The analyzer service talks to Watson Tone analyzer to help analyze the tone of a message. 
+3. Deploy the analyzer pods and service. The analyzer service talks to Watson Tone analyzer to help analyze the tone of a message.
 
     ```console
       kubectl apply -f <(istioctl kube-inject -f analyzer-deployment.yaml --debug)
+      kubectl apply -f analyzer-service.yaml
     ```
-4. Apply the egress:
-
+4. Apply an egress rule to allow the analyzer service to access the Watson service. The rule definition is defined in ([istio101/workshop/plans](https://github.com/IBM/istio101/tree/master/workshop/plans) and is not part of the guestbook application files:
     ```console
       kubectl apply -f analyzer-egress.yaml
     ```
