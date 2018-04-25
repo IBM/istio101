@@ -48,7 +48,7 @@ Lastly we check the pods:
  kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml --debug)
  kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml --debug)
   ```
-These commands will inject the Istio envoy sidecar into the guestbook pods, as well as deploying the guestbook app on to the K8s cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used by future sections to showcase the Istio traffic routing capabilities.
+These commands will inject the Istio envoy sidecar into the guestbook pods, as well as deploy the guestbook app on to the K8s cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
   
 Next, we'll create the guestbook service.
 
@@ -71,12 +71,14 @@ To verify the pods are up:
     guestbook-v2-56d98b558c-dshkh   2/2       Running   0          5d
     guestbook-v2-56d98b558c-mzbxk   2/2       Running   0          5d
     
-Notice that each guestbook pods have 2 containers in it. One is the guestbook container, the other is the Envoy proxy sidecar.
+Notice that each guestbook pods has 2 containers in it. One is the guestbook container, the other is the Envoy proxy sidecar.
 
 ## Add the analyzer service
-The Watson Tone analyzer service will detect the tone in the words and convert them to corresponding emoticons. 
+The Watson Tone analyzer service will detect the tone in the words and convert them to corresponding emoticons.
 
 1. Deploy Watson Tone analyzer service.
+
+    > Note that you should use `bx target --cf` or `bx target -o ORG -s SPACE` to set the Cloud Foundry Org and Space before calling `bx service create...`
 
     ```console
       bx service create tone_analyzer lite my-tone-analyzer-service
@@ -84,9 +86,7 @@ The Watson Tone analyzer service will detect the tone in the words and convert t
       bx service key-show my-tone-analyzer-service myKey
     ```
 
-    > Note that you should use `bx target --cf` or `bx target -o ORG -s SPACE` to set the Cloud Foundry Org and Space before calling `bx service create...`
-
-2. Find our the username and password from the prior step and update analyzer-deployment.yaml with the username and password in the env var section.
+2. Find out the username and password from the prior step and update analyzer-deployment.yaml with the username and password in the env var section.
 
 3. Deploy the analyzer pods and service. The analyzer service talks to Watson Tone analyzer to help analyze the tone of a message.
 
@@ -94,7 +94,7 @@ The Watson Tone analyzer service will detect the tone in the words and convert t
       kubectl apply -f <(istioctl kube-inject -f analyzer-deployment.yaml --debug)
       kubectl apply -f analyzer-service.yaml
     ```
-4. Apply an egress rule to allow the analyzer service to access the Watson service. The rule definition is defined in ([istio101/workshop/plans](https://github.com/IBM/istio101/tree/master/workshop/plans) and is not part of the guestbook application files:
+4. Apply an egress rule to allow the analyzer service to access the Watson service. The rule definition is defined in [istio101/workshop/plans](https://github.com/IBM/istio101/tree/master/workshop/plans) and is not part of the guestbook application files:
     ```console
       kubectl apply -f analyzer-egress.yaml
     ```
