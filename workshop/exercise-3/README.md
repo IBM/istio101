@@ -71,7 +71,7 @@ To verify the pods are up:
     guestbook-v2-56d98b558c-dshkh   2/2       Running   0          5d
     guestbook-v2-56d98b558c-mzbxk   2/2       Running   0          5d
     
-Notice that each guestbook pods has 2 containers in it. One is the guestbook container, the other is the Envoy proxy sidecar.
+Notice that each guestbook pod has 2 containers in it. One is the guestbook container, the other is the Envoy proxy sidecar.
 
 ## Add the analyzer service
 The Watson Tone analyzer service will detect the tone in the words and convert them to corresponding emoticons.
