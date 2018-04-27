@@ -4,7 +4,7 @@
 
 Istio can secure the communication between microservices without requiring application code changes.
 
-Istio Auth is an optional part of Istio's control plane components. When enabled, it provides each Envoy sidecar proxy with a strong (cryptographic) identity, in the form of certificates.
+Istio Auth (recently named Citadel) is an optional part of Istio's control plane components. When enabled, it provides each Envoy sidecar proxy with a strong (cryptographic) identity, in the form of certificates.
 Identity is based on the microservice's role (specifically, the service account it runs under) and is independent of its specific network location, such as cluster or current IP address.
 Envoys then use these certificates to identify each other and establish an authenticated and encrypted communication channel between them.
 
@@ -90,9 +90,9 @@ Note that `cert-chain.pem` is Envoy’s public certificate (i.e., presented to t
 
 If, for some reason, mTLS is not functional, the Guestbook application will not operate correctly. This would be evident in its UI (e.g., it would display a [`Waiting for database connection`](waiting_on_database.png) message). In that case, mTLS should be disabled.
 
-mTLS it can be disabled globally or per service.
+mTLS can be disabled globally or per service.
 
-* To disable mTLS for all services in the mesh, comment out the `authPolicy` settings in the mesh configuration:
+* To disable mTLS for all services in the mesh, comment out the `authPolicy` settings in the mesh configuration, and then restart Istio Pilot to pick up the new configuration:
 
 ```sh
 kubectl edit configmap istio -o yaml -n istio-system
@@ -103,6 +103,8 @@ data:
     # Uncomment the following line to enable mutual TLS between proxies
     # authPolicy: MUTUAL_TLS
     ...
+
+kubectl delete pod -n istio-system istio-pilot-XXXXXXXX
 ```
 
 * To disable mTLS for connections accessing a specific service (since mTLS is triggered by the server-side proxy requesting a client certificate), add an `auth.istio.io/<port#>: NONE` annotation to the service definition:
@@ -137,6 +139,16 @@ spec:
 >
 > Note that the annotations can also be used to gradually enable mTLS on individual services, 
 >
+
+## Quiz
+
+True or False?
+
+1. Istio Auth/Citadel provides each microservice with a strong, cryptographic, identity in the form of a certificate. The certificates' life cycle is fully managed by Istio.
+
+1. Istio provides microservices with mutually authenticated connections, without requiring application code changes.
+
+1. Mutual authentication must be on or off for the entire cluster, gradual adoption is not possible.
 
 ## Further Reading
 
