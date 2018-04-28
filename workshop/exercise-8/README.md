@@ -64,7 +64,7 @@ In this exercise we'll use the denier adapter.
     ```
 ##Quiz
 1. Does creating mixer rules require application code changes? (Yes/No) No
-2. The custom code that interacts with the backend system, i.e. stackdriver, is called 
+2. The custom code that interacts with the backend system, i.e. Prometheus, is called 
 A. Rule B. Instance C. Adapter
 Answer is C
 
