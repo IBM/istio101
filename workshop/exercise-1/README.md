@@ -29,13 +29,15 @@ Assume you already have a Kubernetes cluster, here are the steps to access your 
     bx cs clusters
     ```
     
-    b. Download the configuration file and certificates for your cluster using the `cluster-config` command.
+    b. Note the name of a cluster where you are an admin. You will be able to install Istio into a cluster only if you have the role of admin in that cluster.
+    
+    c. Download the configuration file and certificates for your cluster using the `cluster-config` command.
     
     ```bash
     bx cs cluster-config {your_cluster_name}
     ```
     
-    c. Copy and paste the output command from the previous step to set the `KUBECONFIG` environment variable and configure your CLI to run `kubectl` commands against your cluster.
+    d. Copy and paste the output command from the previous step to set the `KUBECONFIG` environment variable and configure your CLI to run `kubectl` commands against your cluster.
 
 2. Obtain your kubernetes cluster token.
 
