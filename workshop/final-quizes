@@ -31,7 +31,7 @@ A. Policy enforcement B. Traffic Management C. Authentication Policy. D. Telemtr
 
 (Answer A, C, D)
 
-7. With Istio, do my services have to run in Kubernetes?
+7. To leverage Istio, does my service have to run in Kubernetes?
 A. Yes.  B. No
 
 (Answer B).
