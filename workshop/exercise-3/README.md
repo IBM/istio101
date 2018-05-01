@@ -1,8 +1,8 @@
-# Exercise 3 - Deploy Guestbook with Istio Proxy 
+# Exercise 3 - Deploy Guestbook with Istio Proxy
 
 The Guestbook application consists of a web front end, Redis master for storage, and replicated set of Redis slaves. We will deploy that application on Kubernetes with Istio manual injection.
 
-## Clone the repo
+### Clone the repo
 In your terminal, run
   ```sh
   git clone https://github.com/IBM/guestbook.git
@@ -11,8 +11,8 @@ Then go to the example:
   ```sh
   cd v2
   ```
-  
-## Create Redis backend
+
+### Create Redis backend
 The Redis backend provides the persistance service to the application. It consists of the master and slave modules. We will create the controllers and service for both master and slave.
   ``` sh
   kubectl create -f redis-master-deployment.yaml
@@ -42,14 +42,14 @@ Lastly we check the pods:
   redis-slave-kj8jp               1/1       Running   0          5d
   redis-slave-nslps               1/1       Running   0          5d
   ```
-## Install guestbook app with Istio
+### Install guestbook app with Istio
 
   ```sh
  kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml --debug)
  kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml --debug)
   ```
 These commands will inject the Istio envoy sidecar into the guestbook pods, as well as deploy the guestbook app on to the K8s cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
-  
+
 Next, we'll create the guestbook service.
 
     kubectl create -f guestbook-service.yaml
@@ -70,10 +70,10 @@ To verify the pods are up:
     guestbook-v2-56d98b558c-7fvd5   2/2       Running   0          5d
     guestbook-v2-56d98b558c-dshkh   2/2       Running   0          5d
     guestbook-v2-56d98b558c-mzbxk   2/2       Running   0          5d
-    
+
 Notice that each guestbook pod has 2 containers in it. One is the guestbook container, the other is the Envoy proxy sidecar.
 
-## Add the analyzer service
+### Add the analyzer service
 The Watson Tone analyzer service will detect the tone in the words and convert them to corresponding emoticons.
 
 1. Deploy Watson Tone analyzer service.
@@ -99,3 +99,5 @@ The Watson Tone analyzer service will detect the tone in the words and convert t
       kubectl apply -f analyzer-egress.yaml
     ```
 And that concludes the installation of the guestbook application.
+
+#### [Continue to Exercise 4 - Expose the service mesh with the Istio Ingress controller](../exercise-4/README.md)

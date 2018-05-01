@@ -1,4 +1,4 @@
-## Expose the service mesh with the Istio Ingress controller 
+# Exercise 4 - Expose the service mesh with the Istio Ingress controller
 
 The components deployed on the service mesh by default are not exposed outside the cluster. External access to individual services so far has been provided by creating an external load balancer on each service.
 
@@ -41,12 +41,12 @@ A Kubernetes Ingress rule can be created that routes external requests through t
 
 Now you can access the guestbook via http://169.61.37.141(change it to your EXTERNAL-IP).
 
-## Set up the Istio Ingress controller to work with IBM Cloud Container Service (optional)
+### Set up the Istio Ingress controller to work with IBM Cloud Container Service (optional)
 **This feature only works for paid accounts. This section is optional.**  
 
-To have an IBM-provided DNS for Guestbook, you must set up the Istio Ingress controller to route traffic to the Kubernetes Ingress application load balancer (ALB). 
+To have an IBM-provided DNS for Guestbook, you must set up the Istio Ingress controller to route traffic to the Kubernetes Ingress application load balancer (ALB).
 
-The IBM Ingress service provides IBM Cloud users with a secure, reliable, and scalable network stack to distribute incoming traffic to applications on the IBM Cloud. If you want to add more configuration, you simply add annotations in the yaml file. Learn more about [Ingress for IBM Cloud Container Service](https://console.bluemix.net/docs/containers/cs_ingress.html#ingress). 
+The IBM Ingress service provides IBM Cloud users with a secure, reliable, and scalable network stack to distribute incoming traffic to applications on the IBM Cloud. If you want to add more configuration, you simply add annotations in the yaml file. Learn more about [Ingress for IBM Cloud Container Service](https://console.bluemix.net/docs/containers/cs_ingress.html#ingress).
 
 1. Let's first check the IBM Ingress secret and subdomain information.
 ```sh
@@ -84,6 +84,8 @@ spec:
 ```
 The difference is IBM Ingress extended the base Ingress features by providing DNS entry to the Istio service! Now you can now access the app via http://[guestbook].us-east.containers.mybluemix.net.
 
-## References: 
+### References: 
 [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)           
 [Istio Ingress](https://istio.io/docs/tasks/traffic-management/ingress.html)
+
+#### [Continue to Exercise 5 - Telemetry](../exercise-5/README.md)

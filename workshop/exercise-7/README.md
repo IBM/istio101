@@ -135,7 +135,7 @@ spec:
 ```
 
 >
-> Note that the annotations can also be used to gradually enable mTLS on individual services, 
+> Note that the annotations can also be used to gradually enable mTLS on individual services,
 >
 
 ## Further Reading
@@ -147,3 +147,5 @@ spec:
 * [Istio Task](https://istio.io/docs/tasks/security/mutual-tls.html)
 
 * [Istio Concept](https://istio.io/docs/concepts/security/mutual-tls.html)
+
+#### [Continue to Exercise 8 - Policy Enforcement ](../exercise-8/README.md)

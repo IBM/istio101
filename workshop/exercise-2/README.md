@@ -1,4 +1,4 @@
-# Module 2 - Installing Istio on IBM Cloud Container Service
+# Exercise 2 - Installing Istio on IBM Cloud Container Service
 In this module, you download and install Istio.
 
 1. Either download Istio directly from [https://github.com/istio/istio/releases](https://github.com/istio/istio/releases) or get the latest version by using curl:
@@ -39,6 +39,6 @@ istio-mixer-2104784889-20rm8        3/3       Running   0          5m
 istio-pilot-2275554717-93c43        2/2       Running   0          5m
 ```
 
-Congratulations! You successfully installed Istio into your cluster. 
+Congratulations! You successfully installed Istio into your cluster.
 
 #### [Continue to Exercise 3 - Deploy Guestbook with Istio Proxy](../exercise-3/README.md)

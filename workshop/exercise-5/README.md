@@ -1,11 +1,11 @@
-# Exercise 5 - Telemetry 
+# Exercise 5 - Telemetry
 
 ### Challenges with microservices
 
 For the longest time in the history of application development, we build our applications around the concept of monolith mindset. It basically having a large number of instances running all services provided in one application. Things like user account management, payment, reporting are all these services run from a shared resource. This worked pretty well until SOA came along and promised us a much brighter future. The basic principle is to break down applications to smaller components, and having them to talk to one other using protocols like REST or gRPC. Everyone thought this will fundamentally change the landscape and it did up to an extent. However, a new set of challenges emerged. How about cross services communication? How about observability between microservices such as logging or tracing? How about metrics?
 
 ### Istio telemetry
- 
+
 Istio's tracing and metrics features are designed to provide broad and granular insight into the health of all services. Istio's role as a service mesh makes it the ideal data source for observability information, particularly in a microservices environment. As requests pass through multiple services, identifying performance bottlenecks becomes increasingly difficult using traditional debugging techniques. Distributed tracing provides a holistic view of requests transiting through multiple services, allowing for immediate identification of latency issues. With Istio, distributed tracing comes by default. Simply configure Istio to export tracing data to a backend trace aggregator, such as Jaeger. This will expose latency, retry, and failure information for each hop in a request.
 
 You can fine more on how Istio mixer enables the telemetry reporting.
@@ -109,3 +109,4 @@ In the example, when a user visits the guestbook, the HTTP request is sent from 
 
 3. What distributed tracing system does Istio support by default?  A: 1. Zipkin 2. Kibana 3. LogStash 4. Jaeger. (1 and 4 are correct)
 
+#### [Continue to Exercise 6 - Traffic Management](../exercise-6/README.md)
