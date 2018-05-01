@@ -24,9 +24,9 @@ kubectl get svc -n istio-system
 ```
 ```
 NAME            TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                                                            AGE
-istio-ingress   LoadBalancer   {[service_private_IP]}   {[public_IP]}   80:31176/TCP,443:30288/TCP                                         2m
-istio-mixer     ClusterIP      {[service_private_IP]}     <none>           9091/TCP,15004/TCP,9093/TCP,9094/TCP,9102/TCP,9125/UDP,42422/TCP   2m
-istio-pilot     ClusterIP      {[service_private_IP]}    <none>           15003/TCP,443/TCP                                                  2m
+istio-ingress   LoadBalancer   172.21.xxx.xxx   169.xx.xxx.xxx   80:31176/TCP,443:30288/TCP                                         2m
+istio-mixer     ClusterIP      172.21.xxx.xxx   <none>           9091/TCP,15004/TCP,9093/TCP,9094/TCP,9102/TCP,9125/UDP,42422/TCP   2m
+istio-pilot     ClusterIP      172.21.xxx.xxx   <none>           15003/TCP,443/TCP                                                  2m
 ```
 7. Ensure the corresponding pods `istio-pilot-*`, `istio-mixer-*`, `istio-ingress-*`, and `istio-ca-*` are also fully deployed before you continue.
 ```
