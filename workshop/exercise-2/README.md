@@ -40,3 +40,5 @@ istio-pilot-2275554717-93c43        2/2       Running   0          5m
 ```
 
 Congratulations! You successfully installed Istio into your cluster. 
+
+#### [Continue to Exercise 3 - Deploy Guestbook with Istio Proxy](../exercise-3/README.md)
