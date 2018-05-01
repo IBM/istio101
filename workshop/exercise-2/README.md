@@ -35,8 +35,8 @@ kubectl get pods -n istio-system
 ```
 istio-ca-3657790228-j21b9           1/1       Running   0          5m
 istio-ingress-1842462111-j3vcs      1/1       Running   0          5m
-istio-pilot-2275554717-93c43        1/1       Running   0          5m
-istio-mixer-2104784889-20rm8        2/2       Running   0          5m
+istio-mixer-2104784889-20rm8        3/3       Running   0          5m
+istio-pilot-2275554717-93c43        2/2       Running   0          5m
 ```
 
 Congratulations! You successfully installed Istio into your cluster. 
