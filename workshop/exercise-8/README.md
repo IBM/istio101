@@ -1,4 +1,4 @@
-# Exercise 8 - Policy Enforcement 
+# Exercise 8 - Policy Enforcement
 
 Backend systems such as access control systems, telemetry capturing systems, quota enforcement systems, billing systems, and so forth, traditionally directly integrate with Services, creating a hard coupling and baking-in specific semantics and usage options.
 
@@ -54,8 +54,8 @@ Here are the tasks for this exercise.
     ```sh
     curl http://$INGRESS_IP/
     ```
-    and you should the error message: `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
-    
+    You should the error message `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
+
 3. Clean up the rule.
     ```sh
     istioctl delete -f mixer-rule-denial.yaml
