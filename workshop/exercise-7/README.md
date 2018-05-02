@@ -24,9 +24,7 @@ When an application microservice connects to another microservice, the communica
 
 When Envoy's establish a connection, they exchange and validate certificates to confirm that each is indeed connected to a valid and expected peer. The established identities can later be used as basis for policy checks (e.g., access authorization).
 
-## Steps
-
-### Verifying Istio’s mTLS Setup
+### Verify Istio’s mTLS Setup
 
 Verify the cluster-level CA is running:
 
@@ -52,7 +50,7 @@ Istio mutual TLS authentication is enabled if the line `authPolicy: MUTUAL_TLS` 
 
 If mTLS is working correctly, the Guestbook application should continue to operate as expected, without any user visible impact. Istio will automatically add (and manage) the required certificates and private keys. To confirm their presence in the Envoy containers, do the following:
 
-1. get the guesbook-v2 pod name
+1. Get the name of a guestbook-v2 pod. Make sure the pod is “Running”.
 
 ```sh
 kubectl get pods -l app=guestbook-v2
@@ -62,23 +60,19 @@ guestbook-v2-784546fbb9-hsbnq   2/2       Running   0          13h
 guestbook-v2-784546fbb9-lcxdz   2/2       Running   0          13h
 ```
 
-Make sure the pod is “Running”.
-
-1. ssh into the envoy container
+2. SSH into the istio-proxy envoy container (sidecar) of the pod.
 
 ```sh
 kubectl exec -it guestbook-v2-xxxxxxxx -c istio-proxy /bin/bash
 ```
 
-Make sure to change the pod name into the corresponding one on your system. This command will ssh into istio-proxy container (sidecar) of the pod.
-
-1. check out the certificate and keys are present
+3. Verify that the certificate and keys are present.
 
 ```sh
 ls /etc/certs/
 ```
 
-You should see the following (plus some others)
+You should see the following (plus some others):
 
 ```sh
 cert-chain.pem   key.pem   root-cert.pem
@@ -134,9 +128,7 @@ spec:
   ...
 ```
 
->
-> Note that the annotations can also be used to gradually enable mTLS on individual services,
->
+Note that the annotations can also be used to gradually enable mTLS on individual services.
 
 ## Further Reading
 
