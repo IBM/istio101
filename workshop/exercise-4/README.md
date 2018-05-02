@@ -30,7 +30,7 @@ A Kubernetes Ingress rule can be created that routes external requests through t
 
     ```
 
-2. Get the external IP of the Istio Ingress controller. Here is another common command to get the IP address of the ingress.
+2. Get the external IP of the Istio Ingress controller.
 
     ```sh
     kubectl get service istio-ingress -n istio-system
@@ -39,7 +39,7 @@ A Kubernetes Ingress rule can be created that routes external requests through t
     istio-ingress   LoadBalancer   172.21.126.221   169.61.37.141   80:31432/TCP,443:31753/TCP   3h
     ```
 
-Now you can access the guestbook via http://169.61.37.141(change it to your EXTERNAL-IP).
+Now you can access the guestbook via http://<EXTERNAL_IP>. The above example IP address would be accessible at http://169.61.37.141
 
 ### Set up the Istio Ingress controller to work with IBM Cloud Container Service (optional)
 **This feature only works for paid accounts. This section is optional.**  
@@ -55,7 +55,7 @@ bx cs cluster-get guestbook
 ...
 Ingress subdomain:	guestbook-242887.us-east.containers.mybluemix.net
 ```
-2. Modify the `guestbook-frontdoor.yaml` `host` attribute with the url accordingly.
+2. Modify the `guestbook-frontdoor.yaml` `host` attribute with the subdomain URL accordingly.
 After that, run
 ```sh
 kubectl apply -f guestbook-frontdoor.yaml
@@ -65,6 +65,7 @@ kubectl apply -f guestbook-frontdoor.yaml
 ```sh
 kubectl get ingress guestbook-ingress  -o yaml
 ```
+Example output:
 ```sh
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -82,9 +83,9 @@ spec:
               serviceName: guestbook
               servicePort: 3000
 ```
-The difference is IBM Ingress extended the base Ingress features by providing DNS entry to the Istio service! Now you can now access the app via http://[guestbook].us-east.containers.mybluemix.net.
+IBM Ingress extended the base Ingress features by providing DNS entry to the Istio service! Now you can now access the app via http://guestbook.us-south.containers.mybluemix.net.
 
-### References: 
+### References:
 [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)           
 [Istio Ingress](https://istio.io/docs/tasks/traffic-management/ingress.html)
 
