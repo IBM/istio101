@@ -48,8 +48,8 @@ The Redis database is a service that you can use to persist the data of your app
 
 1. Inject the Istio envoy sidecar into the guestbook pods and deploy the guestbook app on to the Kubernetes cluster.
 ```sh
-kubectl apply -f ../v1/guestbook-deployment.yaml --debug
-kubectl apply -f guestbook-deployment.yaml --debug
+kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml --debug)
+kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml --debug)
 ```
 These commands create two versions of deployments: a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future exercises to showcase the Istio traffic routing capabilities.
 
@@ -106,16 +106,16 @@ Before you begin:
 
 3. Add the username and password that you retrieved earlier and save your changes.
 
-4. Deploy the analyzer pods and service. The analyzer service talks to Watson Tone analyzer to help analyze the tone of a message.
+4. Deploy the analyzer pods and service. The analyzer service talks to the Watson Tone analyzer to help analyze the tone of a message.
    ```console
    kubectl apply -f analyzer-deployment.yaml --debug
    kubectl apply -f analyzer-service.yaml
    ```
    
-5. Apply an egress rule to allow the analyzer service to access the Watson service. The rule definition is defined in [istio101/workshop/plans](https://github.com/IBM/istio101/tree/master/workshop/plans) and is not part of the guestbook application files:
+5. Create an egress rule to allow the analyzer service to access the Watson service. The rule is defined in [istio101/workshop/plans](https://github.com/IBM/istio101/tree/master/workshop/plans) and is not part of the guestbook app files:
     ```console
       kubectl apply -f analyzer-egress.yaml
     ```
-And that concludes the installation of the guestbook application.
+Great! With you guestbook up and running, you can now expose the service mesh with the Istio Ingress controller. 
 
 #### [Continue to Exercise 4 - Expose the service mesh with the Istio Ingress controller](../exercise-4/README.md)
