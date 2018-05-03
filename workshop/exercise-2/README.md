@@ -1,25 +1,25 @@
 # Exercise 2 - Installing Istio on IBM Cloud Container Service
 In this module, you download and install Istio.
 
-1. Either download Istio directly from [https://github.com/istio/istio/releases](https://github.com/istio/istio/releases) or get the latest version by using curl:
-```
-curl -L https://git.io/getLatestIstio | sh -
-```
+1.  Either download Istio directly from [https://github.com/istio/istio/releases](https://github.com/istio/istio/releases) or get the latest version by using curl:
+    ```bash
+    curl -L https://git.io/getLatestIstio | sh -
+    ```
 2. Extract the installation files.
-3. Add the `istioctl` client to your PATH. For example, run the following command on a MacOS or Linux system:
+3. Add the `istioctl` client to your PATH. The `<version-number>` is in the directory name. For example, run the following command on a MacOS or Linux system:
 ```
 export PATH=$PWD/istio-<version-number>/bin:$PATH
 ```
 4. Change the directory to the Istio file location.
 
 5. Install Istio on the Kubernetes cluster. Istio is deployed in the Kubernetes namespace `istio-system`.
-```
+```bash
 kubectl apply -f install/kubernetes/istio.yaml
 ```
 **Note**: If you need to enable mutual TLS authentication between sidecars, you can install the `istio-auth` file instead: `kubectl apply -f install/kubernetes/istio-auth.yaml`
 
-6. Ensure that the Kubernetes services `istio-pilot`, `istio-mixer`, and `istio-ingress` are fully deployed before you continue.
-```
+6. Ensure that the Kubernetes services `istio-ingress`, `istio-mixer`, and `istio-pilot` are fully deployed before you continue.
+```bash
 kubectl get svc -n istio-system
 ```
 ```
@@ -28,7 +28,7 @@ istio-ingress   LoadBalancer   172.21.xxx.xxx   169.xx.xxx.xxx   80:31176/TCP,44
 istio-mixer     ClusterIP      172.21.xxx.xxx   <none>           9091/TCP,15004/TCP,9093/TCP,9094/TCP,9102/TCP,9125/UDP,42422/TCP   2m
 istio-pilot     ClusterIP      172.21.xxx.xxx   <none>           15003/TCP,443/TCP                                                  2m
 ```
-7. Ensure the corresponding pods `istio-pilot-*`, `istio-mixer-*`, `istio-ingress-*`, and `istio-ca-*` are also fully deployed before you continue.
+7. Ensure the corresponding pods `istio-ca-*`, `istio-ingress-*`, `istio-mixer-*`, and `istio-pilot-*` are also fully deployed before you continue.
 ```
 kubectl get pods -n istio-system
 ```
