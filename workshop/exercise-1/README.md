@@ -73,4 +73,4 @@ cd istio101/workshop
 
 This is the working directory for the workshop.
 
-#### [Continue to Exercise 2 - Installing Istio](../exercise-2/README.md)
+### [Continue to Exercise 2 - Installing Istio](../exercise-2/README.md)
