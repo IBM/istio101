@@ -49,14 +49,14 @@ Here are the tasks for this exercise.
         - denyrequest.checknothing
     ```
 
-2. Verify that you service is denied:
+2. Verify that the service is denied:
 
     ```sh
     curl http://$INGRESS_IP/
     ```
-    You should the error message `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
+    You should see the error message `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
 
-3. Clean up the rule.
+3. Delete the rule.
     ```sh
     istioctl delete -f mixer-rule-denial.yaml
     ```
