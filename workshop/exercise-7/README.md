@@ -5,14 +5,14 @@
 Istio can secure the communication between microservices without requiring application code changes.
 
 Istio Auth is an optional part of Istio's control plane components. When enabled, it provides each Envoy sidecar proxy with a strong (cryptographic) identity, in the form of certificates.
-Identity is based on the microservice's role (specifically, the service account it runs under) and is independent of its specific network location, such as cluster or current IP address.
+Identity is based on the microservice's the service account and is independent of its specific network location, such as cluster or current IP address.
 Envoys then use these certificates to identify each other and establish an authenticated and encrypted communication channel between them.
 
 Istio Auth is responsible for:
 
-* Providing each service with an identity representing its role;
+* Providing each service with an identity representing its role.
 
-* Providing a common trust root to allow Envoys to validate and authenticate each other; and
+* Providing a common trust root to allow Envoys to validate and authenticate each other.
 
 * Providing a key management system, automating generation, distribution, and rotation of certificates and keys.
 
@@ -20,9 +20,9 @@ When an application microservice connects to another microservice, the communica
 
 * Local TCP connection (i.e., `localhost`, not reaching the "wire") between the application and Envoy (client- and server-side);
 
-* Mutually authenticated and encrypted connection between Envoy proxies;
+* Mutually authenticated and encrypted connection between Envoy proxies.
 
-When Envoy's establish a connection, they exchange and validate certificates to confirm that each is indeed connected to a valid and expected peer. The established identities can later be used as basis for policy checks (e.g., access authorization).
+When Envoys establish a connection, they exchange and validate certificates to confirm that each is indeed connected to a valid and expected peer. The established identities can later be used as basis for policy checks (e.g. access authorization).
 
 ### Verify Istio’s mTLS Setup
 
