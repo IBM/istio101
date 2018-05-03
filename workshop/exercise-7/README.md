@@ -32,7 +32,7 @@ Verify the cluster-level CA is running:
 kubectl get deployment -l istio=istio-ca -n istio-system
 ```
 
-Istio CA is up if the “AVAILABLE” column is 1. For example:
+Expected output:
 ```sh
 NAME       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 istio-ca   1         1         1            1           15h
