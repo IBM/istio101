@@ -80,12 +80,12 @@ guestbook-v2-56d98b558c-mzbxk   2/2       Running   0          5d
 Note that each guestbook pod has 2 containers in it. One is the guestbook container, and the other is the envoy proxy sidecar.
 
 ### Add the analyzer service
-The Watson Tone analyzer service will detect the tone from the words that users enter into the guestbook app. The tone is converted to the corresponding emoticons. 
+The Watson Tone analyzer service detects the tone from the words that users enter into the guestbook app. The tone is converted to the corresponding emoticons. 
 
 Before you begin: 
 - Use `bx target --cf` or `bx target -o ORG -s SPACE` to set the Cloud Foundry org and space where you want to provision the service. 
 
-1. Deploy Watson Tone analyzer service. 
+1. Deploy the Watson Tone analyzer service. 
 
    1. Create the Watson Tone analyzer service in your space. 
       ```console
