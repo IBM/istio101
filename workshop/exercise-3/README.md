@@ -1,6 +1,6 @@
 # Exercise 3 - Deploy Guestbook with Istio Proxy 
 
-The Guestbook application consists of a web front end, Redis master for storage, and replicated set of Redis slaves. We will deploy that application on Kubernetes with Istio manual injection.
+The Guestbook application is a sample application for users to leave comments. It consists of a web front end, Redis master for storage, and replicated set of Redis slaves. We will also integrate the application with Watson tone analyzer service that detects the sentiment in user's comments and reply with emoticons. Here are the steps to deploy the application on your Kubernets cluster:
 
 ## Clone the repo
 In your terminal, run
@@ -42,7 +42,11 @@ Lastly we check the pods:
   redis-slave-kj8jp               1/1       Running   0          5d
   redis-slave-nslps               1/1       Running   0          5d
   ```
-## Install guestbook app with Istio
+## Sidecar injection
+
+In Kubernets, a sidecar is a utility container in the Pod and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using istioctl CLI tool or automatically using the Istio Initializer. In this exercise, we will use the manual injection. Manual injection modifies the controller configuration, e.g. deployment. It does this by modifying the pod template spec such that all pods for that deployment are created with the injected sidecar. 
+
+## Install guestbook app with Manual sidecar injection
 
   ```sh
  kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml --debug)
@@ -78,7 +82,7 @@ The Watson Tone analyzer service will detect the tone in the words and convert t
 
 1. Deploy Watson Tone analyzer service.
 
-    > Note that you should use `bx target --cf` or `bx target -o ORG -s SPACE` to set the Cloud Foundry Org and Space before calling `bx service create...`
+    > Note that you should use `bx target --cf` or `bx target -o ORG -s SPACE` to set the Cloud Foundry Org and Space before calling `bx service create...`. 
 
     ```console
       bx service create tone_analyzer lite my-tone-analyzer-service
