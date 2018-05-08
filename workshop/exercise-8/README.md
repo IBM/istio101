@@ -51,18 +51,20 @@ In this exercise we'll use the denier adapter.
         - denyrequest.checknothing
     ```
 
-2. Verify that you service is denied:
+2. Verify that you service is denied.
 
-    ```sh
+   In [Exercise 4](../exercise-4/README.md), we created the Ingress resource. Make sure the $INGRESS_IP environment variable   is still present. Then in the terminal, try:  
+    
+    ```
     curl http://$INGRESS_IP/
     ```
-    and you should the error message: `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
+   And you should the error message: `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
     
 3. Clean up the rule.
     ```sh
     istioctl delete -f mixer-rule-denial.yaml
     ```
-##Quiz
+## Quiz
 1. Does creating mixer rules require application code changes? (Yes/No) No
 2. The custom code that interacts with the backend system, i.e. Prometheus, is called 
 A. Rule B. Instance C. Adapter
