@@ -39,7 +39,7 @@ A Kubernetes Ingress rule can be created that routes external requests through t
     istio-ingress   LoadBalancer   172.21.126.221   169.61.37.141   80:31432/TCP,443:31753/TCP   3h
     ```
 
-Now you can access the guestbook via http://169.61.37.141(change it to your EXTERNAL-IP).
+Now you can access the guestbook via http://169.61.37.141 (change it to your EXTERNAL-IP).
 
 ## Set up the Istio Ingress controller to work with IBM Cloud Container Service (optional)
 **This feature only works for paid accounts. This section is optional.**  
