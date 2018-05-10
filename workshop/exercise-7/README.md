@@ -138,6 +138,16 @@ spec:
 > Note that the annotations can also be used to gradually enable mTLS on individual services, 
 >
 
+## Quiz
+
+**True or False?**
+
+1. Istio Auth/Citadel provides each microservice with a strong, cryptographic, identity in the form of a certificate. The certificates' life cycle is fully managed by Istio. (True)
+
+2. Istio provides microservices with mutually authenticated connections, without requiring application code changes. (True)
+
+3. Mutual authentication must be on or off for the entire cluster, gradual adoption is not possible. (False)
+
 ## Further Reading
 
 * [Basic TLS/SSL Terminology](https://dzone.com/articles/tlsssl-terminology-and-basics)
