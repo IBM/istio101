@@ -39,7 +39,7 @@ Now we need to configure Istio to automatically gather telemetry data for servic
 2. Generate a small load to the application.
 
     ```sh
-    while sleep 0.5; do curl http://$INGRESS_IP/; done
+    while sleep 0.5; do curl http://[External load balancer IP for Guestbook]/; done
     ```
 
 ## View guestbook telemetry data
