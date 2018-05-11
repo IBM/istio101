@@ -73,7 +73,7 @@ Select guestbook-v2 from Services menu in the left bar
 Establish port forwarding from local port 3000 to the Grafana instance:
 
 ````
-kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana \  -o jsonpath='{.items[0].metadata.name}') 3000:3000
+kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000
 ````
 
 Browse to http://localhost:3000 and navigate to the Istio Dashboard.
