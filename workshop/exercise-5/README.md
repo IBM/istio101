@@ -56,6 +56,18 @@ Now we need to configure Istio to automatically gather telemetry data for servic
 
 ## View guestbook telemetry data
 
+#### Jaeger
+
+Establish port forwarding from local port 16686 to the Jaeger instance
+
+````
+kubectl port-forward -n istio-system \$(kubectl get pod -n istio-system -l app=jaeger -o \jsonpath='{.items[0].metadata.name}') 16686:16686 &
+````
+
+Browse to http://localhost:16686
+
+Select guestbook-v2 from Services menu in the left bar
+
 #### Grafana
 
 Establish port forwarding from local port 3000 to the Grafana instance:
@@ -66,15 +78,7 @@ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=gr
 
 Browse to http://localhost:3000 and navigate to the Istio Dashboard.
 
-#### Jaeger
 
-Establish port forwarding from local port 16686 to the Jaeger instance
-
-````
-kubectl port-forward -n istio-system \$(kubectl get pod -n istio-system -l app=jaeger -o \jsonpath='{.items[0].metadata.name}') 16686:16686 &
-````
-
-Browse to http://localhost:16686
 
 #### Prometheus
 
