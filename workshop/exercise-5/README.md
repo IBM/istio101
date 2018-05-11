@@ -37,12 +37,18 @@ kubectl get services -w --all-namespaces
 
 Now we need to configure Istio to automatically gather telemetry data for services running in the mesh.
 
-1. Create a rule to collect telemetry data.
+1. Go back to your v2 directory
+
+    ````
+    cd guestbook/v2
+    ````
+
+2. Create a rule to collect telemetry data.
 
     ```sh
-    istioctl create -f guestbook/guestbook-telemetry.yaml
+    istioctl create -f guestbook-telemetry.yaml
     ```
-2. Generate a small load to the application.
+3. Generate a small load to the application.
 
     ```sh
     while sleep 0.5; do curl http://$INGRESS_IP/; done
