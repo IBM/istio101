@@ -22,7 +22,7 @@ When an application microservice connects to another microservice, the communica
 
 * Mutually authenticated and encrypted connection between Envoy proxies;
 
-When Envoys establish a connection, they exchange and validate certificates to confirm that each is indeed connected to a valid and expected peer. The established identities can later be used as basis for policy checks (e.g., access authorization).
+When Envoy proxies establish a connection, they exchange and validate certificates to confirm that each is indeed connected to a valid and expected peer. The established identities can later be used as basis for policy checks (e.g., access authorization).
 
 ## Steps
 
