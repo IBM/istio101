@@ -12,6 +12,12 @@ You can fine more on how Istio mixer enables the telemetry reporting.
 
 ### See it in action
 
+Change the directory to the Istio file location.
+
+````
+cd [path_to_istio-version]
+````
+
 First we need to install add-ons for Grafana, Prometheus, ServiceGraph and Jaeger
 
 ```
