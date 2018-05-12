@@ -12,6 +12,12 @@ You can fine more on how Istio mixer enables the telemetry reporting.
 
 ### See it in action
 
+Change the directory to the Istio file location.
+
+````
+cd [path_to_istio-version]
+````
+
 First we need to install add-ons for Grafana, Prometheus, ServiceGraph and Jaeger
 
 ```
@@ -31,28 +37,24 @@ kubectl get services -w --all-namespaces
 
 Now we need to configure Istio to automatically gather telemetry data for services running in the mesh.
 
-1. Create a rule to collect telemetry data.
+1. Go back to your v2 directory
+
+    ````
+    cd guestbook/v2
+    ````
+
+2. Create a rule to collect telemetry data.
 
     ```sh
-    istioctl create -f guestbook/guestbook-telemetry.yaml
+    istioctl create -f guestbook-telemetry.yaml
     ```
-2. Generate a small load to the application.
+3. Generate a small load to the application.
 
     ```sh
-    while sleep 0.5; do curl http://$INGRESS_IP/; done
+    while sleep 0.5; do curl http://[guestbook loadbalancer external IP]/; done
     ```
 
 ## View guestbook telemetry data
-
-#### Grafana
-
-Establish port forwarding from local port 3000 to the Grafana instance:
-
-````
-kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana \  -o jsonpath='{.items[0].metadata.name}') 3000:3000
-````
-
-Browse to http://localhost:3000 and navigate to the Istio Dashboard.
 
 #### Jaeger
 
@@ -62,7 +64,21 @@ Establish port forwarding from local port 16686 to the Jaeger instance
 kubectl port-forward -n istio-system \$(kubectl get pod -n istio-system -l app=jaeger -o \jsonpath='{.items[0].metadata.name}') 16686:16686 &
 ````
 
-Browse to http://localhost:9411
+Browse to http://localhost:16686
+
+Select guestbook-v2 from Services menu in the left bar
+
+#### Grafana
+
+Establish port forwarding from local port 3000 to the Grafana instance:
+
+````
+kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000
+````
+
+Browse to http://localhost:3000 and navigate to the Istio Dashboard.
+
+
 
 #### Prometheus
 
