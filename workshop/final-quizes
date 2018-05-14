@@ -1,0 +1,37 @@
+## Final Quizes
+
+1. Which of the following are the features provided by Istio?
+
+A. Traffic Management   B. Telemtry   C. Policy Enforcement.   D. Machine Learning.  E. Mutual TLS.  F. API Connect
+
+(Answer A B C E)
+
+2. Can microservices deployed in Istio communicate to services outside of Istio?
+
+A. Yes B. No.  (Answer A)
+
+3. Which Istio function normally requires user to modify their application?
+
+A. Traffic Management   B. Metrics   C Distributed Tracing   D. Policy Enforcement. 
+
+(Answer C)
+
+4. Which Istio component is always required when user chooses to only install certain Istio features?
+A. Mixer  B. Pilot.  C. Citadel.  D. Istioctl
+
+(Answer B)
+
+5. Which Istio components below are part of the Istio mesh data plane?
+A. Mixer. B. Pilot C. Citadel D. Envoy side car
+
+(Answer D)
+
+6. Which Istio features allow user to configure per namespace?
+A. Policy enforcement B. Traffic Management C. Authentication Policy. D. Telemtry
+
+(Answer A, C, D)
+
+7. To leverage Istio, does my service have to run in Kubernetes?
+A. Yes.  B. No
+
+(Answer B).
