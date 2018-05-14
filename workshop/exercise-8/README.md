@@ -4,7 +4,9 @@ Backend systems such as access control systems, telemetry capturing systems, quo
 
 Mixer provides a generic intermediation layer between application code and infrastructure backends. Its design moves policy decisions out of the app layer and into configuration instead, under operator control. Instead of having application code integrate with specific backends, the app code instead does a fairly simple integration with Mixer, and Mixer takes responsibility for interfacing with the backend systems.
 
-Here are the tasks for this exercise.
+Given that individual infrastructure backends each have different interfaces and operational models, Mixer needs custom code to deal with each and we call these custom bundles of code **adapters**. Here are some built-in apapters: denier, prometheus,  memquota, stackdriver.
+
+In this exercise we'll use the denier adapter.
 
 ## Service isolation
 
@@ -51,15 +53,24 @@ Here are the tasks for this exercise.
 
 2. Verify that the service is denied:
 
-    ```sh
+   In [Exercise 4](../exercise-4/README.md), we created the Ingress resource. Make sure the $INGRESS_IP environment variable   is still present. Then in the terminal, try:  
+    
+    ```
     curl http://$INGRESS_IP/
     ```
     You should see the error message `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
 
-3. Delete the rule.
+3. Clean up the rule.
+
     ```sh
     istioctl delete -f mixer-rule-denial.yaml
     ```
+## Quiz
+1. Does creating mixer rules require application code changes? (Yes/No) No
+2. The custom code that interacts with the backend system, i.e. Prometheus, is called 
+A. Rule B. Instance C. Adapter
+Answer is C
+
 ## Further Reading
-[Istio Mixer](https://istio.io/docs/concepts/policy-and-control/mixer.html)
+[Istio Mixer](https://istio.io/docs/concepts/policy-and-control/mixer.html)    
 [How to write istio mixer policies](https://medium.com/@szihai_37982/how-to-write-istio-mixer-policies-50dc639acf75)

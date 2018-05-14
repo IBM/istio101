@@ -2,7 +2,7 @@
 
 Assume you already have a cluster that runs Kubernetes version 1.9 or later. Here are the steps to access your cluster.
 
-### Install IBM Cloud Container Service command line utilities
+## Install IBM Cloud Container Service command line utilities
 
 1. Install the IBM Cloud [command line interface](https://clis.ng.bluemix.net/ui/home.html).
 
@@ -30,11 +30,11 @@ Assume you already have a cluster that runs Kubernetes version 1.9 or later. Her
     6. us-south
     Enter a number> 5
     ```
-
+    
 6. Install the Kubernetes CLI. Go to the [Kubernetes page](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl) to install the CLI and follow the steps.
 
 
-### Access your cluster
+## Access your cluster
 
 1. Set the context for your cluster in your CLI. Every time you log in to the IBM Cloud Container Service CLI to work with the cluster, you must run these commands to set the path to the cluster's configuration file as a session variable. The Kubernetes CLI uses this variable to find a local configuration file and certificates that are necessary to connect with the cluster in IBM Cloud.
 
@@ -54,8 +54,8 @@ Assume you already have a cluster that runs Kubernetes version 1.9 or later. Her
 
 2. Obtain your kubernetes cluster token.
 
-    ```bash
-    kubectl config view -o jsonpath='{.users[0].user.auth-provider.config.id-token}'
+    ```
+    kubectl config view -o jsonpath='{.users[0].user.auth-provider.config.id-token}{"\n"}'
     ```
 
 3. Create a proxy to your Kubernetes API server.
@@ -76,17 +76,17 @@ Assume you already have a cluster that runs Kubernetes version 1.9 or later. Her
     bx cs workers <your_cluster_name>
     bx cs worker-get <worker_ID>
     ```
-
-### Clone the lab repo
+    
+## Clone the lab repo
 
 From your command line, run:
    
 ```bash   
 git clone https://github.com/IBM/istio101
 
-cd workshop
+cd istio101/workshop
 ```
 
 This is the working directory for the workshop. You use the example `.yaml` files that are located in the _workshop/plans_ directory in the following exercises.
 
-#### [Continue to Exercise 2 - Installing Istio](../exercise-2/README.md)
+### [Continue to Exercise 2 - Installing Istio](../exercise-2/README.md)

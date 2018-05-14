@@ -48,7 +48,7 @@ To have an IBM-provided DNS for Guestbook, you must set up the Istio Ingress con
 
 The IBM Ingress service provides IBM Cloud users with a secure, reliable, and scalable network stack to distribute incoming traffic to applications on the IBM Cloud. If you want to add more configuration, you simply add annotations in the yaml file. Learn more about [Ingress for IBM Cloud Container Service](https://console.bluemix.net/docs/containers/cs_ingress.html#ingress).
 
-1. Let's first check the IBM Ingress secret and subdomain information.
+1. Let's first check the IBM Ingress subdomain information.
 ```sh
 bx cs cluster-get guestbook
 

@@ -12,11 +12,10 @@ export PATH=$PWD/istio-<version-number>/bin:$PATH
 ```
 4. Change the directory to the Istio file location.
 
-5. Install Istio on the Kubernetes cluster. Istio is deployed in the Kubernetes namespace `istio-system`.
+5. Install Istio on the Kubernetes cluster. Istio is deployed in the Kubernetes namespace `istio-system`. Since in a later exercise we will try out the mutual TLS features, we install the `istio-auth.yaml` here.
 ```bash
-kubectl apply -f install/kubernetes/istio.yaml
+kubectl apply -f install/kubernetes/istio-auth.yaml
 ```
-**Note**: If you need to enable mutual TLS authentication between sidecars, you can install the `istio-auth` file instead: `kubectl apply -f install/kubernetes/istio-auth.yaml`
 
 6. Ensure that the Kubernetes services `istio-ingress`, `istio-mixer`, and `istio-pilot` are fully deployed before you continue.
 ```bash
