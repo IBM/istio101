@@ -39,7 +39,7 @@ A Kubernetes Ingress rule can be created that routes external requests through t
     NAME            TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)                      AGE
     istio-ingress   LoadBalancer   172.21.126.221   169.61.37.141   80:31432/TCP,443:31753/TCP   3h
     ```
-
+    
 3. Access the guestbook app by using the external IP address that you retrieved in the previous step. 
    Example: 
    ```
@@ -54,7 +54,7 @@ To have an IBM-provided DNS for the guestbook app, you must set up the Istio Ing
 
 The IBM Ingress service provides IBM Cloud users with a secure, reliable, and scalable network stack to distribute incoming network traffic to apps in IBM Cloud. You can enhance the IBM-provided Ingress application load balancer by adding annotions. Learn more about [Ingress for IBM Cloud Container Service](https://console.bluemix.net/docs/containers/cs_ingress.html#ingress). 
 
-1. Let's first check the IBM Ingress secret and subdomain information.
+1. Let's first check the IBM Ingress subdomain information.
 ```sh
 bx cs cluster-get guestbook
 

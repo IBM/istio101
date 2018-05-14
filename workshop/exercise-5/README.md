@@ -12,15 +12,20 @@ You can fine more on how Istio mixer enables the telemetry reporting.
 
 ### Configure Istio to receive telemetry data
 
-1. Install add-ons for Grafana, Prometheus, ServiceGraph and Jaeger. 
+1. Change the directory to the Istio file location.
+   ````
+   cd [path_to_istio-version]
+   ````
 
+2. Install add-ons for Grafana, Prometheus, ServiceGraph and Jaeger.
    ```console
    kubectl apply -f install/kubernetes/addons/grafana.yaml
    kubectl apply -f install/kubernetes/addons/prometheus.yaml
    kubectl apply -f install/kubernetes/addons/servicegraph.yaml
    kubectl apply -n istio-system -f https://raw.githubusercontent.com/jaegertracing/jaeger-kubernetes/master/all-in-one/jaeger-all-in-one-template.yml
    ```
-2. Verify that the add-ons were installed successfully. All add-ons are installed into the `istio-system` namespace. 
+   
+3. Verify that the add-ons were installed successfully. All add-ons are installed into the `istio-system` namespace. 
    ```console
    kubectl get pods -w -n istio-system
 
@@ -28,37 +33,43 @@ You can fine more on how Istio mixer enables the telemetry reporting.
    ```
 
 3. Configure Istio to automatically gather telemetry data for services that run in the service mesh. 
-   1. Create a rule to collect telemetry data.
+   1. Go back to your v2 directory
+      ````
+      cd guestbook/v2
+      ````
 
+   2. Create a rule to collect telemetry data. 
       ```sh
-       istioctl create -f guestbook/guestbook-telemetry.yaml
-       ```
-   2. Generate a small load to the guestbook app.
+      istioctl create -f guestbook-telemetry.yaml
+      ```
+   3. Generate a small load to the application.
       ```sh
-      while sleep 0.5; do curl http://$INGRESS_IP/; done
+      while sleep 0.5; do curl http://<guestbook_loadbalancer_external_IP/; done
       ```
 
 ## View guestbook telemetry data
 
-#### Grafana
-
-1. Establish port forwarding from local port 3000 to the Grafana instance.
-
-   ```console
-   kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana \  -o jsonpath='{.items[0].metadata.name}') 3000:3000
-   ```
-
-2. Browse to http://localhost:3000 and navigate to the Istio Dashboard.
-
 #### Jaeger
 
-1. Establish port forwarding from local port 16686 to the Jaeger instance. 
-
+1. Establish port forwarding from local port 16686 to the Jaeger instance.
    ```console
    kubectl port-forward -n istio-system \$(kubectl get pod -n istio-system -l app=jaeger -o \jsonpath='{.items[0].metadata.name}') 16686:16686 &
    ```
 
-2. Browse to http://localhost:9411
+2. Browse to http://localhost:16686.
+
+3. From the **Services** menu, select **guestbook-v2**. 
+
+
+#### Grafana
+
+1. Establish port forwarding from local port 3000 to the Grafana instance:
+   ````
+   kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000
+   ````
+
+2. Browse to http://localhost:3000 and navigate to the Istio Dashboard.
+
 
 #### Prometheus
 

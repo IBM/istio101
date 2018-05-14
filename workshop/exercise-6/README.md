@@ -1,7 +1,7 @@
 # Exercise 6 - Traffic Management
 
 ## Using Rules to Manage Traffic
-The core component used for traffic management in Istio is Pilot, which manages and configures all the Envoy proxy instances deployed in a particular Istio service mesh. It lets you specify what rules you want to use to route traffic between Envoy proxies, which run as sidecars to each service in the mesh.  Each service consists of any number of instances running on pods, containers, VMs etc.  Each service can have any number of versions (a.k.a. subsets).  There can be distinct subsets of service instances running different variants of the application binary. These variants are not necessarily different API versions. They could be iterative changes to the same service, deployed in different environments (prod, staging, dev, etc.).  Pilot translates high-level rules into low-level configurations and distributes this config to Envoy instances.  Pilot uses three types of configuration resources to manage traffic within its service mesh: Virtual Services, Destination Rules, and External Services.
+The core component used for traffic management in Istio is Pilot, which manages and configures all the Envoy proxy instances deployed in a particular Istio service mesh. It lets you specify what rules you want to use to route traffic between Envoy proxies, which run as sidecars to each service in the mesh.  Each service consists of any number of instances running on pods, containers, VMs etc.  Each service can have any number of versions (a.k.a. subsets).  There can be distinct subsets of service instances running different variants of the application binary. These variants are not necessarily different API versions. They could be iterative changes to the same service, deployed in different environments (prod, staging, dev, etc.).  Pilot translates high-level rules into low-level configurations and distributes this config to Envoy instances.  Pilot uses three types of configuration resources to manage traffic within its service mesh: Virtual Services, Destination Rules, and Service Entries.
 
 ### Virtual Services
 A [VirtualService](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#VirtualService) defines a set of traffic routing rules to apply when a host is addressed. Each routing rule defines matching criteria for traffic of a specific protocol. If the traffic is matched, then it is sent to a named [destination](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#Destination) service (or [subset](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#Subset) or version of it) defined in the service registry.
@@ -9,8 +9,8 @@ A [VirtualService](https://istio.io/docs/reference/config/istio.networking.v1alp
 ### Destination Rules
 A [DestinationRule](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#Destination) defines policies that apply to traffic intended for a service after routing has occurred. These rules specify configuration for load balancing, connection pool size from the sidecar, and outlier detection settings to detect and evict unhealthy hosts from the load balancing pool. Any destination `host` and `subset` referenced in a `VirtualService` rule must be defined in a corresponding `DestinationRule`.
 
-### External Services
-An [ExternalService](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#ExternalService) configuration enables services within the mesh to access an external service not necessarily managed by Istio.  The rule describes the endpoints, ports and protocols of a white-listed set of mesh-external domains and IP blocks that services in the mesh are allowed to access.
+### Service Entries
+A [ServiceEntry](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#ServiceEntry) configuration enables services within the mesh to access a service not necessarily managed by Istio.  The rule describes the endpoints, ports and protocols of a white-listed set of mesh-external domains and IP blocks that services in the mesh are allowed to access.
 
 ## The Guestbook Example
 In the Guestbook example, there is one service: guestbook.  The guestbook service has two distinct versions: the base version (version 1) and the modernized version (version 2).  Each version of the service has three instances based on the number of replicas in [guestbook-deployment.yaml](https://github.com/linsun/examples/blob/master/guestbook-go/guestbook-deployment.yaml) and [guestbook-v2-deployment.yaml](https://github.com/linsun/examples/blob/master/guestbook-go/guestbook-v2-deployment.yaml).  By default, prior to creating any rules, Istio will route requests equally across version 1 and version 2 of the guestbook service and their respective instances in a round robin manner.  However, new versions of a service can easily introduce bugs to the service mesh, so following A/B Testing and Canary Deployments are recommended practices to follow.
@@ -120,7 +120,7 @@ Depending on whether a service handles [HTTP](https://istio.io/docs/reference/co
 
 
 ## Questions
-1. Where are routing rules defined?  Options: (VirtualService, DestinationRule, ExternalService)  Answer: VirtualService
-1. Where are service versions (subsets) defined?  Options: (VirtualService, DestinationRule, ExternalService)  Answer: DestinationRule
+1. Where are routing rules defined?  Options: (VirtualService, DestinationRule, ServiceEntry)  Answer: VirtualService
+1. Where are service versions (subsets) defined?  Options: (VirtualService, DestinationRule, ServiceEntry)  Answer: DestinationRule
 1. Which Istio component is responsible for sending traffic management configurations to Istio sidecars?  Options: (Mixer, Citadel, Pilot, Kubernetes)  Answer: Pilot
 1. What is the name of the default proxy that runs in Istio sidecars and routes requests within the service mesh?  Options: (NGINX, Envoy, HAProxy)  Answer: Envoy
