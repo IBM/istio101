@@ -1,14 +1,14 @@
-# Exercise 5 - Telemetry 
+# Exercise 5 - Telemetry
 
 ### Challenges with microservices
 
-For the longest time in the history of app development, we build our apps around the concept of monolith mindset. It basically having a large number of instances running all services provided in one app. Things like user account management, payment, reporting are all these services run from a shared resource. This worked pretty well until SOA came along and promised us a much brighter future. The basic principle is to break down apps to smaller components, and having them to talk to one other using protocols like REST or gRPC. Everyone thought this will fundamentally change the landscape and it did up to an extent. However, a new set of challenges emerged. How about cross services communication? How about observability between microservices such as logging or tracing? How about metrics?
+For the longest time in the history of application development, applications were built with monolith mindset. Monolith applications have a large number of instances running all of the services provided in one application. Things like user account management, payment, and reporting are all run from a shared resource. This worked pretty well until service-oriented architecture (SOA) came along and promised us a much brighter future. The basic principle of SOA is to break down applications to smaller components, and having them to talk to one other using protocols like REST or gRPC. Everyone thought this would fundamentally change the landscape, and it did--up to an extent. However, a new set of challenges emerged. What about cross-services communication? What about observability between microservices, such as logging or tracing? What about metrics?
 
 ### Istio telemetry
- 
+
 Istio's tracing and metrics features are designed to provide broad and granular insight into the health of all services. Istio's role as a service mesh makes it the ideal data source for observability information, particularly in a microservices environment. As requests pass through multiple services, identifying performance bottlenecks becomes increasingly difficult using traditional debugging techniques. Distributed tracing provides a holistic view of requests transiting through multiple services, allowing for immediate identification of latency issues. With Istio, distributed tracing comes by default. Simply configure Istio to export tracing data to a backend trace aggregator, such as Jaeger. This will expose latency, retry, and failure information for each hop in a request.
 
-You can fine more on how Istio mixer enables the telemetry reporting.
+You can read more about how [Istio mixer enables telemetry reporting](https://istio.io/docs/concepts/policy-and-control/mixer.html).
 
 ### Configure Istio to receive telemetry data
 
@@ -33,7 +33,7 @@ You can fine more on how Istio mixer enables the telemetry reporting.
    ```
 
 3. Configure Istio to automatically gather telemetry data for services that run in the service mesh. 
-   1. Go back to your v2 directory
+   1. Go back to your v2 directory.
       ````
       cd guestbook/v2
       ````
@@ -108,7 +108,7 @@ Although Istio proxies are able to automatically send spans, they need some hint
 In the example, when a user visits the guestbook, the HTTP request is sent from the guestbook service to the Watson Tone analyzer service. In order for the individual spans of guestbook service and analyzer service to be tied together, we have modified the guestbook service to extract the required headers (x-request-id, x-b3-traceid, x-b3-spanid, x-b3-parentspanid, x-b3-sampled, x-b3-flags, x-ot-span-context) and forward them onto the analyzer service when calling the analyzer service from the guestbook service.  The change is in the `v2/guestbook/main.go`. By using the `getForwardHeaders()` method, we are able to extract the required headers, and then we use the required headers further when calling the analyzer service via the `getPrimaryTone()` method.
 
 
-## Quizes
+## Quizzes
 
 1. Does a user need to modify their app to get metrics for their apps?   A: 1. Yes 2. No.  (2 is correct)
 
@@ -116,3 +116,4 @@ In the example, when a user visits the guestbook, the HTTP request is sent from 
 
 3. What distributed tracing system does Istio support by default?  A: 1. Zipkin 2. Kibana 3. LogStash 4. Jaeger. (1 and 4 are correct)
 
+#### [Continue to Exercise 6 - Traffic Management](../exercise-6/README.md)

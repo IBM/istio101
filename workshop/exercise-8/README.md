@@ -1,4 +1,4 @@
-# Exercise 8 - Policy Enforcement 
+# Exercise 8 - Policy Enforcement
 
 Backend systems such as access control systems, telemetry capturing systems, quota enforcement systems, billing systems, and so forth, traditionally directly integrate with Services, creating a hard coupling and baking-in specific semantics and usage options.
 
@@ -51,16 +51,17 @@ In this exercise we'll use the denier adapter.
         - denyrequest.checknothing
     ```
 
-2. Verify that you service is denied.
+2. Verify that the service is denied:
 
    In [Exercise 4](../exercise-4/README.md), we created the Ingress resource. Make sure the $INGRESS_IP environment variable   is still present. Then in the terminal, try:  
     
     ```
     curl http://$INGRESS_IP/
     ```
-   And you should the error message: `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
-    
+    You should see the error message `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
+
 3. Clean up the rule.
+
     ```sh
     istioctl delete -f mixer-rule-denial.yaml
     ```

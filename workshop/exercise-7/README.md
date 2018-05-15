@@ -5,14 +5,14 @@
 Istio can secure the communication between microservices without requiring application code changes. Security is provided by authenticating and encrypting communication paths within the cluster. This is becoming a common security and compliance requirement. Delegating communication security to Istio (as opposed to implementing TLS in each microservice), ensures that your application wil be deployed with consistent and manageable security policies.
 
 Istio Auth is an optional part of Istio's control plane components. When enabled, it provides each Envoy sidecar proxy with a strong (cryptographic) identity, in the form of certificates.
-Identity is based on the microservice's role (specifically, the service account it runs under) and is independent of its specific network location, such as cluster or current IP address.
+Identity is based on the microservice's the service account and is independent of its specific network location, such as cluster or current IP address.
 Envoys then use these certificates to identify each other and establish an authenticated and encrypted communication channel between them.
 
 Istio Auth is responsible for:
 
-* Providing each service with an identity representing its role;
+* Providing each service with an identity representing its role.
 
-* Providing a common trust root to allow Envoys to validate and authenticate each other; and
+* Providing a common trust root to allow Envoys to validate and authenticate each other.
 
 * Providing a key management system, automating generation, distribution, and rotation of certificates and keys.
 
@@ -20,7 +20,7 @@ When an application microservice connects to another microservice, the communica
 
 * Local TCP connection (i.e., `localhost`, not reaching the "wire") between the application and Envoy (client- and server-side);
 
-* Mutually authenticated and encrypted connection between Envoy proxies;
+* Mutually authenticated and encrypted connection between Envoy proxies.
 
 When Envoy proxies establish a connection, they exchange and validate certificates to confirm that each is indeed connected to a valid and expected peer. The established identities can later be used as basis for policy checks (e.g., access authorization).
 
@@ -34,7 +34,7 @@ Verify the cluster-level CA is running:
 kubectl get deployment -l istio=istio-ca -n istio-system
 ```
 
-Istio CA is up if the “AVAILABLE” column is 1. For example:
+Expected output:
 ```sh
 NAME       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 istio-ca   1         1         1            1           15h
@@ -52,7 +52,7 @@ Istio mutual TLS authentication is enabled if the line `authPolicy: MUTUAL_TLS` 
 
 If mTLS is working correctly, the Guestbook application should continue to operate as expected, without any user visible impact. Istio will automatically add (and manage) the required certificates and private keys. To confirm their presence in the Envoy containers, do the following:
 
-1. get the guesbook-v2 pod name
+1. Get the name of a guestbook-v2 pod. Make sure the pod is “Running”.
 
 ```sh
 kubectl get pods -l app=guestbook-v2
@@ -62,23 +62,19 @@ guestbook-v2-784546fbb9-hsbnq   2/2       Running   0          13h
 guestbook-v2-784546fbb9-lcxdz   2/2       Running   0          13h
 ```
 
-Make sure the pod is “Running”.
-
-2. ssh into the envoy container
+2. SSH into the envoy container. Make sure to change the pod name into the corresponding one on your system. This command will ssh into istio-proxy container (sidecar) of the pod.
 
 ```sh
 kubectl exec -it guestbook-v2-xxxxxxxx -c istio-proxy /bin/bash
 ```
 
-Make sure to change the pod name into the corresponding one on your system. This command will ssh into istio-proxy container (sidecar) of the pod.
-
-3. check out the certificate and keys are present
+3. Verify that the certificate and keys are present.
 
 ```sh
 ls /etc/certs/
 ```
 
-You should see the following (plus some others)
+You should see the following (plus some others):
 
 ```sh
 cert-chain.pem   key.pem   root-cert.pem
@@ -134,9 +130,7 @@ spec:
   ...
 ```
 
->
-> Note that the annotations can also be used to gradually enable mTLS on individual services, 
->
+Note that the annotations can also be used to gradually enable mTLS on individual services.
 
 ## Quiz
 
@@ -157,3 +151,5 @@ spec:
 * [Istio Task](https://istio.io/docs/tasks/security/mutual-tls.html)
 
 * [Istio Concept](https://istio.io/docs/concepts/security/mutual-tls.html)
+
+#### [Continue to Exercise 8 - Policy Enforcement ](../exercise-8/README.md)

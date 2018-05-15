@@ -1,4 +1,4 @@
-## Expose the service mesh with the Istio Ingress controller 
+# Exercise 4 - Expose the service mesh with the Istio Ingress controller
 
 The components deployed on the service mesh by default are not exposed outside the cluster. External access to individual services so far has been provided by creating an external load balancer on each service.
 
@@ -46,6 +46,8 @@ A Kubernetes Ingress rule can be created that routes external requests through t
    http://169.61.37.141
    ```
 
+Now you can access the guestbook via http://<EXTERNAL_IP>. The above example IP address would be accessible at http://169.61.37.141
+
 ## (Optional) Set up the Istio Ingress controller to work with IBM Cloud Container Service
 
 **Note:** This task requires a standard cluster. 
@@ -61,6 +63,7 @@ bx cs cluster-get guestbook
 ...
 Ingress subdomain:	guestbook-242887.us-east.containers.mybluemix.net
 ```
+
 2. Add the subdomain that you retrieved in the previous step as `host` in the `guestbook-frontdoor.yaml` file.
 
 3. Create the Ingress with the IBM-provided subdomain. 
@@ -102,3 +105,5 @@ Congratulations! You extended the base Ingress features by providing a DNS entry
 ## References: 
 [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)           
 [Istio Ingress](https://istio.io/docs/tasks/traffic-management/ingress.html)
+
+#### [Continue to Exercise 5 - Telemetry](../exercise-5/README.md)
