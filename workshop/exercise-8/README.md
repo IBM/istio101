@@ -1,16 +1,16 @@
-# Exercise 8 - Policy Enforcement
+# Exercise 8 - Enforce policies for microservices
 
-Backend systems such as access control systems, telemetry capturing systems, quota enforcement systems, billing systems, and so forth, traditionally directly integrate with Services, creating a hard coupling and baking-in specific semantics and usage options.
+Backend systems such as access control systems, telemetry capturing systems, quota enforcement systems, billing systems, and so forth, traditionally directly integrate with services, creating a hard coupling and baking-in specific semantics and usage options.
 
-Mixer provides a generic intermediation layer between application code and infrastructure backends. Its design moves policy decisions out of the app layer and into configuration instead, under operator control. Instead of having application code integrate with specific backends, the app code instead does a fairly simple integration with Mixer, and Mixer takes responsibility for interfacing with the backend systems.
+Istio Mixer provides a generic intermediation layer between app code and infrastructure backends. Its design moves policy decisions out of the app layer and into configuration instead, under operator control. Instead of having app code integrate with specific backends, the app code instead does a fairly simple integration with Mixer, and Mixer takes responsibility for interfacing with the backend systems.
 
-Given that individual infrastructure backends each have different interfaces and operational models, Mixer needs custom code to deal with each and we call these custom bundles of code **adapters**. Here are some built-in apapters: denier, prometheus,  memquota, stackdriver.
+Given that individual infrastructure backends each have different interfaces and operational models, Mixer needs custom code to deal with each and we call these custom bundles of code **adapters**. Here are some built-in adapters: denier, prometheus,  memquota, and stackdriver.
 
 In this exercise we'll use the denier adapter.
 
-## Service isolation
+## Service isolation with the denier adapter
 
-1. Block access to Guestbook service
+1. Block access to Guestbook service:
 
     ```sh
     istioctl create -f mixer-rule-denial.yaml
@@ -66,11 +66,11 @@ In this exercise we'll use the denier adapter.
     istioctl delete -f mixer-rule-denial.yaml
     ```
 ## Quiz
-1. Does creating mixer rules require application code changes? (Yes/No) No
+1. Does creating mixer rules require app code changes? (Yes/No) No
 2. The custom code that interacts with the backend system, i.e. Prometheus, is called 
 A. Rule B. Instance C. Adapter
 Answer is C
 
-## Further Reading
+## Further reading
 [Istio Mixer](https://istio.io/docs/concepts/policy-and-control/mixer.html)    
 [How to write istio mixer policies](https://medium.com/@szihai_37982/how-to-write-istio-mixer-policies-50dc639acf75)
