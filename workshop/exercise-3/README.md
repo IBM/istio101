@@ -1,9 +1,9 @@
-# Exercise 3 - Deploy guestbook with Istio Proxy
+# Exercise 3 - Deploy the Guestbook app with Istio Proxy
 
-The Guestbook application is a sample application for users to leave comments. It consists of a web front end, Redis master for storage, and replicated set of Redis slaves. We will also integrate the application with Watson tone analyzer service that detects the sentiment in user's comments and reply with emoticons. Here are the steps to deploy the application on your Kubernets cluster:
+The Guestbook app is a sample app for users to leave comments. It consists of a web front end, Redis master for storage, and replicated set of Redis slaves. We will also integrate the app with Watson Tone Analyzer that detects the sentiment in user's comments and replies with emoticons. Here are the steps to deploy the app on your Kubernetes cluster:
 
-### Download the guestbook app
-1. Open your preferred terminal and download the guestbook app from GitHub.
+### Download the Guestbook app
+1. Open your preferred terminal and download the Guestbook app from GitHub.
   ```sh
   git clone https://github.com/IBM/guestbook.git
   ```
@@ -46,24 +46,23 @@ The Redis database is a service that you can use to persist the data of your app
   ```
 ## Sidecar injection
 
-In Kubernets, a sidecar is a utility container in the Pod and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using istioctl CLI tool or automatically using the Istio Initializer. In this exercise, we will use the manual injection. Manual injection modifies the controller configuration, e.g. deployment. It does this by modifying the pod template spec such that all pods for that deployment are created with the injected sidecar. 
+In Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using istioctl CLI tool or automatically using the Istio Initializer. In this exercise, we will use the manual injection. Manual injection modifies the controller configuration, e.g. deployment. It does this by modifying the pod template spec such that all pods for that deployment are created with the injected sidecar. 
 
-## Install the guestbook app with Manual sidecar injection
+## Install the Guestbook app with manual sidecar injection
 
   ```sh
  kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml --debug)
  kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml --debug)
   ```
-These commands will inject the Istio envoy sidecar into the guestbook pods, as well as deploy the guestbook app on to the K8s cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
+These commands will inject the Istio Envoy sidecar into the guestbook pods, as well as deploy the Guestbook app on to the Kubernetes cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
   
 Next, we'll create the guestbook service.
 
-1. Inject the Istio envoy sidecar into the guestbook pods and deploy the guestbook app on to the Kubernetes cluster.
+1. Inject the Istio Envoy sidecar into the guestbook pods, and deploy the Guestbook app on to the Kubernetes cluster.
 ```sh
 kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml --debug)
 kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml --debug)
 ```
-These commands create two versions of deployments: a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future exercises to showcase the Istio traffic routing capabilities.
 
 2. Create the guestbook service.
 ```sh
@@ -89,45 +88,42 @@ guestbook-v2-56d98b558c-dshkh   2/2       Running   0          5d
 guestbook-v2-56d98b558c-mzbxk   2/2       Running   0          5d
 ```
 
-Note that each guestbook pod has 2 containers in it. One is the guestbook container, and the other is the envoy proxy sidecar.
+Note that each guestbook pod has 2 containers in it. One is the guestbook container, and the other is the Envoy proxy sidecar.
 
-### Add the analyzer service
-The Watson Tone analyzer service detects the tone from the words that users enter into the guestbook app. The tone is converted to the corresponding emoticons. 
+### Add Watson Tone Analyzer
+Watson Tone Analyzer detects the tone from the words that users enter into the Guestbook app. The tone is converted to the corresponding emoticons. 
 
-Before you begin: 
-- Use `bx target --cf` or `bx target -o ORG -s SPACE` to set the Cloud Foundry org and space where you want to provision the service. 
+1. Use `bx target --cf` or `bx target -o ORG -s SPACE` to set the Cloud Foundry org and space where you want to provision the service. 
 
-    > Note that you should use `bx target --cf` or `bx target -o ORG -s SPACE` to set the Cloud Foundry Org and Space before calling `bx service create...`. 
-
-   1. Create the Watson Tone analyzer service in your space. 
+2. Create Watson Tone Analyzer in your space. 
       ```console
       bx service create tone_analyzer lite my-tone-analyzer-service
       ```
       
-   2. Create a service key for the service. 
+3. Create a service key for the service. 
       ```console
       bx service key-create my-tone-analyzer-service myKey
       ```
    
-   3. Show the service key that you created and note the **password** and **username**. 
+4. Show the service key that you created and note the **password** and **username**. 
       ```console
       bx service key-show my-tone-analyzer-service myKey
       ```
 
-2. Open the `analyzer-deployment.yaml` and delete the `#` from the `env var` section to un-comment the username and password fields.
+5. Open the `analyzer-deployment.yaml` and delete the `#` from the `env var` section to un-comment the username and password fields.
 
-3. Add the username and password that you retrieved earlier and save your changes.
+6. Add the username and password that you retrieved earlier and save your changes.
 
-4. Deploy the analyzer pods and service. The analyzer service talks to the Watson Tone analyzer to help analyze the tone of a message.
+7. Deploy the analyzer pods and service. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
    ```console
    kubectl apply -f analyzer-deployment.yaml --debug
    kubectl apply -f analyzer-service.yaml
    ```
    
-5. Create an egress rule to allow the analyzer service to access the Watson service. The rule is defined in [istio101/workshop/plans](https://github.com/IBM/istio101/tree/master/workshop/plans) and is not part of the guestbook app files:
+5. Create an egress rule to allow the analyzer service to access Watson Tone Analyzer. The rule is defined in [istio101/workshop/plans](https://github.com/IBM/istio101/tree/master/workshop/plans) and is not part of the Guestbook app files:
     ```console
       kubectl apply -f analyzer-egress.yaml
     ```
-Great! With you guestbook up and running, you can now expose the service mesh with the Istio Ingress controller. 
+Great! With you Guestbook up and running, you can now expose the service mesh with the Istio Ingress controller. 
 
 #### [Continue to Exercise 4 - Expose the service mesh with the Istio Ingress controller](../exercise-4/README.md)
