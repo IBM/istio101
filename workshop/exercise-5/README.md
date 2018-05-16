@@ -1,8 +1,8 @@
-# Exercise 5 - Telemetry
+# Exercise 5 - Observe service telemetry: metrics and tracing
 
 ### Challenges with microservices
 
-For the longest time in the history of application development, applications were built with monolith mindset. Monolith applications have a large number of instances running all of the services provided in one application. Things like user account management, payment, and reporting are all run from a shared resource. This worked pretty well until service-oriented architecture (SOA) came along and promised us a much brighter future. The basic principle of SOA is to break down applications to smaller components, and having them to talk to one other using protocols like REST or gRPC. Everyone thought this would fundamentally change the landscape, and it did--up to an extent. However, a new set of challenges emerged. What about cross-services communication? What about observability between microservices, such as logging or tracing? What about metrics?
+For the longest time in the history of app development, apps were built with monolith mindset. Monolith apps have a large number of instances running all of the services provided in one app. Things like user account management, payment, and reporting are all run from a shared resource. This worked pretty well until service-oriented architecture (SOA) came along and promised us a much brighter future. The basic principle of SOA is to break down apps to smaller components, and having them to talk to one other using protocols like REST or gRPC. Everyone thought this would fundamentally change the landscape, and it did--up to an extent. However, a new set of challenges emerged. What about cross-services communication? What about observability between microservices, such as logging or tracing? What about metrics?
 
 ### Istio telemetry
 
@@ -42,7 +42,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
       ```sh
       istioctl create -f guestbook-telemetry.yaml
       ```
-   3. Generate a small load to the application.
+   3. Generate a small load to the app.
       ```sh
       while sleep 0.5; do curl http://<guestbook_loadbalancer_external_IP/; done
       ```
@@ -105,7 +105,7 @@ kubectl -n istio-system logs $(kubectl -n istio-system get pods -l istio=mixer -
 
 Although Istio proxies are able to automatically send spans, they need some hints to tie together the entire trace. Apps need to propagate the appropriate HTTP headers so that when the proxies send span information to Zipkin or Jaeger, the spans can be correlated correctly into a single trace.
 
-In the example, when a user visits the guestbook, the HTTP request is sent from the guestbook service to the Watson Tone analyzer service. In order for the individual spans of guestbook service and analyzer service to be tied together, we have modified the guestbook service to extract the required headers (x-request-id, x-b3-traceid, x-b3-spanid, x-b3-parentspanid, x-b3-sampled, x-b3-flags, x-ot-span-context) and forward them onto the analyzer service when calling the analyzer service from the guestbook service.  The change is in the `v2/guestbook/main.go`. By using the `getForwardHeaders()` method, we are able to extract the required headers, and then we use the required headers further when calling the analyzer service via the `getPrimaryTone()` method.
+In the example, when a user visits the Guestbook app, the HTTP request is sent from the guestbook service to Watson Tone Analyzer. In order for the individual spans of guestbook service and Watson Tone Analyzer to be tied together, we have modified the guestbook service to extract the required headers (x-request-id, x-b3-traceid, x-b3-spanid, x-b3-parentspanid, x-b3-sampled, x-b3-flags, x-ot-span-context) and forward them onto the analyzer service when calling the analyzer service from the guestbook service.  The change is in the `v2/guestbook/main.go`. By using the `getForwardHeaders()` method, we are able to extract the required headers, and then we use the required headers further when calling the analyzer service via the `getPrimaryTone()` method.
 
 
 ## Quizzes
