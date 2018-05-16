@@ -1,8 +1,8 @@
-# Exercise 7 - Security
+# Exercise 7 - Secure your service mesh
 
-## Mutual Authentication with Transport Layer Security (mTLS)
+## Mutual authentication with Transport Layer Security (mTLS)
 
-Istio can secure the communication between microservices without requiring application code changes. Security is provided by authenticating and encrypting communication paths within the cluster. This is becoming a common security and compliance requirement. Delegating communication security to Istio (as opposed to implementing TLS in each microservice), ensures that your application wil be deployed with consistent and manageable security policies.
+Istio can secure the communication between microservices without requiring app code changes. Security is provided by authenticating and encrypting communication paths within the cluster. This is becoming a common security and compliance requirement. Delegating communication security to Istio (as opposed to implementing TLS in each microservice), ensures that your app will be deployed with consistent and manageable security policies.
 
 Istio Auth is an optional part of Istio's control plane components. When enabled, it provides each Envoy sidecar proxy with a strong (cryptographic) identity, in the form of certificates.
 Identity is based on the microservice's the service account and is independent of its specific network location, such as cluster or current IP address.
@@ -16,19 +16,15 @@ Istio Auth is responsible for:
 
 * Providing a key management system, automating generation, distribution, and rotation of certificates and keys.
 
-When an application microservice connects to another microservice, the communication is tunneled through the client side and server side Envoys. The end-to-end communication flow is:
+When an app microservice connects to another microservice, the communication is tunneled through the client side and server side Envoys. The end-to-end communication flow is:
 
-* Local TCP connection (i.e., `localhost`, not reaching the "wire") between the application and Envoy (client- and server-side);
+* Local TCP connection (i.e., `localhost`, not reaching the "wire") between the app and Envoy (client- and server-side);
 
 * Mutually authenticated and encrypted connection between Envoy proxies.
 
 When Envoy proxies establish a connection, they exchange and validate certificates to confirm that each is indeed connected to a valid and expected peer. The established identities can later be used as basis for policy checks (e.g., access authorization).
 
-## Steps
-
-### Verify mTLS Setup
-
-Verify the cluster-level CA is running:
+1. Verify the mTLS setup by checking the cluster-level CA:
 
 ```sh
 kubectl get deployment -l istio=istio-ca -n istio-system
@@ -40,17 +36,17 @@ NAME       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 istio-ca   1         1         1            1           15h
 ```
 
-### Verify AuthPolicy Setting in ConfigMap
+2. Verify the AuthPolicy setting in ConfigMap:
 
 ```sh
 kubectl get configmap istio -o yaml -n istio-system | grep authPolicy | head -1
 ```
 
-Istio mutual TLS authentication is enabled if the line `authPolicy: MUTUAL_TLS` isn't commented (i.e., doesn’t have a leading `#`). By default, mutual TLS authentication is enabled. However, if it is disabled/commented, you can [edit the configuration to enable it](#disabling-authentication)
+Istio mutual TLS authentication is enabled if the line `authPolicy: MUTUAL_TLS` isn't commented (i.e., doesn’t have a leading `#`). By default, mutual TLS authentication is enabled. However, if it is disabled/commented, you can [edit the configuration to enable it](#disabling-authentication).
 
-### Trying out the Authenticated Connection
+## Trying out the authenticated connection
 
-If mTLS is working correctly, the Guestbook application should continue to operate as expected, without any user visible impact. Istio will automatically add (and manage) the required certificates and private keys. To confirm their presence in the Envoy containers, do the following:
+If mTLS is working correctly, the Guestbook app should continue to operate as expected, without any user visible impact. Istio will automatically add (and manage) the required certificates and private keys. To confirm their presence in the Envoy containers, do the following:
 
 1. Get the name of a guestbook-v2 pod. Make sure the pod is “Running”.
 
@@ -62,7 +58,7 @@ guestbook-v2-784546fbb9-hsbnq   2/2       Running   0          13h
 guestbook-v2-784546fbb9-lcxdz   2/2       Running   0          13h
 ```
 
-2. SSH into the envoy container. Make sure to change the pod name into the corresponding one on your system. This command will ssh into istio-proxy container (sidecar) of the pod.
+2. SSH into the Envoy container. Make sure to change the pod name into the corresponding one on your system. This command will ssh into istio-proxy container (sidecar) of the pod.
 
 ```sh
 kubectl exec -it guestbook-v2-xxxxxxxx -c istio-proxy /bin/bash
@@ -80,13 +76,13 @@ You should see the following (plus some others):
 cert-chain.pem   key.pem   root-cert.pem
 ```
 
-Note that `cert-chain.pem` is Envoy’s public certificate (i.e., presented to the peer), and `key.pem` is the corresponding private key. The `root-cert.pem` file is Istio Auth's root certificate, used to verify peers` certificates.
+Note that `cert-chain.pem` is Envoy’s public certificate (i.e., presented to the peer), and `key.pem` is the corresponding private key. The `root-cert.pem` file is Istio Auth's root certificate, used to verify peer certificates.
 
-### Disabling Authentication
+## Disabling authentication
 
-If, for some reason, mTLS is not functional, the Guestbook application will not operate correctly. This would be evident in its UI (e.g., it would display a [`Waiting for database connection`](waiting_on_database.png) message). In that case, mTLS should be disabled.
+If, for some reason, mTLS is not functional, the Guestbook app will not operate correctly. This would be evident in its UI (e.g., it would display a [`Waiting for database connection`](waiting_on_database.png) message). In that case, mTLS should be disabled.
 
-mTLS it can be disabled globally or per service.
+mTLS can be disabled globally or per service:
 
 * To disable mTLS for all services in the mesh, comment out the `authPolicy` settings in the mesh configuration:
 
@@ -138,7 +134,7 @@ Note that the annotations can also be used to gradually enable mTLS on individua
 
 1. Istio Auth/Citadel provides each microservice with a strong, cryptographic, identity in the form of a certificate. The certificates' life cycle is fully managed by Istio. (True)
 
-2. Istio provides microservices with mutually authenticated connections, without requiring application code changes. (True)
+2. Istio provides microservices with mutually authenticated connections, without requiring app code changes. (True)
 
 3. Mutual authentication must be on or off for the entire cluster, gradual adoption is not possible. (False)
 
