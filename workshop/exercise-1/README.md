@@ -1,6 +1,6 @@
 # Exercise 1 - Accessing a Kubernetes cluster with IBM Cloud Container Service
 
-Assume you already have a cluster that runs Kubernetes version 1.9 or later. Here are the steps to access your cluster.
+You must already have a [cluster created](https://console.bluemix.net/docs/containers/container_index.html#container_index). Here are the steps to access your cluster.
 
 ## Install IBM Cloud Container Service command line utilities
 
