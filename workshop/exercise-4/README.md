@@ -4,7 +4,7 @@ The components deployed on the service mesh by default are not exposed outside t
 
 A Kubernetes Ingress rule can be created that routes external requests through the Istio Ingress controller to the backing services. In a Kubernetes environment, Istio uses Kubernetes Ingress Resources to configure ingress behavior.
 
-### Expose the guestbook app with Ingress
+### Expose the Guestbook app with Ingress
 
 1. Configure the guestbook default route with the Istio Ingress controller.
 
@@ -40,7 +40,7 @@ A Kubernetes Ingress rule can be created that routes external requests through t
     istio-ingress   LoadBalancer   172.21.126.221   169.61.37.141   80:31432/TCP,443:31753/TCP   3h
     ```
     
-3. Access the guestbook app by using the external IP address that you retrieved in the previous step. 
+3. Access the Guestbook app by using the external IP address that you retrieved in the previous step. 
    Example: 
    ```
    http://169.61.37.141
@@ -52,7 +52,7 @@ Now you can access the guestbook via http://<EXTERNAL_IP>. The above example IP 
 
 **Note:** This task requires a standard cluster. 
 
-To have an IBM-provided DNS for the guestbook app, you must set up the Istio Ingress controller to route traffic to the Kubernetes Ingress application load balancer (ALB). 
+To have an IBM-provided DNS for the Guestbook app, you must set up the Istio Ingress controller to route traffic to the Kubernetes Ingress application load balancer (ALB). 
 
 The IBM Ingress service provides IBM Cloud users with a secure, reliable, and scalable network stack to distribute incoming network traffic to apps in IBM Cloud. You can enhance the IBM-provided Ingress application load balancer by adding annotions. Learn more about [Ingress for IBM Cloud Container Service](https://console.bluemix.net/docs/containers/cs_ingress.html#ingress). 
 
@@ -94,7 +94,7 @@ Ingress subdomain:	guestbook-242887.us-east.containers.mybluemix.net
                  servicePort: 3000
    ```
    
-5. Use the IBM-provided subdomain to access your guestbook app. 
+5. Use the IBM-provided subdomain to access your Guestbook app. 
    Example: 
    ```
    http://[guestbook].us-east.containers.mybluemix.net
