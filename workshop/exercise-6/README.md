@@ -3,13 +3,13 @@
 ## Using rules to manage traffic
 The core component used for traffic management in Istio is Pilot, which manages and configures all the Envoy proxy instances deployed in a particular Istio service mesh. It lets you specify what rules you want to use to route traffic between Envoy proxies, which run as sidecars to each service in the mesh.  Each service consists of any number of instances running on pods, containers, VMs etc.  Each service can have any number of versions (a.k.a. subsets).  There can be distinct subsets of service instances running different variants of the app binary. These variants are not necessarily different API versions. They could be iterative changes to the same service, deployed in different environments (prod, staging, dev, etc.).  Pilot translates high-level rules into low-level configurations and distributes this config to Envoy instances.  Pilot uses three types of configuration resources to manage traffic within its service mesh: Virtual Services, Destination Rules, and Service Entries.
 
-### Virtual services
+### Virtual Services
 A [VirtualService](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#VirtualService) defines a set of traffic routing rules to apply when a host is addressed. Each routing rule defines matching criteria for traffic of a specific protocol. If the traffic is matched, then it is sent to a named [destination](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#Destination) service (or [subset](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#Subset) or version of it) defined in the service registry.
 
-### Destination rules
+### Destination Rules
 A [DestinationRule](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#Destination) defines policies that apply to traffic intended for a service after routing has occurred. These rules specify configuration for load balancing, connection pool size from the sidecar, and outlier detection settings to detect and evict unhealthy hosts from the load balancing pool. Any destination `host` and `subset` referenced in a `VirtualService` rule must be defined in a corresponding `DestinationRule`.
 
-### Service entries
+### Service Entries
 A [ServiceEntry](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#ServiceEntry) configuration enables services within the mesh to access a service not necessarily managed by Istio.  The rule describes the endpoints, ports and protocols of a white-listed set of mesh-external domains and IP blocks that services in the mesh are allowed to access.
 
 ## The Guestbook app
