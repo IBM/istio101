@@ -1,4 +1,4 @@
-# Exercise 7 - Secure your service mesh
+# Exercise 7 - Secure your services
 
 ## Mutual authentication with Transport Layer Security (mTLS)
 
