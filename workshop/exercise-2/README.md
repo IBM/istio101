@@ -28,7 +28,7 @@ istio-ingress   LoadBalancer   {[service_private_IP]}   {[public_IP]}   80:31176
 istio-mixer     ClusterIP      {[service_private_IP]}     <none>           9091/TCP,15004/TCP,9093/TCP,9094/TCP,9102/TCP,9125/UDP,42422/TCP   2m
 istio-pilot     ClusterIP      {[service_private_IP]}    <none>           15003/TCP,443/TCP                                                  2m
 ```
-7. Ensure the corresponding pods `istio-pilot-*`, `istio-mixer-*`, `istio-ingress-*`, and `istio-ca-*` are also fully deployed before you continue.
+7. Ensure the corresponding pods `istio-pilot-*`, `istio-mixer-*`, `istio-ingress-*`, and `istio-ca-*` are all in **`Running`** state before you continue.
 ```
 kubectl get pods -n istio-system
 ```
