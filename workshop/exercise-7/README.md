@@ -26,6 +26,7 @@ When Envoy proxies establish a connection, they exchange and validate certificat
 
 ## Steps
 
+<<<<<<< HEAD
 > Version 2 of the guestbook application uses an external service (tone analyzer) which is not Istio-enabled. Current Istio release (0.8) has a [known limitation](https://istio.io/help/faq/security.html#istio-to-not-istio), where where an mTLS enabled service fails to communicate with a service without Istio. This limitation will be lifted in an upcoming release.
 > Thus, we will disable mTLS globally and enable it only for communication between internal cluster services in this lab.
 
@@ -39,6 +40,12 @@ kubectl apply -f install/kubernetes/istio-auth.yaml
 ```
 
 Be sure to confirm that Istio is running before continuing. See [exercise-2](../exercise-2/README.md) for more details.
+=======
+> Version 2 of the guestbook application uses an external service (tone analyzer) that is not Istio enabled. The current Istio release (0.8) has a [known limitation](https://istio.io/help/faq/security.html#istio-to-not-istio) where where an mTLS enabled service fails to communicate with a service without Istio. This limitation will be lifted in an upcoming release.
+> Thus, we will disable mTLS globally and enable it only for communication between internal cluster services in this lab.
+
+### Verify mTLS Setup
+>>>>>>> 03a22d0d0f73728c237292a3a5061864fc6995fa
 
 Verify the cluster-level CA is running:
 
@@ -116,6 +123,7 @@ data:
 
 kubectl delete pod istio-pilot-657cb5ddf7-9c6nv -n istio-system
 pod "istio-pilot-657cb5ddf7-9c6nv" deleted
+<<<<<<< HEAD
 ```
 
 After Istio Pilot is restarted, the Guestbook user interface should display correctly.
@@ -137,6 +145,29 @@ spec:
   ...
 ```
 
+=======
+```
+
+After Istio Pilot is restarted, the Guestbook user interface should display correctly.
+
+* We can now gradually enable mTLS on individual services. For example, in the case of Guestbook we can enable mTLS for the guestbook service:
+
+```sh
+kubectl edit service guestbook
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    auth.istio.io/3000: MUTUAL_TLS
+  ...
+spec:
+  ports:
+    - name: http
+      targetPort: 3000
+  ...
+```
+
+>>>>>>> 03a22d0d0f73728c237292a3a5061864fc6995fa
 * Note that annotations also be used to disable mTLS for connections accessing a specific service. Since mTLS is triggered by the server-side proxy requesting a client certificate, add an `auth.istio.io/<port#>: NONE` annotation to the service definition. For example, to disable mTLS on guestbook and analyzer:
 
 ```sh
