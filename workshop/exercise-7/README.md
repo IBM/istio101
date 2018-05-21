@@ -37,6 +37,7 @@ If you have previously deployed Istio without cluster-level CA, start by redeplo
 kubectl delete -f install/kubernetes/istio.yaml
 kubectl apply -f install/kubernetes/istio-auth.yaml
 ```
+
 Be sure to confirm that Istio is running before continuing. See [exercise-2](../exercise-2/README.md) for more details.
 
 Verify the cluster-level CA is running:
