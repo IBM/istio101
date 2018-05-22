@@ -61,12 +61,13 @@ A Kubernetes Ingress rule can be created that routes external requests through t
     istio-ingress   LoadBalancer                    *              80:31702/TCP,443:32290/TCP   10d
     
     
-    kubectl get ing
+    bx cs workers guestbook
     
-    NAME                HOSTS     ADDRESS        PORTS     AGE
-    guestbook-ingress   *         169.60.72.58   80        10d
+    ID             Public IP      Private IP      Machine Type        State    Status   Zone    Version   
+    kube-xxx       169.60.87.20   10.188.80.69    u2c.2x4.encrypted   normal   Ready    wdc06   1.9.7_1510*   
+
     ```
- The node port in above sample output is `169.60.72.58:31702`.
+ The node port in above sample output is `169.60.87.20:31702`.
  
  3. Access the Guestbook app by using the node port that you retrieved in the previous step. 
    Example: 
