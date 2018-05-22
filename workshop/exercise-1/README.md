@@ -35,8 +35,9 @@ You must already have a [cluster created](https://console.bluemix.net/docs/conta
 
 
 ## Access your cluster
+Learn how to set the context to work with your cluster by using the `kubectl` CLI, access the Kubernetes dashboard, and gather basic information about your cluster.
 
-1. Set the context for your cluster in your CLI. Every time you log in to the IBM Cloud Container Service CLI to work with the cluster, you must run these commands to set the path to the cluster's configuration file as a session variable. The Kubernetes CLI uses this variable to find a local configuration file and certificates that are necessary to connect with the cluster in IBM Cloud.
+1.  Set the context for your cluster in your CLI. Every time you log in to the IBM Cloud Container Service CLI to work with the cluster, you must run these commands to set the path to the cluster's configuration file as a session variable. The Kubernetes CLI uses this variable to find a local configuration file and certificates that are necessary to connect with the cluster in IBM Cloud.
 
     a. List the available clusters.
     
@@ -52,30 +53,34 @@ You must already have a [cluster created](https://console.bluemix.net/docs/conta
     
     c. Copy and paste the output command from the previous step to set the `KUBECONFIG` environment variable and configure your CLI to run `kubectl` commands against your cluster.
 
-2. Obtain your kubernetes cluster token.
+2.  View the Kubernetes dashboard. With the dashboard, you can get an overview of the apps and services that run in your cluster, as well as manage your Kubernetes resources such as deployments and pods.
 
-    ```
-    kubectl config view -o jsonpath='{.users[0].user.auth-provider.config.id-token}{"\n"}'
-    ```
+    a.  Obtain your Kubernetes cluster token.
 
-3. Create a proxy to your Kubernetes API server.
+        ```
+        kubectl config view -o jsonpath='{.users[0].user.auth-provider.config.id-token}{"\n"}'
+        ```
 
-    ```bash
-    kubectl proxy
-    ```
+    b.  Create a proxy to your Kubernetes API server.
+
+        ```bash
+        kubectl proxy
+        ```
     
-4. In a browser, go to http://localhost:8001/ui to access the API server dashboard.   Choose the `Token` option and paste in the token obtained earlier from step 2 into the token field and click `SIGN IN`.
+    c.  In a browser, go to http://localhost:8001/ui to access the API server dashboard.   Choose the `Token` option and paste in the token obtained earlier from step 2 into the token field and click `SIGN IN`.
 
-5. View details of your cluster.
-    ```bash
-    bx cs cluster-get <your_cluster_name>
-    ```
+3.  Get basic information about your cluster and its worker nodes. This information can help you manage your cluster and troubleshoot issues.
 
-6. Verify the worker nodes in the cluster.   
-    ```bash
-    bx cs workers <your_cluster_name>
-    bx cs worker-get <worker_ID>
-    ```
+    a.  View details of your cluster.
+        ```bash
+        bx cs cluster-get <your_cluster_name>
+        ```
+
+    b.  Verify the worker nodes in the cluster.   
+        ```bash
+        bx cs workers <your_cluster_name>
+        bx cs worker-get <worker_ID>
+        ```
     
 ## Clone the lab repo
 
