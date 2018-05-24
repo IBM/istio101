@@ -4,7 +4,7 @@ The components deployed on the service mesh by default are not exposed outside t
 
 A Kubernetes Ingress rule can be created that routes external requests through the Istio Ingress controller to the backing services. In a Kubernetes environment, Istio uses Kubernetes Ingress Resources to configure ingress behavior.
 
-### Expose the Guestbook app with Ingress
+### Expose the Guestbook app with Ingress if you have paid cluster
 
 1. Configure the guestbook default route with the Istio Ingress controller.
 
@@ -46,8 +46,35 @@ A Kubernetes Ingress rule can be created that routes external requests through t
    http://169.61.37.141
    ```
 
-Now you can access the guestbook via http://<EXTERNAL_IP>. The above example IP address would be accessible at http://169.61.37.141
+### Expose the Guestbook app with Ingress if you have lite cluster
+1. Configure the guestbook default route with the Istio Ingress controller.
 
+    ```sh
+    kubectl apply -f guestbook-ingress.yaml
+    ```
+
+2. Now check the node port of the ingress.
+    ```sh
+    kubectl get svc istio-ingress -n istio-system
+    
+    NAME            TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)                      AGE
+    istio-ingress   LoadBalancer                    *              80:31702/TCP,443:32290/TCP   10d
+    
+    
+    bx cs workers guestbook
+    
+    ID             Public IP      Private IP      Machine Type        State    Status   Zone    Version   
+    kube-xxx       169.60.87.20   10.188.80.69    u2c.2x4.encrypted   normal   Ready    wdc06   1.9.7_1510*   
+
+    ```
+ The node port in above sample output is `169.60.87.20:31702`.
+ 
+ 3. Access the Guestbook app by using the node port that you retrieved in the previous step. 
+   Example: 
+   ```
+   http://169.60.72.58:31702
+   ```
+ 
 ## (Optional) Set up the Istio Ingress controller to work with IBM Cloud Container Service
 
 **Note:** This task requires a standard cluster. 
