@@ -75,6 +75,7 @@ kubectl get svc
 NAME           TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
 guestbook      LoadBalancer   172.21.36.181   169.61.37.140   80:32149/TCP   5d
 ```
+**Note: For Lite clusters, the external ip will not be avaiable. That is expected.**
 
 4. Verify that the pods are up and running.
 ```sh
