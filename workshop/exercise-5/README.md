@@ -53,7 +53,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 1. Establish port forwarding from local port 16686 to the Jaeger instance.
    ```console
-   kubectl port-forward -n istio-system \$(kubectl get pod -n istio-system -l app=jaeger -o \jsonpath='{.items[0].metadata.name}') 16686:16686 &
+   kubectl port-forward -n istio-system $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath='{.items[0].metadata.name}') 16686:16686 
    ```
 
 2. Browse to http://localhost:16686.
