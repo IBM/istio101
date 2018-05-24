@@ -69,7 +69,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
    kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000
    ````
 
-2. Browse to http://localhost:3000 and navigate to the Istio Dashboard.
+2. Browse to http://localhost:3000 and navigate to the Istio, Mixer or Pilot Dashboard by clicking on the Home menu on the top left.
 
 
 #### Prometheus
