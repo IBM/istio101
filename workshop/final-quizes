@@ -35,3 +35,71 @@ A. Policy enforcement B. Traffic Management C. Authentication Policy. D. Telemtr
 A. Yes.  B. No
 
 (Answer B).
+
+8. What’s the purpose of sidecar container?
+    1. It’s a container with Istio installed
+    2. It’s utility container in the pod
+    3. It helps to speed up the cluster run time.
+    4. None of the above
+    
+    (Answer 2).
+
+9. What Istio component primarily manages telemetry ? 
+    1. Pilot
+    2. Istio-auth
+    3. Mixer
+    4. Istio data plane
+
+(Answer 3).
+
+
+10. What’s an Envoy?
+    1. It’s web server
+    2. It’s sidecar proxy
+    3. Both
+    4. None
+    
+ (Answer 2).   
+ 
+11. What component is primarily responsible for traffic management?
+    1. Pilot
+    2. Mixer
+    3. Istio-auth
+    4. Security
+    
+ (Answer 1).  
+    
+12. A VirtualService defines policies that apply to traffic intended for a service after routing has occurred
+    1. Yes
+    2. No
+
+(Answer 2). 
+    
+13. ServiceEntry configuration enables services within the mesh to access a service not necessarily managed by Istio.
+    1. Yes
+    2. No
+    
+(Answer 1).
+
+
+14. Canary deployment is a method of performing identical tests against two separate service versions in order to determine which performs better.
+    1. Yes
+    2. No
+    
+(Answer 2).   
+    
+15. Which of the following statements is true?
+    1. Istio can secure the communication between microservices without requiring app code changes.
+    2. Istio can secure the communication between containers without requiring app code changes.
+    3. Istio can secure the communication between clusters without requiring app code changes.
+    4. None of the bove
+    
+(Answer 1).
+    
+16. With what Istio components one can write custom adapters?
+    1. Istio-auth
+    2. Mixer
+    3. Pilot
+    4. Envoy
+
+(Answer 2).
