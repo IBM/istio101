@@ -27,6 +27,8 @@ istio-ingress   LoadBalancer   172.21.xxx.xxx   169.xx.xxx.xxx   80:31176/TCP,44
 istio-mixer     ClusterIP      172.21.xxx.xxx   <none>           9091/TCP,15004/TCP,9093/TCP,9094/TCP,9102/TCP,9125/UDP,42422/TCP   2m
 istio-pilot     ClusterIP      172.21.xxx.xxx   <none>           15003/TCP,443/TCP                                                  2m
 ```
+  **Note: For Lite clusters, the istio-ingress service will be in `pending` state with no external ip. That is normal.**
+
 7. Ensure the corresponding pods `istio-ca-*`, `istio-ingress-*`, `istio-mixer-*`, and `istio-pilot-*` are all in **`Running`** state before you continue.
 ```
 kubectl get pods -n istio-system
