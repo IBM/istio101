@@ -59,6 +59,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 2. Browse to http://localhost:16686.
 
 3. From the **Services** menu, select **guestbook-v2**. 
+4. Scroll to the bottom and click on **Find Traces** button to see traces
 
 
 #### Grafana
