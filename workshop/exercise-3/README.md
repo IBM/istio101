@@ -75,6 +75,7 @@ kubectl get svc
 NAME           TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
 guestbook      LoadBalancer   172.21.36.181   169.61.37.140   80:32149/TCP   5d
 ```
+**Note: For Lite clusters, the external ip will not be avaiable. That is expected.**
 
 4. Verify that the pods are up and running.
 ```sh
@@ -116,7 +117,7 @@ Watson Tone Analyzer detects the tone from the words that users enter into the G
 
 7. Deploy the analyzer pods and service. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
    ```console
-   kubectl apply -f analyzer-deployment.yaml --debug
+   kubectl apply -f analyzer-deployment.yaml
    kubectl apply -f analyzer-service.yaml
    ```
    
