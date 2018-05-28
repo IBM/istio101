@@ -31,7 +31,7 @@ When Envoy proxies establish a connection, they exchange and validate certificat
 
 1. Setting up Istio Certificate Authority (CA)
 
-If you have previously deployed Istio without cluster-level CA, start by redeploying Istio using istio-auth.yaml file:
+If you have previously deployed Istio without cluster-level CA, start by redeploying Istio using istio-auth.yaml file. The following should be run from the Istio release version directory (i.e., be sure to `cd [path_to_istio-version]` first. Executing the commands in a different directory would result in a *`path does not exist`* error):
 
 ```sh
 kubectl delete -f install/kubernetes/istio.yaml
