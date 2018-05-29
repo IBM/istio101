@@ -40,6 +40,8 @@ istio-mixer-2104784889-20rm8        3/3       Running   0          5m
 istio-pilot-2275554717-93c43        2/2       Running   0          5m
 ```
 
+Before your continue, make sure all the pods are deployed. If they're in running state, wait and let the deployment finish.
+
 Congratulations! You successfully installed Istio into your cluster.
 
 #### [Continue to Exercise 3 - Deploy Guestbook with Istio Proxy](../exercise-3/README.md)
