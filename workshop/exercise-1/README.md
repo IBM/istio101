@@ -7,7 +7,8 @@ You must already have a [cluster created](https://console.bluemix.net/docs/conta
 1. Install the IBM Cloud [command line interface](https://clis.ng.bluemix.net/ui/home.html).
 
 2.  Log in to the IBM Cloud CLI. If you have a federated account, include the `[--sso]` flag.   
-    ```bash
+    
+    ```bash
     bx login [--sso]
     ```
 
@@ -57,15 +58,15 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
 
     a.  Obtain your Kubernetes cluster token.
 
-        ```
-        kubectl config view -o jsonpath='{.users[0].user.auth-provider.config.id-token}{"\n"}'
-        ```
+    ```bash
+    kubectl config view -o jsonpath='{.users[0].user.auth-provider.config.id-token}{"\n"}'
+    ```
 
     b.  Create a proxy to your Kubernetes API server.
 
-        ```bash
-        kubectl proxy
-        ```
+    ```bash
+    kubectl proxy
+    ```
     
     c.  In a browser, go to http://localhost:8001/ui to access the API server dashboard.   Choose the `Token` option and paste in the token obtained earlier from step 2 into the token field and click `SIGN IN`.
 
