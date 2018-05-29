@@ -36,7 +36,7 @@ A. Yes.  B. No
 
 (Answer B).
 
-8. What’s the purpose of sidecar container?
+8. What’s the purpose of sidecar container in Kubernetes?
     1. It’s a container with Istio installed
     2. It’s utility container in the pod
     3. It helps to speed up the cluster run time.
@@ -69,7 +69,7 @@ A. Yes.  B. No
     
  (Answer 1).  
     
-12. A VirtualService defines policies that apply to traffic intended for a service after routing has occurred
+12. A VirtualService defines policies that apply to traffic intended for a service after routing has occurred.
     1. Yes
     2. No
 
@@ -82,11 +82,11 @@ A. Yes.  B. No
 (Answer 1).
 
 
-14. Canary deployment is a method of performing identical tests against two separate service versions in order to determine which performs better.
+14. A/B is a method of performing identical tests against two separate service versions in order to determine which performs better.
     1. Yes
     2. No
     
-(Answer 2).   
+(Answer 1).   
     
 15. Which of the following statements is true?
     1. Istio can secure the communication between microservices without requiring app code changes.
@@ -96,7 +96,7 @@ A. Yes.  B. No
     
 (Answer 1).
     
-16. With what Istio components one can write custom adapters?
+16. With what Istio components one can write custom adapters for tracing and metrics?
     1. Istio-auth
     2. Mixer
     3. Pilot
