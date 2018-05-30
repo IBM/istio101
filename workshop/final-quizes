@@ -21,7 +21,7 @@ A. Mixer  B. Pilot.  C. Citadel.  D. Istioctl
 
 (Answer B)
 
-5. Which Istio components below are part of the Istio mesh data plane?
+5. Which Istio components below are part of the Istio service mesh data plane?
 A. Mixer. B. Pilot C. Citadel D. Envoy side car
 
 (Answer D)
@@ -87,16 +87,16 @@ A. Yes.  B. No
     2. No
     
 (Answer 1).   
-    
-15. Which of the following statements is true?
-    1. Istio can secure the communication between microservices without requiring app code changes.
-    2. Istio can secure the communication between containers without requiring app code changes.
-    3. Istio can secure the communication between clusters without requiring app code changes.
-    4. None of the bove
-    
-(Answer 1).
-    
-16. With what Istio components one can write custom adapters for tracing and metrics?
+  
+
+15. What is the default side car proxy in Istio?
+    1. Nginx
+    2. Linkerd
+    3. Envoy
+    4. None of the above
+(Answer 3)
+
+16. With what Istio components one can enable users to write custom adapters for tracing and metrics?
     1. Istio-auth
     2. Mixer
     3. Pilot
