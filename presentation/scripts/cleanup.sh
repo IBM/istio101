@@ -11,6 +11,12 @@ kubectl delete -f ./samples/bookinfo/kube/route-rule-all-v1.yaml
 
 kubectl delete -f ./install/kubernetes/istio-sidecar-injector-with-ca-bundle.yaml
 
+kubectl -n istio-system delete secret sidecar-injector-certs
+
+kubectl delete csr istio-sidecar-injector.istio-system
+
+kubectl label namespace default istio-injection-
+
 kubectl delete -f ./install/kubernetes/istio.yaml
 
 kubectl get pods --all-namespaces

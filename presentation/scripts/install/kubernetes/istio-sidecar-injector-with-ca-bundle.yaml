@@ -38,13 +38,15 @@ spec:
       serviceAccountName: istio-sidecar-injector-service-account
       containers:
         - name: webhook
-          image: docker.io/istio/sidecar_injector:0.5.0
+          image: docker.io/istio/sidecar_injector:0.7.1
           imagePullPolicy: IfNotPresent
           args:
             - --tlsCertFile=/etc/istio/certs/cert.pem
             - --tlsKeyFile=/etc/istio/certs/key.pem
             - --injectConfig=/etc/istio/inject/config
             - --meshConfig=/etc/istio/config/mesh
+            - --healthCheckInterval=2s
+            - --healthCheckFile=/health
           volumeMounts:
           - name: config-volume
             mountPath: /etc/istio/config
@@ -55,6 +57,24 @@ spec:
           - name: inject-config
             mountPath: /etc/istio/inject
             readOnly: true
+          livenessProbe:
+            exec:
+              command:
+                - /usr/local/bin/sidecar-injector
+                - probe
+                - --probe-path=/health
+                - --interval=2s
+            initialDelaySeconds: 4
+            periodSeconds: 4
+          readinessProbe:
+            exec:
+              command:
+                - /usr/local/bin/sidecar-injector
+                - probe
+                - --probe-path=/health
+                - --interval=2s
+            initialDelaySeconds: 4
+            periodSeconds: 4
       volumes:
       - name: config-volume
         configMap:
@@ -80,12 +100,13 @@ webhooks:
         name: istio-sidecar-injector
         namespace: istio-system
         path: "/inject"
-      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZSVENDQXkyZ0F3SUJBZ0lKQUlpUnlySGdoNjhiTUEwR0NTcUdTSWIzRFFFQkN3VUFNRGt4TnpBMUJnTlYKQkFNTUxtRTFPRFEwWW1RME5tUTJNalExT1RNNVlUTTRNelJqTmpneE1tWTJaV0prTFd0MVltVnlibVYwWlhNdApZMkV3SGhjTk1UZ3dOREF6TWpFd05qVTNXaGNOTkRVd09ERTVNakV3TmpVM1dqQTVNVGN3TlFZRFZRUUREQzVoCk5UZzBOR0prTkRaa05qSTBOVGt6T1dFek9ETTBZelk0TVRKbU5tVmlaQzFyZFdKbGNtNWxkR1Z6TFdOaE1JSUMKSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQWc4QU1JSUNDZ0tDQWdFQStGVTlVMHEzTnRoM0N0K1NlcVhBZFVGRgpCcDJDWGVHM2N4WFdFTzVNZk95NnVBVjBpZnJKOW11bTBjZXBMT1JDZVEyUktEVFk1Wm9KQ1NPblpqMnRIdUZPCjBSRjBZU2RBNXFqNk5zcGVvLytwaExpcmpHMUkzUXJQTGY4eENYRHhybkdXWDJ5akFaSnhEU2hYdWVRaEtydDMKMGhpOGtuY0xFR0ljSkxsTGxsMXE1R05rMUk0QWJCM1J5Wlk2a3ZuYXhmbWkvb1RvRlpGS21xbElYbGk3OWYzUApzOGt2YTZSNmtuekpsQ0lyc2R6ajYzSG0yZy9saldWVk55ckVkQVVlQmhGRTZwZmd5bE5aVmdNcUtHaGxOYWQ1CkFBc285WjN0OHZzUXFidmNiQnJndTE0U1lyLzVMQU53dFQ4NFJVV0JGRHdpTVN6dU1ZUHg4Ti8vZmJ0ZXdKM0cKbnFPTW9JUGJvRjJtZlUxbndTSmM5cmlHZks0UE1uazJwMk1MWE95UTN3UkxhdjZERE5zaGtWQ3plaWdVREdoMwpZZFllQzJzbXJUeWxVb3YvdmFqRFhZaS9LendnMGgrVk5MTzBDYmJEK1NIS3VZa0VUT2hXd1FRVGF4NzhCdlQyCk43dnRwNG9Qc3RkeWx3WXZyMlE4K0hBcEs2aXAxMTJJeitDQTQvbllESWZWYnpzVVNBSmVCZTdPK3d4d0VPaEsKK3dxKzM3KzUxczBGejF6MGFxNjlFbDFDRGpoazVOZjRVRzBwdnBVeHN6a2JMZzBQUzFVUFNnTjM0dkQwWWlqaQp4eWVuamVubDVWQUhkY1kyUzhXVms0MjhPMU9ReDFlVERCdWk0MS9ta3JJSnpZUG5JYW82RUtGb0l2SXk2NVFVCk5vYi95b1Raa1JibG1Ga0syMHNDQXdFQUFhTlFNRTR3SFFZRFZSME9CQllFRkg1ZTFSK3lQNWpoek10WkU2VnAKZnRjRXFiSlZNQjhHQTFVZEl3UVlNQmFBRkg1ZTFSK3lQNWpoek10WkU2VnBmdGNFcWJKVk1Bd0dBMVVkRXdRRgpNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dJQkFMZUR3QnVvb2FmZnNxRVErazFMM1Vmb0pqZmNIdUt5CkhHdFNrL1FkNVBVM1lCVjBFYUt3WUdtR2dhcENUblI1eFB1d05YcEIxdTk2d3ZWMGt2RktmWVptc2R0Z3NUSm0KV0ZCUDZwNzYvRUlXZ2NjNlRKQ201Y2FlQkVzcTRpZ2FKVkV5NmVrb1RwdFVjR1krWDdzeXVOTEVaaDZRUGJJVgpVUWg1STJscTlENFk1eGNlbXo0RjlUajhFRGlGb0VtZGlOMWF4bm5Qb0NvUVZxbE56SkhPaXkwNjRpa1JEM1hwCnpjYSsvOHVtVS9QZmJHdTBFMFY1aEh2SW9xQWRRR3I1MHFmYmZndWk2Q1R0WHlDWXBFMjBrQTg1bGhuQ1c2T1kKQTd1c1BhQ25tVW5sam9TK0M3aVVzWUxvU2hMTGx1UmdVaWJ1emtxbERObEJsblM5WHVjVTVJUS9UOG1QWnlHRwpXU1FsdVBKb0ZIT2EvcFYycmxrdlI4QTEwcndGQXllSG1sWlZ2Nk5Fd2E4dCtDUTRLcktiRWNUMkRodWg3QkUxClZaR2xyOEtDZlQ3ZVVXR2pNaWkyeTlyMi90SS9wRUlTQzVFUy9BWWtoY1pUOFZSMCtOUHhCaS9Nc0NQL1FJN2MKVklRQXdWVDRKVE5DcVBQWVBrSjVYSGZyS2pReCsxTXh6dmVmUWl6d3VDcFFnSFgwMHNMZGdOQldIZWNrVFpMVQpyM2pYM3g5VDRhazVFaTFTbnlZVUdTL3JmM3ZtZjJsbzl6WDBERTRaVWh2TzNDaEpLVnhLRXgrUEdNVGpITllJClVQWkYvYXAyTGlBbS9laktRRU5tQktyQkJMUVdwd3pCYlJjSFBTb3h5b1NjZENlQ211YkNhcEtuZ0k1ZUFKb1gKTlFhZ29McGhuT2VYCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZSVENDQXkyZ0F3SUJBZ0lKQUpDY2V2SUhyVWNVTUEwR0NTcUdTSWIzRFFFQkN3VUFNRGt4TnpBMUJnTlYKQkFNTUxqSTFNV015TUdSallXTXhPVFJpWkRGaVlUVmhPVGxsWXpRMU5qazJaVEEwTFd0MVltVnlibVYwWlhNdApZMkV3SGhjTk1UZ3dOREF6TVRZMU1qUXhXaGNOTkRVd09ERTVNVFkxTWpReFdqQTVNVGN3TlFZRFZRUUREQzR5Ck5URmpNakJrWTJGak1UazBZbVF4WW1FMVlUazVaV00wTlRZNU5tVXdOQzFyZFdKbGNtNWxkR1Z6TFdOaE1JSUMKSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQWc4QU1JSUNDZ0tDQWdFQXVIelBiQVRURCtZdVl3MzQrYXdhV3IycwpOamhvNWNmdWd3SGgvd2VOSWwxWkM0eUpVZWVCYVBFNmR5QkxhRDVhRi9GUkNENHJDYW9CdXJPL05TdmxSZ3Q2Ci9xSVUrZGhMTG1vL1RVdENlUGpjTStXZXJFZnV2ZGpGdmRDMWtGTGNNQlMvRHRqTElHbGdCTHB3ektmb2hCU0MKTlQ4bHFpYjhvUFZnNG9nT3dWOHY1YXJTUzVhbFJWTmcrTzNaYmgzTlhlWFZvZCswWWQ1WGtjWEIvdVpjZ3hnLwpYTTlyT2p0S3hzQ2VUZ3dhVmRHaHpZUHJCQkh6VjZEb3VqZHNpM0taaTlSS21sSjZTeEFhQ1lzTk5wNHV3QlB0Cm1HNkYraGZXWXdDaU1KSWQzeXQxZlJRSk1IQ3dVQU1sWCtRT29JWHpJNkdQblczN1NNaVBYRUdvZHF3cWt3SkgKZUFESklnbmNoT0pSRzY0dlVQVHRFS2hsYksrWW1tQWJHUjhZU2c3RFlFbFJjcTNqVVljTS9NbjRFN3J6SlppdwpmZ2c1azhXN0tzQUJqaFBUeUJlL0tGRW9lOUx4ejMxVTgyb0lvc2UvbmFSYmZ0NEd4SE5aNjdNV2dMNzhyME16CjhLK0R5UWxNclUrVmJiM2VReG5ySWdOdFB2NEVoNFFKNjlKZWV6eUNzeTBicWhHandzaXUrTXhaSzRCYkw0emsKcC8xNHlKUWY1eDY2SjJ5RkFLZTNMYlFtYTMrSHJtN2FMUHNWeTZBLy9ZUXo1ek5Pd2wvMmsvU3UvVFprZTNDcwo3TkpUT3RlRDVaUzNNSGliN2JxWHYwSFJaN0dhZzFicmYzYVh3RFcyb20xQlpOckRWOFhWQ0xuUkhtNlZxZjBrCmUwQ2F4K1czTDYvczRqazZTUGtDQXdFQUFhTlFNRTR3SFFZRFZSME9CQllFRkNXNExQbWdCd3dXbDFuTjc2TE0KMEhmaHNiejJNQjhHQTFVZEl3UVlNQmFBRkNXNExQbWdCd3dXbDFuTjc2TE0wSGZoc2J6Mk1Bd0dBMVVkRXdRRgpNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dJQkFEVzhSeVp5WGdnbkFDejRELysyUGZFTkdSdDIyS2RCCjNnSG1Qc1pDRUFzRUxzeWREZXNIK2dXNks0YmR3QVpRc3N0SGl0LzNnYjcxNUVFc3ZVM3g4Y1JubHlBMHlIYlIKWXZvTkJxSmI3Vjg4WmU0UU9Gd1BST21lbjQxU09PUUdOUnBHYll1dkp3VnVmMXdWSFg0M1FxbmZCQ0VEL3M4eAp5MDNNOVRhOFI2STlUTzNkL1ZSYjBiQmk0VUZKZXNEVjlZMVIzbldQUEp3MWx1TEVhRUZEdDlGeDZBN2t0SjlvCjhRb2wwVUMyQnY5QzJ5LzVBVjVpc3JpS0NRRXpEK0hVaFBCaUhQOWJzSGx3NjB4ek1JaVZTNklkdkxlT2VhdlAKWnBxQjhCQzBxa3diQ0Vkb1hUbjZzZzZwNlQvUTFMalFwcFp4UitUTU9GSE1OMVhVOURPSm1WcjVIRkZoMXA0Wgo1NFEyZHkxQWVtYVYvUU5qdXdoVjBvbXBOWVpvZ0MvMUh4aHNGdmRXNVI4S042MzF0Zm9GRFd0V1ZVWWhObm11ClpWcW5pWENZWS8wdkwxOEY5OHpzVm1od2lWVE9keVdXT0xtenVZcUZHUFArV1Q5b2g5L1ZVd0dVVnJIVlZ1YVIKczhZRzZTKzRTNk51bHJDQlA1Z1BoVXhTYlVZdGFLck5LVDNRdjA2ZElhNStVM0phYS9lRXk2aS9vOEd3cVNocgpYdW45TjhuR0JnZWNWSmtXOUlhVytXZUV2bXAvaXRhUlRpSXRoQnNXcW9DRkFPY2w3VXRhR2k3RVovNVlaUlA2CmtZcHRkdFlkT2RCbDdnbFBteU52N1ZkSnMybEw4b0JlNlhUNGt3Y3VGOGJkdHQvSVBGN3E4d21rbk1pM25iUVEKbkRJNXcvV1o2bXowCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
     rules:
       - operations: [ "CREATE" ]
         apiGroups: [""]
         apiVersions: ["v1"]
         resources: ["pods"]
+    failurePolicy: Fail
     namespaceSelector:
       matchLabels:
         istio-injection: enabled

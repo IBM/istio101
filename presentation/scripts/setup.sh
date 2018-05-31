@@ -38,6 +38,6 @@ read -n 1 -s -r -p "Press any key to continue"
 kubectl apply -f ./install/kubernetes/addons/prometheus.yaml
 kubectl apply -f ./install/kubernetes/addons/grafana.yaml
 kubectl apply -f ./install/kubernetes/addons/zipkin.yaml
-#kubectl apply -f ./samples/httpbin/httpbin.yaml
-#kubectl apply -f ./samples/bookinfo/kube/bookinfo.yaml
+kubectl apply -f ./samples/httpbin/httpbin.yaml
+kubectl apply -f ./samples/bookinfo/kube/bookinfo.yaml
 kubectl apply -f ./samples/httpbin/sample-client/fortio-deploy.yaml

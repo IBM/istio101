@@ -1,0 +1,52 @@
+# GENERATED FILE. Use with Kubernetes 1.7+
+# TO UPDATE, modify files in install/kubernetes/templates and run install/updateVersion.sh
+apiVersion: v1
+kind: Service
+metadata:
+  name: istio-mixer-validator
+  namespace: istio-system
+  labels:
+    istio: mixer-validator
+spec:
+  ports:
+  - name: webhook
+    port: 443
+  selector:
+    istio: mixer-validator
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: istio-mixer-validator-service-account
+  namespace: istio-system
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: istio-mixer-validator
+  namespace: istio-system
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        istio: mixer-validator
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      serviceAccountName: istio-mixer-validator-service-account
+      containers:
+      - name: validator
+        image: docker.io/istio/mixer:0.7.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 443
+        command:
+        - /usr/local/bin/mixs
+        - validator
+        - --webhook-name=istio-mixer-validator
+        - --namespace=istio-system
+        - --port=443
+        - --secret-name=istio-mixer-validator
+        - --configStoreURL=k8s://
+---
