@@ -109,29 +109,13 @@ spec:
   hosts:
   - "gateway.watsonplatform.net"
   ports:
-  - number: 80
+  - number: 443
     name: https
-    protocol: http
+    protocol: https
   resolution: DNS
-  endpoints:
-   - address: gateway.watsonplatform.net
-     ports:
-       https: 443
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: bluemix-tone-analyzer
-spec:
-  host: "gateway.watsonplatform.net"
-  trafficPolicy:
-    tls:
-      mode: SIMPLE # initiates HTTPS when talking to gateway.watsonplatform.net
 ```
 
-The `ServiceEntry` defines addresses and ports services within the mesh are allowed to make requests to.  A `DestinationRule` is also created.  This is required because the guestbook service makes calls over HTTP, but the Watson service only accepts HTTPS connections.  The `DestinationRule` tells Istio to convert the outgoing HTTP request to HTTPS.
-
-If two browsers are available on your system, observe the modernized guestbook service in Firefox and the original guestbook service in any other browser.
+The `ServiceEntry` defines addresses and ports services within the mesh are allowed to make requests to.  If two browsers are available on your system, observe the modernized guestbook service in Firefox and the original guestbook service in any other browser.
 
 ### Canary deployment
 In `Canary Deployments`, newer versions of services are incrementally rolled out to users to minimize the risk and impact of any bugs introduced by the newer version.  To begin incrementally routing traffic to the newer version of the guestbook service, modify the original `VirtualService` rule:

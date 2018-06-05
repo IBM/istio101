@@ -6,21 +6,7 @@ spec:
   hosts:
   - "gateway.watsonplatform.net"
   ports:
-  - number: 80
+  - number: 443
     name: https
-    protocol: http
+    protocol: https
   resolution: DNS
-  endpoints:
-   - address: gateway.watsonplatform.net
-     ports:
-       https: 443
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: bluemix-tone-analyzer
-spec:
-  host: "gateway.watsonplatform.net"
-  trafficPolicy:
-    tls:
-      mode: SIMPLE # initiates HTTPS when talking to gateway.watsonplatform.net
