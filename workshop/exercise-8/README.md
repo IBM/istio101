@@ -53,8 +53,8 @@ In this exercise we'll use the denier adapter.
 
 2. Verify that the service is denied:
 
-   In [Exercise 4](../exercise-4/README.md), we created the Ingress resource. Make sure the $INGRESS_IP environment variable   is still present. Then in the terminal, try:  
-    
+   In [Exercise 5](../exercise-5/README.md), we created the Ingress resource. Make sure the $INGRESS_IP environment variable   is still present. Then in the terminal, try:  
+
     ```
     curl http://$INGRESS_IP/
     ```
@@ -67,7 +67,7 @@ In this exercise we'll use the denier adapter.
     ```
 ## Quiz
 1. Does creating mixer rules require app code changes? (Yes/No) No
-2. The custom code that interacts with the backend system, i.e. Prometheus, is called 
+2. The custom code that interacts with the backend system, i.e. Prometheus, is called
 A. Rule B. Instance C. Adapter
 Answer is C
 
