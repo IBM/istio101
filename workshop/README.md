@@ -1,5 +1,5 @@
-# Beyond the Basics: Istio and IBM Cloud Container Service
-[Istio](https://www.ibm.com/cloud/info/istio) is an open platform to connect, secure, and manage a network of microservices, also known as a service mesh, on cloud platforms such as Kubernetes in IBM Cloud Container Service. With Istio, You can manage network traffic, load balance across microservices, enforce access policies, verify service identity on the service mesh, and more.
+# Beyond the Basics: Istio and IBM Cloud Kubernetes Service
+[Istio](https://www.ibm.com/cloud/info/istio) is an open platform to connect, secure, and manage a network of microservices, also known as a service mesh, on cloud platforms such as Kubernetes in IBM Cloud Kubernetes Service. With Istio, You can manage network traffic, load balance across microservices, enforce access policies, verify service identity on the service mesh, and more.
 
 In this course, you can see how to install Istio alongside microservices for a simple mock app called Guestbook. When you deploy Guestbook's microservices into an IBM Cloud Container Service cluster where Istio is installed, you inject the Istio Envoy sidecar proxies in the pods of each microservice.
 
@@ -20,17 +20,17 @@ You must you must have a Trial, Pay-As-You-Go, or Subscription [IBM Cloud accoun
 
 Use Kubernetes 1.9.x or newer because earlier versions may require changes in manifests.
 
-You must have [already created a cluster](https://console.bluemix.net/docs/containers/container_index.html#container_index) in IBM Cloud Container Service.
+You must have [already created a cluster](https://console.bluemix.net/docs/containers/container_index.html#container_index) in IBM Cloud Kubernetes Service.
 
 If you are using a Trial IBM Cloud Account, be aware that you may encounter resource caps, especially if there are existing resources in your cluster.  During the course, if any pods remain in `Pending` status, you may need to adjust the number of `replicas` in the various deployment yamls to a value of 1, delete the deployment, and attempt the steps again.
 
-You should have a basic understanding of containers, IBM Cloud Container Service, and Istio. If you have no experience with those, take the following courses:
-1. [Get started with Kubernetes and IBM Cloud Container Service](https://developer.ibm.com/courses/all/get-started-kubernetes-ibm-cloud-container-service/)
-2. [Get started with Istio and IBM Cloud Container Service](https://developer.ibm.com/courses/all/get-started-istio-ibm-cloud-container-service/)
+You should have a basic understanding of containers, IBM Cloud Kubernetes Service, and Istio. If you have no experience with those, take the following courses:
+1. [Get started with Kubernetes and IBM Cloud Kubernetes Service](https://developer.ibm.com/courses/all/get-started-kubernetes-ibm-cloud-container-service/)
+2. [Get started with Istio and IBM Cloud Kubernetes Service](https://developer.ibm.com/courses/all/get-started-istio-ibm-cloud-container-service/)
 
 
 ## Workshop setup
-- [Exercise 1 - Accessing a Kubernetes cluster with IBM Cloud Container Service](exercise-1/README.md)
+- [Exercise 1 - Accessing a Kubernetes cluster with IBM Cloud Kubernetes Service](exercise-1/README.md)
 - [Exercise 2 - Installing Istio](exercise-2/README.md)
 - [Exercise 3 - Deploying Guestbook with Istio Proxy](exercise-3/README.md)
 
