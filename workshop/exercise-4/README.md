@@ -133,4 +133,4 @@ Congratulations! You extended the base Ingress features by providing a DNS entry
 [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)           
 [Istio Ingress](https://istio.io/docs/tasks/traffic-management/ingress.html)
 
-#### [Continue to Exercise 5 - Telemetry](../exercise-5/README.md)
+#### [Continue to Exercise 5 - Traffic Management](../exercise-5/README.md)

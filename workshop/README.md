@@ -37,7 +37,7 @@ You should have a basic understanding of containers, IBM Cloud Kubernetes Servic
 ## Creating a service mesh with Istio
 
 - [Exercise 4 - Expose the service mesh with the Istio Ingress controller](exercise-4/README.md)
-- [Exercise 5 - Observe service telemetry: metrics and tracing](exercise-5/README.md)
-- [Exercise 6 - Perform traffic management](exercise-6/README.md)
+- [Exercise 5 - Perform traffic management](exercise-5/README.md)
+- [Exercise 6 - Observe service telemetry: metrics and tracing](exercise-6/README.md)
 - [Exercise 7 - Secure your service mesh](exercise-7/README.md)
 - [Exercise 8 - Enforce policies for microservices](exercise-8/README.md)

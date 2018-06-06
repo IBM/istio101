@@ -1,173 +1,120 @@
-# Exercise 6 - Perform traffic management
+# Exercise 5 - Observe service telemetry: metrics and tracing
 
-## Using rules to manage traffic
-The core component used for traffic management in Istio is Pilot, which manages and configures all the Envoy proxy instances deployed in a particular Istio service mesh. It lets you specify what rules you want to use to route traffic between Envoy proxies, which run as sidecars to each service in the mesh.  Each service consists of any number of instances running on pods, containers, VMs etc.  Each service can have any number of versions (a.k.a. subsets).  There can be distinct subsets of service instances running different variants of the app binary. These variants are not necessarily different API versions. They could be iterative changes to the same service, deployed in different environments (prod, staging, dev, etc.).  Pilot translates high-level rules into low-level configurations and distributes this config to Envoy instances.  Pilot uses three types of configuration resources to manage traffic within its service mesh: Virtual Services, Destination Rules, and Service Entries.
+### Challenges with microservices
 
-### Virtual Services
-A [VirtualService](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#VirtualService) defines a set of traffic routing rules to apply when a host is addressed. Each routing rule defines matching criteria for traffic of a specific protocol. If the traffic is matched, then it is sent to a named [destination](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#Destination) service (or [subset](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#Subset) or version of it) defined in the service registry.
+For the longest time in the history of app development, apps were built with monolith mindset. Monolith apps have a large number of instances running all of the services provided in one app. Things like user account management, payment, and reporting are all run from a shared resource. This worked pretty well until service-oriented architecture (SOA) came along and promised us a much brighter future. The basic principle of SOA is to break down apps to smaller components, and having them to talk to one other using protocols like REST or gRPC. Everyone thought this would fundamentally change the landscape, and it did--up to an extent. However, a new set of challenges emerged. What about cross-services communication? What about observability between microservices, such as logging or tracing? What about metrics?
 
-### Destination Rules
-A [DestinationRule](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#Destination) defines policies that apply to traffic intended for a service after routing has occurred. These rules specify configuration for load balancing, connection pool size from the sidecar, and outlier detection settings to detect and evict unhealthy hosts from the load balancing pool. Any destination `host` and `subset` referenced in a `VirtualService` rule must be defined in a corresponding `DestinationRule`.
+### Istio telemetry
 
-### Service Entries
-A [ServiceEntry](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#ServiceEntry) configuration enables services within the mesh to access a service not necessarily managed by Istio.  The rule describes the endpoints, ports and protocols of a white-listed set of mesh-external domains and IP blocks that services in the mesh are allowed to access.
+Istio's tracing and metrics features are designed to provide broad and granular insight into the health of all services. Istio's role as a service mesh makes it the ideal data source for observability information, particularly in a microservices environment. As requests pass through multiple services, identifying performance bottlenecks becomes increasingly difficult using traditional debugging techniques. Distributed tracing provides a holistic view of requests transiting through multiple services, allowing for immediate identification of latency issues. With Istio, distributed tracing comes by default. Simply configure Istio to export tracing data to a backend trace aggregator, such as Jaeger. This will expose latency, retry, and failure information for each hop in a request.
 
-## The Guestbook app
-In the Guestbook app, there is one service: guestbook.  The guestbook service has two distinct versions: the base version (version 1) and the modernized version (version 2).  Each version of the service has three instances based on the number of replicas in [guestbook-deployment.yaml](https://github.com/linsun/examples/blob/master/guestbook-go/guestbook-deployment.yaml) and [guestbook-v2-deployment.yaml](https://github.com/linsun/examples/blob/master/guestbook-go/guestbook-v2-deployment.yaml).  By default, prior to creating any rules, Istio will route requests equally across version 1 and version 2 of the guestbook service and their respective instances in a round robin manner.  However, new versions of a service can easily introduce bugs to the service mesh, so following A/B Testing and Canary Deployments is good practice.
+You can read more about how [Istio mixer enables telemetry reporting](https://istio.io/docs/concepts/policy-and-control/mixer.html).
 
-### A/B testing with Istio
-A/B testing is a method of performing identical tests against two separate service versions in order to determine which performs better.  To prevent Istio from performing the default routing behavior between the original and modernized guestbook service, define the following rules (found in [istio101/workshop/plans](https://github.com/IBM/istio101/tree/master/workshop/plans)):
+### Configure Istio to receive telemetry data
 
-```console
-istioctl create -f virtualservice-all-v1.yaml
-```
+1. Change the directory to the Istio file location.
+   ````
+   cd [path_to_istio-version]
+   ````
 
-```yaml
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: virtual-service-guestbook
-spec:
-  hosts:
-    - '*'
-  gateways:
-    - guestbook-gateway
-  http:
-    - route:
-        - destination:
-            host: guestbook
-            subset: v1
-```
+2. Install add-ons for Grafana, Prometheus, ServiceGraph and Jaeger.
+   ```console
+   kubectl apply -f install/kubernetes/addons/grafana.yaml
+   kubectl apply -f install/kubernetes/addons/prometheus.yaml
+   kubectl apply -f install/kubernetes/addons/servicegraph.yaml
+   kubectl apply -n istio-system -f https://raw.githubusercontent.com/jaegertracing/jaeger-kubernetes/master/all-in-one/jaeger-all-in-one-template.yml
+   ```
 
-```console
-istioctl create -f guestbook-destination.yaml
-```
+3. Verify that the add-ons were installed successfully. All add-ons are installed into the `istio-system` namespace.
+   ```console
+   kubectl get pods -w -n istio-system
 
-```yaml
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: destination-guestbook
-spec:
-  host: guestbook
-  subsets:
-    - name: v1
-      labels:
-        version: '1.0'
-    - name: v2
-      labels:
-        version: '2.0'
-```
+   kubectl get services -w -n istio-system
+   ```
 
-The `VirtualService` defines a rule that captures all HTTP traffic coming in through the Istio ingress gateway, `guestbook-gateway`, and routes 100% of the traffic to pods of the guestbook service with label "version: v1".  A subset or version of a route destination is identified with a reference to a named service subset which must be declared in a corresponding `DestinationRule`.  Since there are three instances matching the criteria of hostname `guestbook` and subset `version: v1`, by default Envoy will send traffic to all three instances in a round robin manner.  You can view the guestbook service UI using the IP address and port obtained in [Exercise 4](../exercise-4/README.md) and enter it as a URL in Firefox or Chrome web browsers.
+3. Configure Istio to automatically gather telemetry data for services that run in the service mesh.
+   1. Go back to your v2 directory.
+      ````
+      cd guestbook/v2
+      ````
 
-To enable the Istio service mesh for A/B testing against the new service version, modify the original `VirtualService` rule:
+   2. Create a rule to collect telemetry data.
+      ```sh
+      istioctl create -f guestbook-telemetry.yaml
+      ```
+   3. Generate a small load to the app.
+      ```sh
+      while sleep 0.5; do curl http://<guestbook_loadbalancer_external_IP/; done
+      ```
 
-```console
-istioctl replace -f virtualservice-test.yaml
-```
+## View guestbook telemetry data
 
-```yaml
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: virtual-service-guestbook
-spec:
-  hosts:
-    - '*'
-  gateways:
-    - guestbook-gateway
-  http:
-    - match:
-        - headers:
-            user-agent:
-              regex: '.*Firefox.*'
-      route:
-        - destination:
-            host: guestbook
-            subset: v2
-    - route:
-        - destination:
-            host: guestbook
-            subset: v1
-```
+#### Jaeger
 
-In Istio `VirtualService` rules, there can be only one rule for each service and therefore when defining multiple [HTTPRoute](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#HTTPRoute) blocks, the order in which they are defined in the yaml matters.  Hence, the original `VirtualService` rule is modified rather than creating a new rule.  With the modified rule, incoming requests originating from `Firefox` browsers will go to the newer version of guestbook.  All other requests fall-through to the next block, which routes all traffic to the original version of guestbook.  
+1. Establish port forwarding from local port 16686 to the Jaeger instance.
+   ```console
+   kubectl port-forward -n istio-system $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath='{.items[0].metadata.name}') 16686:16686
+   ```
 
-The newer version of the guestbook service call the Watson Tone Analyzer service created in [Exercise 3](../exercise-3/README.md).  By default Istio blocks calls to services outside the service mesh.  In order for calls to reach the Watson service, create the following `ServiceEntry`:
+2. Browse to http://localhost:16686.
 
-```console
-istioctl create -f serviceentry-tone.yaml
-```
+3. From the **Services** menu, select **guestbook-v2**.
+4. Scroll to the bottom and click on **Find Traces** button to see traces
 
-```yaml
-apiVersion: networking.istio.io/v1alpha3
-kind: ServiceEntry
-metadata:
-  name: bluemix-tone-analyzer
-spec:
-  hosts:
-  - "gateway.watsonplatform.net"
-  ports:
-  - number: 443
-    name: https
-    protocol: https
-  resolution: DNS
-```
 
-The `ServiceEntry` defines addresses and ports services within the mesh are allowed to make requests to.  If two browsers are available on your system, observe the modernized guestbook service in Firefox and the original guestbook service in any other browser.
+#### Grafana
 
-### Canary deployment
-In `Canary Deployments`, newer versions of services are incrementally rolled out to users to minimize the risk and impact of any bugs introduced by the newer version.  To begin incrementally routing traffic to the newer version of the guestbook service, modify the original `VirtualService` rule:
+1. Establish port forwarding from local port 3000 to the Grafana instance:
+   ````
+   kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000
+   ````
+
+2. Browse to http://localhost:3000 and navigate to the Istio, Mixer or Pilot Dashboard by clicking on the Home menu on the top left.
+
+
+#### Prometheus
+
+1. Establish port forwarding from local port 9090 to the Prometheus instance.
+
+   ```console
+   kubectl -n istio-system port-forward \
+     $(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') \
+     9090:9090
+   ```
+2. Browse to http://localhost:9090/graph, and in the “Expression” input box, enter: request_count. Click Execute.
+
+#### Service Graph
+
+1. Establish port forwarding from local port 8088 to the Service Graph instance:
+
+   ```console
+   kubectl -n istio-system port-forward \
+     $(kubectl -n istio-system get pod -l app=servicegraph -o jsonpath='{.items[0].metadata.name}') \
+     8088:8088
+   ```  
+
+2. Browse to http://localhost:8088/dotviz
+
+#### Mixer Log Stream
 
 ```console
-istioctl replace -f virtualservice-80-20.yaml
+kubectl -n istio-system logs $(kubectl -n istio-system get pods -l istio=mixer -o jsonpath='{.items[0].metadata.name}') mixer | grep \"instance\":\"newlog.logentry.istio-system\"
 ```
 
-```yaml
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: virtual-service-guestbook
-spec:
-  hosts:
-    - '*'
-  gateways:
-    - guestbook-gateway
-  http:
-    - route:
-        - destination:
-            host: guestbook
-            subset: v1
-          weight: 80
-        - destination:
-            host: guestbook
-            subset: v2
-          weight: 20
-```
 
-In the modified rule, the routed traffic is split between two different subsets of the guestbook service.  In this manner, traffic to the modernized version 2 of guestbook is controlled on a percentage basis to limit the impact of any unforeseen bugs.  This rule can be modified over time until eventually all traffic is directed to the newer version of the service.
+## Understand what happened
 
-### Implementing circuit breakers with destination rules
-Istio `DestinationRules` allow users to configure Envoy's implementation of [circuit breakers](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/circuit_breaking).  Circuit breakers are critical for defining the behavior for service-to-service communication in the service mesh.  In the event of a failure for a particular service, circuit breakers allow users to set global defaults for failure recovery on a per service and/or per service version basis.  Users can apply a [traffic policy](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#TrafficPolicy) at the top level of the `DestinationRule` to create circuit breaker settings for an entire service, or it can be defined at the subset level to create settings for a particular version of a service.
+Although Istio proxies are able to automatically send spans, they need some hints to tie together the entire trace. Apps need to propagate the appropriate HTTP headers so that when the proxies send span information to Zipkin or Jaeger, the spans can be correlated correctly into a single trace.
 
-Depending on whether a service handles [HTTP](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#ConnectionPoolSettings.HTTPSettings) requests or [TCP](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#ConnectionPoolSettings.TCPSettings) connections, `DestinationRules` expose a number of ways for Envoy to limit traffic to a particular service as well as define failure recovery behavior for services initiating the connection to an unhealthy service.
-
-## Further reading
-* [Istio Concept](https://istio.io/docs/concepts/traffic-management/)
-* [Istio Rules API](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html)
-* [Istio V1alpha1 to V1alpha3 Converter Tool](https://istio.io/docs/reference/commands/istioctl.html#istioctl%20experimental%20convert-networking-config)
-* [Istio Proxy Debug Tool](https://istio.io/docs/reference/commands/istioctl.html#istioctl%20proxy-config)
-* [Traffic Management](https://blog.openshift.com/istio-traffic-management-diving-deeper/)
-* [Circuit Breaking](https://blog.openshift.com/microservices-patterns-envoy-part-i/)
-* [Timeouts and Retries](https://blog.openshift.com/microservices-patterns-envoy-proxy-part-ii-timeouts-retries/)
+In the example, when a user visits the Guestbook app, the HTTP request is sent from the guestbook service to Watson Tone Analyzer. In order for the individual spans of guestbook service and Watson Tone Analyzer to be tied together, we have modified the guestbook service to extract the required headers (x-request-id, x-b3-traceid, x-b3-spanid, x-b3-parentspanid, x-b3-sampled, x-b3-flags, x-ot-span-context) and forward them onto the analyzer service when calling the analyzer service from the guestbook service.  The change is in the `v2/guestbook/main.go`. By using the `getForwardHeaders()` method, we are able to extract the required headers, and then we use the required headers further when calling the analyzer service via the `getPrimaryTone()` method.
 
 
+## Quizzes
 
-## Questions
-1. Where are routing rules defined?  Options: (VirtualService, DestinationRule, ServiceEntry)  Answer: VirtualService
-1. Where are service versions (subsets) defined?  Options: (VirtualService, DestinationRule, ServiceEntry)  Answer: DestinationRule
-1. Which Istio component is responsible for sending traffic management configurations to Istio sidecars?  Options: (Mixer, Citadel, Pilot, Kubernetes)  Answer: Pilot
-1. What is the name of the default proxy that runs in Istio sidecars and routes requests within the service mesh?  Options: (NGINX, Envoy, HAProxy)  Answer: Envoy
+1. Does a user need to modify their app to get metrics for their apps?   A: 1. Yes 2. No.  (2 is correct)
+
+2. Does a user need to modify their app to get distributed tracing for their app to work properly? A: 1. Yes 2. No.  (1 is correct)
+
+3. What distributed tracing system does Istio support by default?  A: 1. Zipkin 2. Kibana 3. LogStash 4. Jaeger. (1 and 4 are correct)
 
 #### [Continue to Exercise 7 - Security](../exercise-7/README.md)
