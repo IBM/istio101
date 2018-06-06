@@ -113,7 +113,7 @@ Watson Tone Analyzer detects the tone from the words that users enter into the G
    kubectl apply -f <(istioctl kube-inject -f analyzer-deployment.yaml)
    kubectl apply -f analyzer-service.yaml
    ```
-   Great! With your Guestbook up and running, you can now expose the service mesh with the Istio Ingress controller. 
+   Great! With your Guestbook up and running, you can now expose the service mesh with the Istio Ingress Gateway.
 
 
-#### [Continue to Exercise 4 - Expose the service mesh with the Istio Ingress controller](../exercise-4/README.md)
+#### [Continue to Exercise 4 - Telemetry](../exercise-4/README.md)
