@@ -17,9 +17,9 @@ You must already have a [cluster created](https://console.bluemix.net/docs/conta
     bx plugin install container-service -r Bluemix
     ```
 
-4. To verify that the plug-in is installed properly, run `bx plugin list`. The Kubernetes Service plug-in is displayed in the results as `container-service`.
+4. To verify that the plug-in is installed properly, run `bx plugin list`. The Container Service plug-in is displayed in the results as `container-service`.
 
-5.  Initialize the Kubernetes Service plug-in and point the endpoint to your region. For example when prompted, enter `5` for `us-east`.   
+5.  Initialize the Container Service plug-in and point the endpoint to your region. For example when prompted, enter `5` for `us-east`.   
     ```bash
     $ bx cs region-set
     Choose a region:
