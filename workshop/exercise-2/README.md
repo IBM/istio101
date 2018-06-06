@@ -17,7 +17,7 @@ export PATH=$PWD/istio-<version-number>/bin:$PATH
 kubectl apply -f install/kubernetes/istio-demo.yaml
 ```
 
-6. Ensure that the Kubernetes services `istio-ingress`, `istio-mixer`, and `istio-policy` are fully deployed before you continue.
+6. Ensure that the Kubernetes services `istio-ingressgateway`, `istio-mixer`, and `istio-pilot` are fully deployed before you continue.
 ```bash
 kubectl get svc -n istio-system
 ```
@@ -39,7 +39,7 @@ zipkin                     172.22.xxx.xxx   <none>        9411/TCP              
 ```
   **Note: For Lite clusters, the istio-ingress service will be in `pending` state with no external ip. That is normal.**
 
-7. Ensure the corresponding pods `istio-citadel-*`, `istio-ingressgateway-*`, `istio-mixer-*`, and `istio-policy-*` are all in **`Running`** state before you continue.
+7. Ensure the corresponding pods `istio-citadel-*`, `istio-ingressgateway-*`, `istio-mixer-*`, and `istio-pilot-*` are all in **`Running`** state before you continue.
 ```
 kubectl get pods -n istio-system
 ```
