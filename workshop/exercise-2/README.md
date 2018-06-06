@@ -12,12 +12,12 @@ export PATH=$PWD/istio-<version-number>/bin:$PATH
 ```
 4. Change the directory to the Istio file location.
 
-5. Install Istio on the Kubernetes cluster. Istio is deployed in the Kubernetes namespace `istio-system`. Since in a later exercise we will try out the mutual TLS features, we install the `istio-demo-auth.yaml` here.
+5. Install Istio on the Kubernetes cluster. Istio is deployed in the Kubernetes namespace `istio-system`.
 ```bash
 kubectl apply -f install/kubernetes/istio-demo.yaml
 ```
 
-6. Ensure that the Kubernetes services `istio-ingress`, `istio-mixer`, and `istio-policy` are fully deployed before you continue.
+6. Ensure that the `istio-*` Kubernetes services are deployed before you continue.
 ```bash
 kubectl get svc -n istio-system
 ```
@@ -37,9 +37,9 @@ servicegraph               172.22.xxx.xxx   <none>        8088/TCP              
 tracing                    172.22.xxx.xxx   <pending>     80:30132/TCP                                                          1m
 zipkin                     172.22.xxx.xxx   <none>        9411/TCP                                                              1m
 ```
-  **Note: For Lite clusters, the istio-ingress service will be in `pending` state with no external ip. That is normal.**
+  **Note: For Lite clusters, the istio-ingressgateway service will be in `pending` state with no external ip. That is normal.**
 
-7. Ensure the corresponding pods `istio-citadel-*`, `istio-ingressgateway-*`, `istio-mixer-*`, and `istio-policy-*` are all in **`Running`** state before you continue.
+7. Ensure the corresponding pods `istio-citadel-*`, `istio-ingressgateway-*`, `istio-pilot-*`, and `istio-policy-*` are all in **`Running`** state before you continue.
 ```
 kubectl get pods -n istio-system
 ```
@@ -59,7 +59,7 @@ prometheus-586d95b8d9-hqfn6                 1/1       Running   0          1m
 servicegraph-6d86dfc6cb-hprh2               1/1       Running   0          1m
 ```
 
-Before your continue, make sure all the pods are deployed. If they're in running state, wait and let the deployment finish.
+Before your continue, make sure all the pods are deployed and **`Running`**. If they're in `pending` state, wait a few minutes to let the deployment finish.
 
 Congratulations! You successfully installed Istio into your cluster.
 
