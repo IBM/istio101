@@ -40,7 +40,7 @@ A Kubernetes Ingress rule can be created that routes external requests through t
     istio-ingress   LoadBalancer   172.21.126.221   169.61.37.141   80:31432/TCP,443:31753/TCP   3h
     ```
 
-3. Access the Guestbook app by using the external IP address that you retrieved in the previous step.
+3. Make note of the external IP address that you retrieved in the previous step as it will be used to access the Guestbook app in later parts of the course.
    Example:
    ```
    http://169.61.37.141
@@ -69,7 +69,7 @@ A Kubernetes Ingress rule can be created that routes external requests through t
     ```
  The node port in above sample output is `169.60.87.20:31702`.
 
- 3. Access the Guestbook app by using the node port that you retrieved in the previous step.
+ 3. Make note of the IP and node port that you retrieved in the previous step as it will be used to access the Guestbook app in later parts of the course.
    Example:
    ```
    http://169.60.72.58:31702
@@ -121,7 +121,7 @@ Ingress subdomain:	guestbook-242887.us-east.containers.mybluemix.net
                  servicePort: 3000
    ```
 
-5. Use the IBM-provided subdomain to access your Guestbook app.
+5. Make note of the IBM-provided subdomain as it will be used to access your Guestbook app in later parts of the course.
    Example:
    ```
    http://[guestbook].us-east.containers.mybluemix.net
