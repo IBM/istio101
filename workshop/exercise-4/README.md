@@ -1,4 +1,4 @@
-# Exercise 5 - Observe service telemetry: metrics and tracing
+# Exercise 4 - Observe service telemetry: metrics and tracing
 
 ### Challenges with microservices
 

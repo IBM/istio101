@@ -9,8 +9,8 @@ In this course, you can see how to install Istio alongside microservices for a s
 After you complete this course, you'll be able to:
 - Download and install Istio in your cluster
 - Deploy the Guestbook sample app
-- Set up the Istio Ingress controller
 - Use metrics, logging and tracing to observe services
+- Set up the Istio Ingress Gateway
 - Perform simple traffic management, such as A/B tests and canary deployments
 - Secure your service mesh
 - Enforce policies for your microservices
