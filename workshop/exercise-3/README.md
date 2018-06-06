@@ -50,19 +50,12 @@ In Kubernetes, a sidecar is a utility container in the pod, and its purpose is t
 
 ## Install the Guestbook app with manual sidecar injection
 
-  ```sh
- kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml)
- kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml)
-  ```
-These commands will inject the Istio Envoy sidecar into the guestbook pods, as well as deploy the Guestbook app on to the Kubernetes cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
-
-Next, we'll create the guestbook service.
-
 1. Inject the Istio Envoy sidecar into the guestbook pods, and deploy the Guestbook app on to the Kubernetes cluster.
 ```sh
 kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml)
 kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml)
 ```
+These commands will inject the Istio Envoy sidecar into the guestbook pods, as well as deploy the Guestbook app on to the Kubernetes cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
 
 2. Create the guestbook service.
 ```sh
