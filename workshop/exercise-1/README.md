@@ -1,8 +1,8 @@
-# Exercise 1 - Accessing a Kubernetes cluster with IBM Cloud Container Service
+# Exercise 1 - Accessing a Kubernetes cluster with IBM Cloud Kubernetes Service
 
 You must already have a [cluster created](https://console.bluemix.net/docs/containers/container_index.html#container_index). Here are the steps to access your cluster.
 
-## Install IBM Cloud Container Service command line utilities
+## Install IBM Cloud Kubernetes Service command line utilities
 
 1. Install the IBM Cloud [command line interface](https://clis.ng.bluemix.net/ui/home.html).
 
@@ -12,14 +12,14 @@ You must already have a [cluster created](https://console.bluemix.net/docs/conta
     bx login [--sso]
     ```
 
-3.  Install the IBM Cloud Container Service plug-in.
+3.  Install the IBM Cloud Kubernetes Service plug-in.
     ```bash
     bx plugin install container-service -r Bluemix
     ```
 
-4. To verify that the plug-in is installed properly, run `bx plugin list`. The Container Service plug-in is displayed in the results as `container-service`.
+4. To verify that the plug-in is installed properly, run `bx plugin list`. The Kubernetes Service plug-in is displayed in the results as `container-service`.
 
-5.  Initialize the Container Service plug-in and point the endpoint to your region. For example when prompted, enter `5` for `us-east`.   
+5.  Initialize the Kubernetes Service plug-in and point the endpoint to your region. For example when prompted, enter `5` for `us-east`.   
     ```bash
     $ bx cs region-set
     Choose a region:
@@ -38,7 +38,7 @@ You must already have a [cluster created](https://console.bluemix.net/docs/conta
 ## Access your cluster
 Learn how to set the context to work with your cluster by using the `kubectl` CLI, access the Kubernetes dashboard, and gather basic information about your cluster.
 
-1.  Set the context for your cluster in your CLI. Every time you log in to the IBM Cloud Container Service CLI to work with the cluster, you must run these commands to set the path to the cluster's configuration file as a session variable. The Kubernetes CLI uses this variable to find a local configuration file and certificates that are necessary to connect with the cluster in IBM Cloud.
+1.  Set the context for your cluster in your CLI. Every time you log in to the IBM Cloud Kubernetes Service CLI to work with the cluster, you must run these commands to set the path to the cluster's configuration file as a session variable. The Kubernetes CLI uses this variable to find a local configuration file and certificates that are necessary to connect with the cluster in IBM Cloud.
 
     a. List the available clusters.
     
