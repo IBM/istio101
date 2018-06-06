@@ -39,15 +39,24 @@ zipkin                     172.22.xxx.xxx   <none>        9411/TCP              
 ```
   **Note: For Lite clusters, the istio-ingress service will be in `pending` state with no external ip. That is normal.**
 
-7. Ensure the corresponding pods `istio-ca-*`, `istio-ingress-*`, `istio-mixer-*`, and `istio-policy-*` are all in **`Running`** state before you continue.
+7. Ensure the corresponding pods `istio-citadel-*`, `istio-ingressgateway-*`, `istio-mixer-*`, and `istio-pilot-*` are all in **`Running`** state before you continue.
 ```
 kubectl get pods -n istio-system
 ```
 ```
-istio-ca-3657790228-j21b9           1/1       Running   0          5m
-istio-ingress-1842462111-j3vcs      1/1       Running   0          5m
-istio-mixer-2104784889-20rm8        3/3       Running   0          5m
-istio-pilot-2275554717-93c43        2/2       Running   0          5m
+NAME                                        READY     STATUS    RESTARTS   AGE
+grafana-cd99bf478-kpwnk                     1/1       Running   0          1m
+istio-citadel-ff5696f6f-5pw9p               1/1       Running   0          1m
+istio-egressgateway-58d98d898c-d42f4        1/1       Running   0          1m
+istio-ingressgateway-6bc7c7c4bc-f78xr       1/1       Running   0          1m
+istio-pilot-6c5c6b586c-dv7fs                2/2       Running   0          1m
+istio-policy-5c7fbb4b9f-pj6zz               2/2       Running   0          1m
+istio-sidecar-injector-dbd67c88d-ds9xn      1/1       Running   0          1m
+istio-statsd-prom-bridge-6dbb7dcc7f-9z6h5   1/1       Running   0          1m
+istio-telemetry-54b5bf4847-gmgxt            2/2       Running   0          1m
+istio-tracing-67dbb5b89f-lwmzf              1/1       Running   0          1m
+prometheus-586d95b8d9-hqfn6                 1/1       Running   0          1m
+servicegraph-6d86dfc6cb-hprh2               1/1       Running   0          1m
 ```
 
 Before your continue, make sure all the pods are deployed. If they're in running state, wait and let the deployment finish.
