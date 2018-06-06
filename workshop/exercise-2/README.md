@@ -22,10 +22,20 @@ kubectl apply -f install/kubernetes/istio-demo.yaml
 kubectl get svc -n istio-system
 ```
 ```
-NAME            TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                                                            AGE
-istio-ingress   LoadBalancer   172.21.xxx.xxx   169.xx.xxx.xxx   80:31176/TCP,443:30288/TCP                                         2m
-istio-mixer     ClusterIP      172.21.xxx.xxx   <none>           9091/TCP,15004/TCP,9093/TCP,9094/TCP,9102/TCP,9125/UDP,42422/TCP   2m
-istio-pilot     ClusterIP      172.21.xxx.xxx   <none>           15003/TCP,443/TCP                                                  2m
+NAME                       CLUSTER-IP       EXTERNAL-IP   PORT(S)                                                               AGE
+grafana                    172.22.xxx.xxx   <none>        3000/TCP                                                              4d
+istio-citadel              172.22.xxx.xxx   <none>        8060/TCP,9093/TCP                                                     1m
+istio-egressgateway        172.22.xxx.xxx   <none>        80/TCP,443/TCP                                                        1m
+istio-ingressgateway       172.22.xxx.xxx   <pending>     80:31380/TCP,443:31390/TCP,31400:31400/TCP                            1m
+istio-pilot                172.22.xxx.xxx   <none>        15003/TCP,15005/TCP,15007/TCP,15010/TCP,15011/TCP,8080/TCP,9093/TCP   1m
+istio-policy               172.22.xxx.xxx   <none>        9091/TCP,15004/TCP,9093/TCP                                           1m
+istio-sidecar-injector     172.22.xxx.xxx   <none>        443/TCP                                                               1m
+istio-statsd-prom-bridge   172.22.xxx.xxx   <none>        9102/TCP,9125/UDP                                                     1m
+istio-telemetry            172.22.xxx.xxx   <none>        9091/TCP,15004/TCP,9093/TCP,42422/TCP                                 1m
+prometheus                 172.22.xxx.xxx   <none>        9090/TCP                                                              1m
+servicegraph               172.22.xxx.xxx   <none>        8088/TCP                                                              1m
+tracing                    172.22.xxx.xxx   <pending>     80:30132/TCP                                                          1m
+zipkin                     172.22.xxx.xxx   <none>        9411/TCP                                                              1m
 ```
   **Note: For Lite clusters, the istio-ingress service will be in `pending` state with no external ip. That is normal.**
 
