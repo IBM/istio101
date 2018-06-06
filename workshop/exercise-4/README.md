@@ -75,13 +75,13 @@ A Kubernetes Ingress rule can be created that routes external requests through t
    http://169.60.72.58:31702
    ```
 
-## (Optional) Set up the Istio Ingress controller to work with IBM Cloud Container Service
+## (Optional) Set up the Istio Ingress controller to work with IBM Cloud Kubernetes Service
 
 **Note:** This task requires a standard cluster.
 
 To have an IBM-provided DNS for the Guestbook app, you must set up the Istio Ingress controller to route traffic to the Kubernetes Ingress application load balancer (ALB).
 
-The IBM Ingress service provides IBM Cloud users with a secure, reliable, and scalable network stack to distribute incoming network traffic to apps in IBM Cloud. You can enhance the IBM-provided Ingress application load balancer by adding annotions. Learn more about [Ingress for IBM Cloud Container Service](https://console.bluemix.net/docs/containers/cs_ingress.html#ingress).
+The IBM Ingress service provides IBM Cloud users with a secure, reliable, and scalable network stack to distribute incoming network traffic to apps in IBM Cloud. You can enhance the IBM-provided Ingress application load balancer by adding annotions. Learn more about [Ingress for IBM Cloud Kubernetes Service](https://console.bluemix.net/docs/containers/cs_ingress.html#ingress).
 
 1. Let's first check the IBM Ingress subdomain information.
 ```sh
