@@ -73,15 +73,16 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
 3.  Get basic information about your cluster and its worker nodes. This information can help you manage your cluster and troubleshoot issues.
 
     a.  View details of your cluster.
-        ```bash
-        bx cs cluster-get <your_cluster_name>
-        ```
+    
+    ```bash
+    bx cs cluster-get <your_cluster_name>
+    ```
 
     b.  Verify the worker nodes in the cluster.   
-        ```bash
-        bx cs workers <your_cluster_name>
-        bx cs worker-get <worker_ID>
-        ```
+    ```bash
+    bx cs workers <your_cluster_name>
+    bx cs worker-get <worker_ID>
+    ```
     
 ## Clone the lab repo
 
