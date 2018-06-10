@@ -2,13 +2,13 @@
 
 ## Mutual authentication with Transport Layer Security (mTLS)
 
-Istio can secure the communication between microservices without requiring app code changes. Security is provided by authenticating and encrypting communication paths within the cluster. This is becoming a common security and compliance requirement. Delegating communication security to Istio (as opposed to implementing TLS in each microservice), ensures that your app will be deployed with consistent and manageable security policies.
+Istio can secure the communication between microservices without requiring application code changes. Security is provided by authenticating and encrypting communication paths within the cluster. This is becoming a common security and compliance requirement. Delegating communication security to Istio (as opposed to implementing TLS in each microservice), ensures that your application will be deployed with consistent and manageable security policies.
 
-Istio Auth is an optional part of Istio's control plane components. When enabled, it provides each Envoy sidecar proxy with a strong (cryptographic) identity, in the form of certificates.
-Identity is based on the microservice's the service account and is independent of its specific network location, such as cluster or current IP address.
-Envoys then use these certificates to identify each other and establish an authenticated and encrypted communication channel between them.
+Istio Citadel is an optional part of Istio's control plane components. When enabled, it provides each Envoy sidecar proxy with a strong (cryptographic) identity, in the form of a certificate.
+Identity is based on the microservice's service account and is independent of its specific network location, such as cluster or current IP address.
+Envoys then use the certificates to identify each other and establish an authenticated and encrypted communication channel between them.
 
-Istio Auth is responsible for:
+Citadel is responsible for:
 
 * Providing each service with an identity representing its role.
 
@@ -16,9 +16,9 @@ Istio Auth is responsible for:
 
 * Providing a key management system, automating generation, distribution, and rotation of certificates and keys.
 
-When an app microservice connects to another microservice, the communication is tunneled through the client side and server side Envoys. The end-to-end communication flow is:
+When an application microservice connects to another microservice, the communication is redirected through the client side and server side Envoys. The end-to-end communication path is:
 
-* Local TCP connection (i.e., `localhost`, not reaching the "wire") between the app and Envoy (client- and server-side);
+* Local TCP connection (i.e., `localhost`, not reaching the "wire") between the application and Envoy (client- and server-side);
 
 * Mutually authenticated and encrypted connection between Envoy proxies.
 
@@ -47,6 +47,7 @@ kubectl get deployment -l istio=istio-ca -n istio-system
 ```
 
 Expected output:
+
 ```sh
 NAME       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 istio-ca   1         1         1            1           15h
