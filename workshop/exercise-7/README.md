@@ -29,55 +29,83 @@ When Envoy proxies establish a connection, they exchange and validate certificat
 > Version 2 of the guestbook application uses an external service (tone analyzer) which is not Istio-enabled. Current Istio release (0.8) has a [known limitation](https://istio.io/help/faq/security.html#istio-to-not-istio), where where an mTLS enabled service fails to communicate with a service without Istio. This limitation will be lifted in an upcoming release.
 > Thus, we will disable mTLS globally and enable it only for communication between internal cluster services in this lab.
 
-1. Setting up Istio Certificate Authority (CA)
+1. Ensure Citadel is running
 
-If you have previously deployed Istio without cluster-level CA, start by redeploying Istio using istio-auth.yaml file. The following should be run from the Istio release version directory (i.e., be sure to `cd [path_to_istio-version]` first. Executing the commands in a different directory would result in a *`path does not exist`* error):
-
-```sh
-kubectl delete -f install/kubernetes/istio.yaml
-kubectl apply -f install/kubernetes/istio-auth.yaml
-```
-
-Be sure to confirm that Istio is running before continuing. See [exercise-2](../exercise-2/README.md) for more details.
-
-Verify the cluster-level CA is running:
+Citadel is Istio's in-cluster Certificate Authority (CA) and is required for generating and managing cryptographic identities in the cluster.
+Verify Citadel is running:
 
 ```sh
-kubectl get deployment -l istio=istio-ca -n istio-system
+kubectl get deployment -l istio=citadel -n istio-system
 ```
 
 Expected output:
 
 ```sh
-NAME       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-istio-ca   1         1         1            1           15h
+NAME            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+istio-citadel   1         1         1            1           15h
 ```
 
-2. Verify the AuthPolicy setting in ConfigMap:
+1. Define mTLS Authentication Policy
+
+Define mTLS authentication policy for the analyzer service:
 
 ```sh
-kubectl get configmap istio -n istio-system | grep authPolicy | head -1
+cat <<EOF | istioctl create -f -
+apiVersion: authentication.istio.io/v1alpha1
+kind: Policy
+metadata:
+  name: mtls-to-analyzer
+  namespace: default
+spec:
+  targets:
+  - name: analyzer
+  peers:
+  - mtls:
+EOF
+Created config policy/default/mtls-to-analyzer at revision 3934195
 ```
 
-Istio mutual TLS authentication is enabled if the line `authPolicy: MUTUAL_TLS` isn't commented (i.e., doesn’t have a leading `#`). By default, mutual TLS authentication is enabled. However, if it is disabled/commented, you can [edit the configuration to enable it](#disabling-authentication).
+Confirm the policy has been created:
 
-Due to a [known limitation](https://istio.io/help/faq/security.html#istio-to-not-istio), the Guestbook application can not currently work with mTLS enabled for all services, and it should be disabled globally. Until the limitation is fixed, follow through with the steps defined [here](#disabling-authentication) instead of those listed directly below.
+```sh
+kubectl get policies.authentication.istio.io
+NAME              AGE
+mtls-to-analyzer  1m
+```
 
-## Trying out the authenticated connection
+3. Enable mTLS from guestbook using a Destination rule
+
+```sh
+cat <<EOF | istioctl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: route-with-mtls-for-analyzer
+  namespace: default
+spec:
+  host: "analyzer.default.svc.cluster.local"
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+EOF
+Created config destination-rule/default/route-with-mtls-for-analyzer at revision 3934279
+```
+
+## Verifying the Authenticated Connection
 
 If mTLS is working correctly, the Guestbook app should continue to operate as expected, without any user visible impact. Istio will automatically add (and manage) the required certificates and private keys. To confirm their presence in the Envoy containers, do the following:
 
-1. Get the name of a guestbook-v2 pod. Make sure the pod is “Running”.
+1. Get the name of a guestbook pod. Make sure the pod is “Running”.
 
 ```sh
-kubectl get pods -l app=guestbook-v2
+kubectl get pods -l app=guestbook
 NAME                            READY     STATUS    RESTARTS   AGE
 guestbook-v2-784546fbb9-299jz   2/2       Running   0          13h
 guestbook-v2-784546fbb9-hsbnq   2/2       Running   0          13h
 guestbook-v2-784546fbb9-lcxdz   2/2       Running   0          13h
 ```
 
-2. SSH into the Envoy container. Make sure to change the pod name into the corresponding one on your system. This command will ssh into istio-proxy container (sidecar) of the pod.
+2. SSH into the Envoy container. Make sure to change the pod name into the corresponding one on your system. This command will execute into istio-proxy container (sidecar) of the pod.
 
 ```sh
 kubectl exec -it guestbook-v2-xxxxxxxx -c istio-proxy /bin/bash
@@ -95,83 +123,13 @@ You should see the following (plus some others):
 cert-chain.pem   key.pem   root-cert.pem
 ```
 
-Note that `cert-chain.pem` is Envoy’s public certificate (i.e., presented to the peer), and `key.pem` is the corresponding private key. The `root-cert.pem` file is Istio Auth's root certificate, used to verify peer certificates.
-
-## Disabling authentication
-
-If, for some reason, mTLS is not functional, the Guestbook app will not operate correctly. This would be evident in its UI (e.g., it would display a [`Waiting for database connection`](waiting_on_database.png) message). In that case, mTLS should be disabled.
-
-mTLS can be disabled globally or per service:
-
-* To disable mTLS for all services in the mesh, comment out the `authPolicy` settings in the mesh configuration and restart Istio Pilot to pick up the new configuration:
-
-```sh
-kubectl edit configmap istio -n istio-system
-...
-apiVersion: v1
-data:
-  mesh: |-
-    # Uncomment the following line to enable mutual TLS between proxies
-    # authPolicy: MUTUAL_TLS
-    ...
-
-kubectl delete pod istio-pilot-657cb5ddf7-9c6nv -n istio-system
-pod "istio-pilot-657cb5ddf7-9c6nv" deleted
-```
-
-After Istio Pilot is restarted, the Guestbook user interface should display correctly.
-
-* We can now gradually enable mTLS on individual services. For example, in the case of Guestbook we can enable mTLS for the guestbook service:
-
-```sh
-kubectl edit service guestbook
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    auth.istio.io/3000: MUTUAL_TLS
-  ...
-spec:
-  ports:
-    - name: http
-      targetPort: 3000
-  ...
-```
-
-* Note that annotations also be used to disable mTLS for connections accessing a specific service. Since mTLS is triggered by the server-side proxy requesting a client certificate, add an `auth.istio.io/<port#>: NONE` annotation to the service definition. For example, to disable mTLS on guestbook and analyzer:
-
-```sh
-kubectl edit service guestbook
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    auth.istio.io/3000: NONE
-  ...
-spec:
-  ports:
-    - name: http
-      targetPort: 3000
-  ...
-
-
-kubectl edit service analyzer
-...
-metadata:
-  annotations:
-    auth.istio.io/5000: NONE
-spec:
-  ports:
-    - name: http
-      targetPort: 5000
-  ...
-```
+Note that `cert-chain.pem` is Envoy’s public certificate (i.e., presented to the peer), and `key.pem` is the corresponding private key. The `root-cert.pem` file is Citadel's root certificate, used to verify peer certificates.
 
 ## Quiz
 
 **True or False?**
 
-1. Istio Auth/Citadel provides each microservice with a strong, cryptographic, identity in the form of a certificate. The certificates' life cycle is fully managed by Istio. (True)
+1. Istio Citadel provides each microservice with a strong, cryptographic, identity in the form of a certificate. The certificates' life cycle is fully managed by Istio. (True)
 
 2. Istio provides microservices with mutually authenticated connections, without requiring app code changes. (True)
 
