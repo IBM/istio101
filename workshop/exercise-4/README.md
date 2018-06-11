@@ -2,37 +2,24 @@
 
 ### Challenges with microservices
 
-For the longest time in the history of app development, apps were built with monolith mindset. Monolith apps have a large number of instances running all of the services provided in one app. Things like user account management, payment, and reporting are all run from a shared resource. This worked pretty well until service-oriented architecture (SOA) came along and promised us a much brighter future. The basic principle of SOA is to break down apps to smaller components, and having them to talk to one other using protocols like REST or gRPC. Everyone thought this would fundamentally change the landscape, and it did--up to an extent. However, a new set of challenges emerged. What about cross-services communication? What about observability between microservices, such as logging or tracing? What about metrics?
+We all know that microservice architecture are the perfect fit for cloud native applications and it increases the delivery velocities greatly.   Envision you have many microservices that are delivered by multiple team, how do you observe the the overall platform and each of the service to find out exactly what is going on with each of the service?  When something goes wrong, how do you know which service or which communication among the few services are causing the problem?
 
 ### Istio telemetry
 
-Istio's tracing and metrics features are designed to provide broad and granular insight into the health of all services. Istio's role as a service mesh makes it the ideal data source for observability information, particularly in a microservices environment. As requests pass through multiple services, identifying performance bottlenecks becomes increasingly difficult using traditional debugging techniques. Distributed tracing provides a holistic view of requests transiting through multiple services, allowing for immediate identification of latency issues. With Istio, distributed tracing comes by default. Simply configure Istio to export tracing data to a backend trace aggregator, such as Jaeger. This will expose latency, retry, and failure information for each hop in a request.
+Istio's tracing and metrics features are designed to provide broad and granular insight into the health of all services. Istio's role as a service mesh makes it the ideal data source for observability information, particularly in a microservices environment. As requests pass through multiple services, identifying performance bottlenecks becomes increasingly difficult using traditional debugging techniques. Distributed tracing provides a holistic view of requests transiting through multiple services, allowing for immediate identification of latency issues. With Istio, distributed tracing comes by default. This will expose latency, retry, and failure information for each hop in a request.
 
 You can read more about how [Istio mixer enables telemetry reporting](https://istio.io/docs/concepts/policy-and-control/mixer.html).
 
 ### Configure Istio to receive telemetry data
 
-1. Change the directory to the Istio file location.
-   ````
-   cd [path_to_istio-version]
-   ````
-
-2. Install add-ons for Grafana, Prometheus, ServiceGraph and Jaeger.
-   ```console
-   kubectl apply -f install/kubernetes/addons/grafana.yaml
-   kubectl apply -f install/kubernetes/addons/prometheus.yaml
-   kubectl apply -f install/kubernetes/addons/servicegraph.yaml
-   kubectl apply -n istio-system -f https://raw.githubusercontent.com/jaegertracing/jaeger-kubernetes/master/all-in-one/jaeger-all-in-one-template.yml
-   ```
-
-3. Verify that the add-ons were installed successfully. All add-ons are installed into the `istio-system` namespace.
+1. Verify that the Grafana, Prometheus, ServiceGraph and Jaeger add-ons were installed successfully. All add-ons are installed into the `istio-system` namespace.
    ```console
    kubectl get pods -w -n istio-system
 
    kubectl get services -w -n istio-system
    ```
 
-3. Configure Istio to automatically gather telemetry data for services that run in the service mesh.
+2. Configure Istio to automatically gather telemetry data for services that run in the service mesh.
    1. Go back to your v2 directory.
       ````
       cd guestbook/v2
@@ -42,9 +29,42 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
       ```sh
       istioctl create -f guestbook-telemetry.yaml
       ```
+   3. Obtain the guestbook endpoint to access the guestbook.  
+      i. For paid cluster, you can acceess the guestbook via the external IP for your service as guestbook is deployed as a load blanacer service.  Get the EXTERNAL-IP of the guestbook service via output below:
+
+      ```sh
+      kubectl get service guestbook -n default
+      ```
+      
+      ii. For lite cluster, first, get the worker's public IP:
+      ```sh
+      bx cs workers <cluster_name>
+      ```
+      
+          Examples: 
+          ```
+          bx cs workers cluster1
+          ID             Public IP      Private IP      Machine Type        State    Status   Zone    Version   
+          kube-xxx       169.60.87.20   10.188.80.69    u2c.2x4.encrypted   normal   Ready    wdc06   1.9.7_1510*   
+          ```
+   
+      Second, get the node port:
+      ```sh
+      kubectl get svc guestbook -n default
+      ```
+      
+          Examples:
+          ```
+          $ kubectl get svc guestbook -n default
+          NAME        TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
+          guestbook   LoadBalancer   172.21.134.6   pending        80:31702/TCP   4d
+          ```
+      
+      The node port in above sample output is `169.60.87.20:31702`
+
    3. Generate a small load to the app.
       ```sh
-      while sleep 0.5; do curl http://<guestbook_loadbalancer_external_IP/; done
+      while sleep 0.5; do curl http://<guestbook_endpoint/; done
       ```
 
 ## View guestbook telemetry data
@@ -58,7 +78,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 2. Browse to http://localhost:16686.
 
-3. From the **Services** menu, select **guestbook-v2**.
+3. From the **Services** menu, select either the **guestbook** or **analyzer** service.
 4. Scroll to the bottom and click on **Find Traces** button to see traces
 
 
@@ -68,8 +88,14 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
    ````
    kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000
    ````
+   
+2. Due to a known Istio dashboard performance issue with 0.8, browse to http://localhost:3000, and install the following dashboards:
+   1. Click on the `+` sign on the top left side, then click on the `import` menu
+   2. On the resulting page, click the `update .json File` button.
+   3. Navigate to the workshop/dashboards directory, and select the `istio-mesh-dashboard.json` file.
+   Repeat the above steps for the `istio-tcp-service-dashboard.json` and `istio-http-grpc-service-dashboard.json` files.
 
-2. Browse to http://localhost:3000 and navigate to the Istio, Mixer or Pilot Dashboard by clicking on the Home menu on the top left.
+3. Browse to http://localhost:3000 and navigate to the Istio Mesh Dashboard by clicking on the Home menu on the top left.
 
 
 #### Prometheus
@@ -81,7 +107,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
      $(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') \
      9090:9090
    ```
-2. Browse to http://localhost:9090/graph, and in the “Expression” input box, enter: request_count. Click Execute.
+2. Browse to http://localhost:9090/graph, and in the “Expression” input box, enter: istio_request_count. Click Execute.
 
 #### Service Graph
 
@@ -95,12 +121,6 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 2. Browse to http://localhost:8088/dotviz
 
-#### Mixer Log Stream
-
-```console
-kubectl -n istio-system logs $(kubectl -n istio-system get pods -l istio=mixer -o jsonpath='{.items[0].metadata.name}') mixer | grep \"instance\":\"newlog.logentry.istio-system\"
-```
-
 
 ## Understand what happened
 
@@ -109,7 +129,7 @@ Although Istio proxies are able to automatically send spans, they need some hint
 In the example, when a user visits the Guestbook app, the HTTP request is sent from the guestbook service to Watson Tone Analyzer. In order for the individual spans of guestbook service and Watson Tone Analyzer to be tied together, we have modified the guestbook service to extract the required headers (x-request-id, x-b3-traceid, x-b3-spanid, x-b3-parentspanid, x-b3-sampled, x-b3-flags, x-ot-span-context) and forward them onto the analyzer service when calling the analyzer service from the guestbook service.  The change is in the `v2/guestbook/main.go`. By using the `getForwardHeaders()` method, we are able to extract the required headers, and then we use the required headers further when calling the analyzer service via the `getPrimaryTone()` method.
 
 
-## Quizzes
+## Questions
 
 1. Does a user need to modify their app to get metrics for their apps?   A: 1. Yes 2. No.  (2 is correct)
 
