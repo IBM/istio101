@@ -2,7 +2,7 @@
 
 ### Challenges with microservices
 
-We all know that microservice architecture are the perfect fit for cloud native applications and it increases the delivery velocities greatly.   Envision you have many microservices that are delivered by multiple team, how do you observe the the overall platform and each of the service to find out exactly what is going on with each of the service?  When something goes wrong, how do you know which service or which communication among the few services are causing the problem?
+We all know that microservice architecture is the perfect fit for cloud native applications and it increases the delivery velocities greatly.   Envision you have many microservices that are delivered by multiple teams, how do you observe the the overall platform and each of the service to find out exactly what is going on with each of the services?  When something goes wrong, how do you know which service or which communication among the few services are causing the problem?
 
 ### Istio telemetry
 
