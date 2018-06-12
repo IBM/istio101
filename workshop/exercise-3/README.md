@@ -40,23 +40,23 @@ The Redis database is a service that you can use to persist the data of your app
   ```sh
   kubectl get pods
   NAME                            READY     STATUS    RESTARTS   AGE
-  redis-master-4sswq              2/2       Running   0          5d
-  redis-slave-kj8jp               2/2       Running   0          5d
-  redis-slave-nslps               2/2       Running   0          5d
+  redis-master-4sswq              1/1       Running   0          5d
+  redis-slave-kj8jp               1/1       Running   0          5d
+  redis-slave-nslps               1/1       Running   0          5d
   ```
 
 ## Sidecar injection
 
-In Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using istioctl CLI tool or automatically using the Istio Initializer. In this exercise, we will use the automatic injection which is enabled when you installed Istio.
+n Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using istioctl CLI tool or automatically using the Istio Initializer. In this exercise, we will use the manual injection. Manual injection modifies the controller configuration, e.g. deployment. It does this by modifying the pod template spec such that all pods for that deployment are created with the injected sidecar.
 
 ## Install the Guestbook app
 
 1. Deploy the Guestbook app in the Kubernetes cluster with automatic Istio Envoy sidecar injection.
 ```sh
-kubectl apply -f ../v1/guestbook-deployment.yaml
-kubectl apply -f guestbook-deployment.yaml
+kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml)
+kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml)
 ```
-Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
+These commands will inject the Istio Envoy sidecar into the guestbook pods, as well as deploy the Guestbook app on to the Kubernetes cluster. Here we have two versions of deployments, a new version (v2) in the current directory, and a previous version (v1) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
 
 2. Create the guestbook service.
 ```sh
@@ -109,7 +109,7 @@ Watson Tone Analyzer detects the tone from the words that users enter into the G
 
 7. Deploy the analyzer pods and service. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
    ```console
-   kubectl apply -f analyzer-deployment.yaml
+   kubectl apply -f <(istioctl kube-inject -f analyzer-deployment.yaml)
    kubectl apply -f analyzer-service.yaml
    ```
    Great! With your Guestbook up and running, you can now expose the service mesh with the Istio Ingress Gateway.
