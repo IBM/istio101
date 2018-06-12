@@ -44,19 +44,18 @@ The Redis database is a service that you can use to persist the data of your app
   redis-slave-kj8jp               1/1       Running   0          5d
   redis-slave-nslps               1/1       Running   0          5d
   ```
-
 ## Sidecar injection
 
-n Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using istioctl CLI tool or automatically using the Istio Initializer. In this exercise, we will use the manual injection. Manual injection modifies the controller configuration, e.g. deployment. It does this by modifying the pod template spec such that all pods for that deployment are created with the injected sidecar.
+In Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using istioctl CLI tool or automatically using the Istio Initializer. In this exercise, we will use the manual injection. Manual injection modifies the controller configuration, e.g. deployment. It does this by modifying the pod template spec such that all pods for that deployment are created with the injected sidecar.
 
-## Install the Guestbook app
+## Install the Guestbook app with manual sidecar injection
 
-1. Deploy the Guestbook app in the Kubernetes cluster with automatic Istio Envoy sidecar injection.
+1. Inject the Istio Envoy sidecar into the guestbook pods, and deploy the Guestbook app on to the Kubernetes cluster.
 ```sh
 kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml)
 kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml)
 ```
-These commands will inject the Istio Envoy sidecar into the guestbook pods, as well as deploy the Guestbook app on to the Kubernetes cluster. Here we have two versions of deployments, a new version (v2) in the current directory, and a previous version (v1) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
+These commands will inject the Istio Envoy sidecar into the guestbook pods, as well as deploy the Guestbook app on to the Kubernetes cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
 
 2. Create the guestbook service.
 ```sh
