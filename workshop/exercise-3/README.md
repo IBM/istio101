@@ -87,26 +87,24 @@ Note that each guestbook pod has 2 containers in it. One is the guestbook contai
 ### Add Watson Tone Analyzer
 Watson Tone Analyzer detects the tone from the words that users enter into the Guestbook app. The tone is converted to the corresponding emoticons.
 
-1. Use `bx target --cf` or `bx target -o ORG -s SPACE` to set the Cloud Foundry org and space where you want to provision the service.
-
-2. Create Watson Tone Analyzer in your space.
+1. Create Watson Tone Analyzer in your account.
       ```console
-      bx service create tone_analyzer lite my-tone-analyzer-service
+      ibmcloud resource service-instance-create my-tone-analyzer-service tone-analyzer lite us-east
       ```
 
 3. Create a service key for the service.
       ```console
-      bx service key-create my-tone-analyzer-service myKey
+      ibmcloud resource service-key-create myKey Editor --instance-name my-tone-analyzer-service
       ```
 
-4. Show the service key that you created and note the **password** and **username**.
+4. Show the service key that you created and note the **url** and **apikey**.
       ```console
-      bx service key-show my-tone-analyzer-service myKey
+      ibmcloud resource service-key myKey
       ```
 
-5. Open the `analyzer-deployment.yaml` and delete the `#` from the `env var` section to un-comment the username and password fields.
+5. Open the `analyzer-deployment.yaml` and delete the `#` from the `env var` section to un-comment the _url_ and _apikey_ fields.
 
-6. Add the username and password that you retrieved earlier and save your changes.
+6. Add the _url_ (if different from the default) and _apikey_ that you retrieved earlier and save your changes.
 
 7. Deploy the analyzer pods and service. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
    ```console

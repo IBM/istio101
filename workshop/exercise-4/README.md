@@ -14,9 +14,9 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 1. Verify that the Grafana, Prometheus, ServiceGraph and Jaeger add-ons were installed successfully. All add-ons are installed into the `istio-system` namespace.
    ```console
-   kubectl get pods -w -n istio-system
+   kubectl get pods -n istio-system
 
-   kubectl get services -w -n istio-system
+   kubectl get services -n istio-system
    ```
 
 2. Configure Istio to automatically gather telemetry data for services that run in the service mesh.
