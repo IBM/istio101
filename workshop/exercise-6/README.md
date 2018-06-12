@@ -104,7 +104,7 @@ istioctl create -f serviceentry-tone.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
 metadata:
-  name: bluemix-tone-analyzer
+  name: watson-tone-analyzer
 spec:
   hosts:
   - "gateway.watsonplatform.net"
