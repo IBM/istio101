@@ -84,29 +84,16 @@ guestbook-v2-56d98b558c-mzbxk   2/2       Running   0          5d
 
 Note that each guestbook pod has 2 containers in it. One is the guestbook container, and the other is the Envoy proxy sidecar.
 
-### Add Watson Tone Analyzer
+### Use Watson Tone Analyzer
 Watson Tone Analyzer detects the tone from the words that users enter into the Guestbook app. The tone is converted to the corresponding emoticons.
 
-1. Create Watson Tone Analyzer in your account.
-      ```console
-      ibmcloud resource service-instance-create my-tone-analyzer-service tone-analyzer lite us-east
-      ```
+1. Find the provided Watson service username and password in the email.
 
-3. Create a service key for the service.
-      ```console
-      ibmcloud resource service-key-create myKey Editor --instance-name my-tone-analyzer-service
-      ```
+2. Open the `analyzer-deployment.yaml` and delete the `#` from the `env var` section to un-comment the username and password fields.
 
-4. Show the service key that you created and note the **url** and **apikey**.
-      ```console
-      ibmcloud resource service-key myKey
-      ```
+3. Add the username and password that you obtained earlier and save your changes.
 
-5. Open the `analyzer-deployment.yaml` and delete the `#` from the `env var` section to un-comment the _url_ and _apikey_ fields.
-
-6. Add the _url_ (if different from the default) and _apikey_ that you retrieved earlier and save your changes.
-
-7. Deploy the analyzer pods and service. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
+4. Deploy the analyzer pods and service. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
    ```console
    kubectl apply -f <(istioctl kube-inject -f analyzer-deployment.yaml)
    kubectl apply -f analyzer-service.yaml
