@@ -56,7 +56,7 @@ istio-ingressgateway       LoadBalancer   172.21.254.53    169.6.1.1   80:31380/
    http://169.60.72.58:31702
    ```
 
-## (Optional) Set up the Istio Ingress Gateway to work with IBM Cloud Kubernetes Service
+## **DO NOT RUN THIS, please continue to [exercise-6](../exercise-6/README.md)** (Optional) Set up the Istio Ingress Gateway to work with IBM Cloud Kubernetes Service
 
 **Note:** This task requires a standard cluster.
 
