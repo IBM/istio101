@@ -12,6 +12,11 @@ You must already have a [cluster created](https://console.bluemix.net/docs/conta
     ibmcloud login [--sso]
     ```
 
+    or if you have an api key, use:
+    ```bash
+    ibmcloud login --apikey {apikey}
+    ```
+    
 3.  Install the IBM Cloud Kubernetes Service plug-in.
     ```bash
     ibmcloud plugin install container-service -r Bluemix
