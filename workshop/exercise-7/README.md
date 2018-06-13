@@ -145,4 +145,4 @@ Note that `cert-chain.pem` is Envoy’s public certificate (i.e., presented to t
 
 * [Istio Concept](https://istio.io/docs/concepts/security/mutual-tls.html)
 
-## [Continue to Exercise 8 - Policy Enforcement](../exercise-8/README.md)
+## DON NOT USE IT - [Continue to Exercise 8 - Policy Enforcement](../exercise-8/README.md)
