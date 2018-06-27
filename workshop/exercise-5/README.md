@@ -17,8 +17,9 @@ An Ingress Gateway resource can be created to allow external requests through th
     ```sh
     kubectl get service istio-ingressgateway -n istio-system
 
-    NAME            TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)                      AGE
-istio-ingressgateway       LoadBalancer   172.21.254.53    169.6.1.1   80:31380/TCP,443:31390/TCP,31400:31400/TCP                            2d
+    NAME                   TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)                                       AGE
+    istio-ingressgateway   LoadBalancer   172.21.254.53    169.6.1.1       80:31380/TCP,443:31390/TCP,31400:31400/TCP    1m
+               2d
     ```
 
 3. Make note of the external IP address that you retrieved in the previous step as it will be used to access the Guestbook app in later parts of the course.
