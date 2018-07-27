@@ -71,20 +71,10 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 #### Jaeger
 
-1. Browse to your Jaeger service, after finding the service endpoint:
-
-      ```sh
-      kubectl get svc tracing -n istio-system
-      ```
-      
-          Examples:
-          ```
-          $ kubectl get svc tracing -n istio-system
-            NAME      TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
-            tracing   LoadBalancer   172.21.35.209   169.60.1.1   80:30217/TCP   29m
-          ```
-
-   The service endpoint is `169.60.1.1` if the external IP is assigned.  If it is not assigned, you may access the tracing service via node port, using the same technique as described earlier for discovering the node port for the guestbook service.
+1. Establish port forwarding from local port 16686 to the Tracing instance:
+   ````
+   kubectl port-forward -n istio-system $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath='{.items[0].metadata.name}') 16686:16686 &
+   ````
    
 2. From the **Services** menu, select either the **guestbook** or **analyzer** service.
 3. Scroll to the bottom and click on **Find Traces** button to see traces
@@ -115,7 +105,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
      $(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') \
      9090:9090
    ```
-2. Browse to http://localhost:9090/graph, and in the “Expression” input box, enter: istio_request_count. Click Execute.
+2. Browse to http://localhost:9090/graph, and in the “Expression” input box, enter: istio_request_byte_count. Click Execute.
 
 #### Service Graph
 
