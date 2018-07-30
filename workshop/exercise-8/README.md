@@ -13,7 +13,7 @@ In this exercise we'll use the denier adapter.
 1. Block access to Guestbook service:
 
     ```sh
-    istioctl create -f mixer-rule-denial.yaml
+    kubectl create -f mixer-rule-denial.yaml
     ```
 
     Let's examine the rule:
@@ -63,7 +63,7 @@ In this exercise we'll use the denier adapter.
 3. Clean up the rule.
 
     ```sh
-    istioctl delete -f mixer-rule-denial.yaml
+    kubectl delete -f mixer-rule-denial.yaml
     ```
 ## Quiz
 1. Does creating mixer rules require app code changes? (Yes/No) No
