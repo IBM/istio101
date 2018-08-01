@@ -50,7 +50,7 @@ istio-citadel   1         1         1            1           15h
 Define mTLS authentication policy for the analyzer service:
 
 ```sh
-cat <<EOF | istioctl create -f -
+cat <<EOF | kubectl create -f -
 apiVersion: authentication.istio.io/v1alpha1
 kind: Policy
 metadata:
@@ -76,7 +76,7 @@ mtls-to-analyzer  1m
 3. Enable mTLS from guestbook using a Destination rule
 
 ```sh
-cat <<EOF | istioctl create -f -
+cat <<EOF | kubectl create -f -
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:

@@ -27,7 +27,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
    2. Create a rule to collect telemetry data.
       ```sh
-      istioctl create -f guestbook-telemetry.yaml
+      kubectl create -f guestbook-telemetry.yaml
       ```
    3. Obtain the guestbook endpoint to access the guestbook.  
       i. For paid cluster, you can acceess the guestbook via the external IP for your service as guestbook is deployed as a load blanacer service.  Get the EXTERNAL-IP of the guestbook service via output below:

@@ -9,7 +9,7 @@ An Ingress Gateway resource can be created to allow external requests through th
 1. Configure the guestbook default route with the Istio Ingress Gateway. The `guestbook-gateway.yaml` file is in this repository (istio101) in the following directory: `workshop/plans/guestbook-gateway.yaml `
 
     ```sh
-    istioctl create -f guestbook-gateway.yaml
+    kubectl create -f guestbook-gateway.yaml
     ```
 
 2. Get the **EXTERNAL-IP** of the Istio Ingress Gateway.
@@ -32,7 +32,7 @@ An Ingress Gateway resource can be created to allow external requests through th
 1. Configure the guestbook default route with the Istio Ingress Gateway.
 
     ```sh
-    istioctl create -f guestbook-gateway.yaml
+    kubectl create -f guestbook-gateway.yaml
     ```
 
 2. Now check the node port of the ingress.
