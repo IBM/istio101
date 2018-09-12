@@ -69,6 +69,30 @@ The node port in above sample output is `169.60.87.20:31702`
 while sleep 0.5; do curl http://<guestbook_endpoint/; done
 ```
 
+
+## Useful commands to generate load on the app
+
+In the following exercises, you'll use Istio to view load and requests on the app. You can use the provided shell snippits here to generate artificial load.
+
+To generate 404s
+
+```shell
+while true; do sleep 0.5;  curl http://<guestbook_endpoint>/lrandomurl; echo; done
+```
+
+To generate simple 'read access' 200s
+
+```shell
+while true; do sleep 0.5;  curl http://<guestbook_endpoint>/lrange/guestbook; echo; done
+```
+
+To generate 200s, write something to the database, and cause guestbook to hit avatar
+
+```shell
+while true; do sleep 0.5; curl 'http://173.193.99.97:31667/rpush/guestbook/Spencer/CoolWebsite'; echo; done
+```
+
+
 ## View guestbook telemetry data
 
 #### Jaeger
