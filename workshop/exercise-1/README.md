@@ -12,11 +12,6 @@ You must already have a [cluster created](https://console.bluemix.net/docs/conta
 ibmcloud login [--sso]
 ```
 
-or if you have an api key, use:
-
-```shell
-ibmcloud login --apikey <apikey>
-```
 
 3.  Install the IBM Cloud Kubernetes Service plug-in.
 
@@ -44,6 +39,9 @@ Enter a number> 5
 
 6. Install the Kubernetes CLI. Go to the [Kubernetes page](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl) to install the CLI and follow the steps.
 
+> To proceed, your Kubernetes cluster must be started - the state should change from "Pending" to "Normal". Here are the steps to access your cluster. If your cluster is taking too long to create, ask a room moderator for help.
+
+
 ## Access your cluster
 Learn how to set the context to work with your cluster by using the `kubectl` CLI, access the Kubernetes dashboard, and gather basic information about your cluster.
 
@@ -62,6 +60,9 @@ ibmcloud cs cluster-config <your_cluster_name>
 ```
 
 c. Copy and paste the output command from the previous step to set the `KUBECONFIG` environment variable and configure your CLI to run `kubectl` commands against your cluster.
+
+    > Consider placing the EXPORT command in your bash profile to avoid running these commands every time you open a new shell.
+
 
 2.  Get basic information about your cluster and its worker nodes. This information can help you manage your cluster and troubleshoot issues.
 
