@@ -88,7 +88,7 @@ In this exercise, you will validate your Istio installation and launch some debu
 
 ![istio architecture](istio-whatisit.svg)
 
-Istio's core functionality is achieved by setting up a proxy, or sidecar, inside every kubernetes pod. Outgoing and incoming traffic bound for the pod is intercepted by iptables and delivered to the `envoy` daemon running in the sidecar. The `envoy` proxy can then inspect, modify, forward, and record all traffic used by the application. East-West traffic goes through two `envoy` proxies, one at source and one at destination. All `envoy` proxies are configured by `pilot`, an Istio component.
+Istio's core functionality is achieved by setting up a proxy, or sidecar, inside every kubernetes pod. Outgoing and incoming traffic bound for the pod is intercepted by iptables and delivered to the [envoy](https://www.envoyproxy.io/) daemon running in the sidecar. The `envoy` proxy can then inspect, modify, forward, and record all traffic used by the application. East-West traffic goes through two `envoy` proxies, one at source and one at destination. All `envoy` proxies are configured by [`pilot`](https://istio.io/docs/reference/commands/pilot-agent/), an Istio component. Other major Istio components are [citadel](https://istio.io/docs/concepts/security/#authentication-architecture) which manages mTLS, [telemetry](https://istio.io/docs/tasks/telemetry/) which collects information on microservice cross-chatter, and [policy](https://istio.io/docs/concepts/policies-and-telemetry/) which defines and enforces network communication policies.
 
 ## Sidecar injection
 
@@ -187,7 +187,7 @@ In your logs terminal, you should be seeing the requests filter through that `en
 [2018-08-20T05:10:54.802Z] "GET / HTTP/1.1" 200 - 0 612 0 0 "-" "curl/7.47.0" "61fb9a7f-c0bf-9e01-bd01-2b23ba0fe088" "nginx" "127.0.0.1:80"
 ```
 
-You can find all 3 stops of the request in the logs. First at the sidecar in the source pod, then at the sidecar in the destination pod (that's what we just looked at), and finally in the application logs inside the destination pod.
+You can find all 3 hops of the request in the logs. First at the sidecar in the source pod, then at the sidecar in the destination pod (that's what we just looked at), and finally in the application logs inside the destination pod.
 
 
 You've now done some basic Istio poking, and hopefully have a deeper understanding of what is going on when we use Istio as a service mesh.
