@@ -1,10 +1,10 @@
 ## Circuit-breaker
 
-Now that we have reviewed the metrics Mixer is collecting, let's start generating some failures. 
+Now that we have reviewed the metrics Mixer is collecting, let's start generating some failures.
 We will be using a simple application that will respond to our requests with an HTTP status code.
 We want to test out the circuit-breaking features of Istio by generating load incremently with an application called fortio.
 
-We start with a basic Istio route rule (samples/httpbin/routerules/httpbin-v1.yaml) that will direct all of our traffic for the httpbin service to services with the version v1 label. 
+We start with a basic Istio route rule (samples/httpbin/routerules/httpbin-v1.yaml) that will direct all of our traffic for the httpbin service to services with the version v1 label.
 We will also create a new Istio DestinationPolicy (samples/httpbin/destinationpolicies/httpbin-circuit-breaker.yaml). This will allow us to limit the impact that other clients can have on our service during failures, erratic network chatter, etc. (Review notes about the options set in destinationpolicyfile)
 
 ```shell
@@ -22,7 +22,7 @@ Let's trip the breaker with 2 connections and 20 requests. Our current circuit-b
 
 <b>PRESS ENTER IN TERMINAL.</b>
 
-After running this load test twice we now see our 503 error codes going up. 
+After running this load test twice we now see our 503 error codes going up.
 
 Let's generate even more load with 3 connections and 20 requests.
 
@@ -32,7 +32,7 @@ Let's generate even more load with 3 connections and 20 requests.
 
 To test how our service deals with failure, we will try to inject some delays within our bookinfo service. This service will display books with brief descriptions. It will also dispaly ratings by calling on a seperate service.
 
-Let's view a working example of our application. 
+Let's view a working example of our application.
 
 <b>NAVIGATE TO INGRESSIP/productpage in browser</b>
 
@@ -87,12 +87,10 @@ We start with a basic route-rule to make sure all users are routed to v1 of all 
 Notice how both frank and jason see the same page
 
 We now want to add stars to our rating service to display alongside each review.
-Our new rule ( scripts/samples/bookinfo/kube/route-rule-reviews-test-v2.yaml ) will filter all requests for user=jason to the v2 service while everyone else will continue to see v1. 
+Our new rule ( scripts/samples/bookinfo/kube/route-rule-reviews-test-v2.yaml ) will filter all requests for user=jason to the v2 service while everyone else will continue to see v1.
 
 <b>PRESS ENTER IN TERMINAL.</b>
 
 Notice how jason can now see stars next to his reviews and if we login as frank, we still see no stars on v1
 
 <b>PRESS ENTER IN TERMINAL TO CLEANUP</b>
-
-
