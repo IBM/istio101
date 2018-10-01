@@ -13,69 +13,69 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 ### Configure Istio to receive telemetry data
 
 1. Verify that the Grafana, Prometheus, ServiceGraph and Jaeger add-ons were installed successfully. All add-ons are installed into the `istio-system` namespace.
-   ```console
-   kubectl get pods -n istio-system
 
-   kubectl get services -n istio-system
-   ```
+```shell
+kubectl get pods -n istio-system
+kubectl get services -n istio-system
+```
 
 2. Configure Istio to automatically gather telemetry data for services that run in the service mesh.
    1. Go back to your v2 directory.
-      ````
-      cd guestbook/v2
-      ````
+
+```shell
+cd guestbook/v2
+```
 
    2. Create a rule to collect telemetry data.
-      ```sh
-      kubectl create -f guestbook-telemetry.yaml
-      ```
-   3. Obtain the guestbook endpoint to access the guestbook.  
-      i. For paid cluster, you can acceess the guestbook via the external IP for your service as guestbook is deployed as a load blanacer service.  Get the EXTERNAL-IP of the guestbook service via output below:
+```shell
+kubectl create -f guestbook-telemetry.yaml
+```
 
-      ```sh
-      kubectl get service guestbook -n default
-      ```
-      
-      ii. For lite cluster, first, get the worker's public IP:
-      ```sh
-      bx cs workers <cluster_name>
-      ```
-      
-          Examples: 
-          ```
-          bx cs workers cluster1
-          ID             Public IP      Private IP      Machine Type        State    Status   Zone    Version   
-          kube-xxx       169.60.87.20   10.188.80.69    u2c.2x4.encrypted   normal   Ready    wdc06   1.9.7_1510*   
-          ```
-   
-      Second, get the node port:
-      ```sh
-      kubectl get svc guestbook -n default
-      ```
-      
-          Examples:
-          ```
-          $ kubectl get svc guestbook -n default
-          NAME        TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
-          guestbook   LoadBalancer   172.21.134.6   pending        80:31702/TCP   4d
-          ```
-      
-      The node port in above sample output is `169.60.87.20:31702`
+   3. Obtain the guestbook endpoint to access the guestbook.
+   i. For paid cluster, you can acceess the guestbook via the external IP for your service as guestbook is deployed as a load blanacer service.  Get the EXTERNAL-IP of the guestbook service via output below:
+```shell
+kubectl get service guestbook -n default
+```
+   ii. For lite cluster, first, get the worker's public IP:
+```shell
+bx cs workers <cluster_name>
+```
+   Examples:
+```shell
+bx cs workers cluster1
+ID             Public IP      Private IP      Machine Type        State    Status   Zone    Version
+kube-xxx       169.60.87.20   10.188.80.69    u2c.2x4.encrypted   normal   Ready    wdc06   1.9.7_1510*
+```
+
+   Second, get the node port:
+```shell
+kubectl get svc guestbook -n default
+```
+
+   Examples:
+```shell
+kubectl get svc guestbook -n default
+NAME        TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
+guestbook   LoadBalancer   172.21.134.6   pending        80:31702/TCP   4d
+```
+
+   The node port in above sample output is `169.60.87.20:31702`
 
    3. Generate a small load to the app.
-      ```sh
-      while sleep 0.5; do curl http://<guestbook_endpoint/; done
-      ```
+```shell
+while sleep 0.5; do curl http://<guestbook_endpoint/; done
+```
 
 ## View guestbook telemetry data
 
 #### Jaeger
 
 1. Establish port forwarding from local port 16686 to the Tracing instance:
-   ````
-   kubectl port-forward -n istio-system $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath='{.items[0].metadata.name}') 16686:16686 &
-   ````
-   
+
+```
+kubectl port-forward -n istio-system $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath='{.items[0].metadata.name}') 16686:16686 &
+```
+
 2. From the **Services** menu, select either the **guestbook** or **analyzer** service.
 3. Scroll to the bottom and click on **Find Traces** button to see traces
 
@@ -83,10 +83,11 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 #### Grafana
 
 1. Establish port forwarding from local port 3000 to the Grafana instance:
-   ````
-   kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000
-   ````
-   
+
+```
+kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000
+```
+
 2. Due to a known Istio dashboard performance issue with 0.8, browse to http://localhost:3000, and install the following dashboards:
    1. Click on the `+` sign on the top left side, then click on the `import` menu
    2. On the resulting page, click the `update .json File` button.
@@ -100,22 +101,22 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 1. Establish port forwarding from local port 9090 to the Prometheus instance.
 
-   ```console
-   kubectl -n istio-system port-forward \
-     $(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') \
-     9090:9090
-   ```
+```shell
+kubectl -n istio-system port-forward \
+  $(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') \
+  9090:9090
+```
 2. Browse to http://localhost:9090/graph, and in the “Expression” input box, enter: istio_request_byte_count. Click Execute.
 
 #### Service Graph
 
 1. Establish port forwarding from local port 8088 to the Service Graph instance:
 
-   ```console
-   kubectl -n istio-system port-forward \
-     $(kubectl -n istio-system get pod -l app=servicegraph -o jsonpath='{.items[0].metadata.name}') \
-     8088:8088
-   ```  
+```shell
+kubectl -n istio-system port-forward \
+  $(kubectl -n istio-system get pod -l app=servicegraph -o jsonpath='{.items[0].metadata.name}') \
+  8088:8088
+```
 
 2. Browse to http://localhost:8088/dotviz
 
