@@ -1,6 +1,6 @@
-# istio-intro
+# Introduction to Istio
 
-Getting to know istio meetup content
+Getting to know Istio Meetup content
 
 ## Setup
 - Follow the prerequisites in [SETUP.md](./SETUP.md)
