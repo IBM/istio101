@@ -18,7 +18,7 @@ In the Guestbook app, there is one service: guestbook.  The guestbook service ha
 ### A/B testing with Istio
 A/B testing is a method of performing identical tests against two separate service versions in order to determine which performs better.  To prevent Istio from performing the default routing behavior between the original and modernized guestbook service, define the following rules (found in [istio101/workshop/plans](https://github.com/IBM/istio101/tree/master/workshop/plans)):
 
-```console
+```shell
 kubectl replace -f virtualservice-all-v1.yaml
 ```
 
@@ -39,7 +39,7 @@ spec:
             subset: v1
 ```
 
-```console
+```shell
 kubectl create -f guestbook-destination.yaml
 ```
 
@@ -63,7 +63,7 @@ The `VirtualService` defines a rule that captures all HTTP traffic coming in thr
 
 To enable the Istio service mesh for A/B testing against the new service version, modify the original `VirtualService` rule:
 
-```console
+```shell
 kubectl replace -f virtualservice-test.yaml
 ```
 
@@ -92,11 +92,11 @@ spec:
             subset: v1
 ```
 
-In Istio `VirtualService` rules, there can be only one rule for each service and therefore when defining multiple [HTTPRoute](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#HTTPRoute) blocks, the order in which they are defined in the yaml matters.  Hence, the original `VirtualService` rule is modified rather than creating a new rule.  With the modified rule, incoming requests originating from `Firefox` browsers will go to the newer version of guestbook.  All other requests fall-through to the next block, which routes all traffic to the original version of guestbook.  
+In Istio `VirtualService` rules, there can be only one rule for each service and therefore when defining multiple [HTTPRoute](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#HTTPRoute) blocks, the order in which they are defined in the yaml matters.  Hence, the original `VirtualService` rule is modified rather than creating a new rule.  With the modified rule, incoming requests originating from `Firefox` browsers will go to the newer version of guestbook.  All other requests fall-through to the next block, which routes all traffic to the original version of guestbook.
 
 The newer version of the guestbook service call the Watson Tone Analyzer service created in [Exercise 3](../exercise-3/README.md).  By default Istio blocks calls to services outside the service mesh.  In order for calls to reach the Watson service, create the following `ServiceEntry`:
 
-```console
+```shell
 kubectl create -f serviceentry-tone.yaml
 ```
 
@@ -120,7 +120,7 @@ The `ServiceEntry` defines addresses and ports services within the mesh are allo
 ### Canary deployment
 In `Canary Deployments`, newer versions of services are incrementally rolled out to users to minimize the risk and impact of any bugs introduced by the newer version.  To begin incrementally routing traffic to the newer version of the guestbook service, modify the original `VirtualService` rule:
 
-```console
+```shell
 kubectl replace -f virtualservice-80-20.yaml
 ```
 
