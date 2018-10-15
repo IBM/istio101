@@ -20,7 +20,7 @@ kubectl get services -n istio-system
 ```
 
 2. Configure Istio to automatically gather telemetry data for services that run in the service mesh.
-   1. Go back to your v2 directory.
+- Go back to your v2 directory.
 
 ```shell
 cd guestbook/v2
