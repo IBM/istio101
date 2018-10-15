@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: poke-pod
+  namespace: default
+spec:
+  containers:
+  - image: nibalizer/utilities
+    imagePullPolicy: Always
+    name: poke-pod
+    command: 
+      - sleep
+      - infinity

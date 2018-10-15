@@ -109,16 +109,15 @@ Go back and export that environment variable and try again.
 ### Launch a debug container
 
 ```bash
-kubectl run -i --tty poke2-`date +%s` --image=nibalizer/utilities --restart=ver -- sh
+kubectl apply -f <(istioctl kube-inject -f poke-pod.yaml)
 ```
 
-This container is running with plenty of utilities. A great way to debug issues in your cluster. Full credit to [Paul](https://twitter.com/pczarkowski) for teaching us this one.
-Leave this container running, and examine it with a different terminal.
+This container is running with plenty of utilities. A great way to debug issues in your cluster. 
 
 ```bash
 kubectl get pod
 NAME                     READY     STATUS        RESTARTS   AGE
-poke2-1534738056         2/2       Running       0          35m
+poke-pod                 2/2       Running       0          35m
 ```
 
 Note that the pod is running, and that it has a `2/2` for containers. That's the sidecar!
@@ -126,18 +125,18 @@ Note that the pod is running, and that it has a `2/2` for containers. That's the
 Lets dig deeper:
 
 ```bash
-kubectl describe pod/poke2-1534738056
+kubectl describe pod/poke-pod
 ```
 
 There is a ton of output in here! Note that we have an `init-container` referenced, an `init-container` is a contianer that runs before the main application comes up. This is used all over Kubernetes. It's a great place to just run a little intializer script or do other setup work. In this case the `init-container` runs a script that runs a bunch of `iptables` commands that reroute all network traffic through the sidecar. You can view the logs of that like this:
 
 ```bash
-kubectl logs poke2-1534738056 -c istio-init
+kubectl logs poke-pod -c istio-init
 ```
 
 You can see all the `iptables` magic there. Also note that when we have more than one container in the pod, we have to use the `-c` flag to specify which contianer we're refering to.
 
-Further down the `describe` output, we can see that there is a long running sidecar container called `istio-proxy`. We can see in the args to the container what kind of configuration information it has. Note the `istio-pilot` discovery address. This is how every sidecar checks into the `pilot` system to get configuration. There is more digging to do here, but let's move on.
+Further down the `describe` output, we can see that there is a long running sidecar container called `istio-proxy`. We can see in the args to the container what kind of configuration information it has. There is more digging to do here, but let's move on.
 
 
 ### See the proxy in action
@@ -145,7 +144,7 @@ Further down the `describe` output, we can see that there is a long running side
 Create an nginx service
 
 ```bash
-kubectl apply -f nginx.yaml
+kubectl apply -f <(istioctl kube-inject -f nginx.yaml)
 ```
 
 And inspect
@@ -154,7 +153,7 @@ And inspect
 kubectl get pod
 NAME                     READY     STATUS    RESTARTS   AGE
 nginx-645dbd8899-mwnsc   2/2       Running   0          4s
-poke2-1534738056         2/2       Running   0          52m
+poke-pod                 2/2       Running   0          52m
 ```
 
 ```bash
@@ -172,9 +171,10 @@ kubectl logs nginx-645dbd8899-mwnsc -c istio-proxy -f
 ```
 > Note, your exact pod name will be different.
 
-In the other terminal, the one still at a root shell in the utilities container, make some requests.
+In another terminal, exec into the poke container and make some requests.
 
 ```bash
+kubectl exec -it poke-pod /bin/bash -c poke-pod
 curl nginx
 curl nginx
 curl nginx:3000
@@ -191,6 +191,13 @@ You can find all 3 hops of the request in the logs. First at the sidecar in the 
 
 
 You've now done some basic Istio poking, and hopefully have a deeper understanding of what is going on when we use Istio as a service mesh.
+
+### Delete validation pods
+
+```shell
+kubectl delete pod/poke-pod
+kubectl delete deployment/nginx
+```
 
 
 #### [Continue to Exercise 3 - Deploy Guestbook with Istio Proxy](../exercise-3/README.md)
