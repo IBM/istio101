@@ -39,7 +39,7 @@ Enter a number> 5
 
 6. Install the Kubernetes CLI. Go to the [Kubernetes page](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl) to install the CLI and follow the steps.
 
-> To proceed, your Kubernetes cluster must be started - the state should change from "Pending" to "Normal". Here are the steps to access your cluster. If your cluster is taking too long to create, ask a room moderator for help. If you do not have a cluster, refer to the [kube101](https://github.com/IBM/kube101/tree/master/workshop/Lab0#lab-0-get-the-ibm-cloud-container-service) tutorial for how to create one.
+> To proceed, your Kubernetes cluster must be started - the state should change from "Pending" to "Normal". Here are the steps to access your cluster. If your cluster is taking too long to create, ask for help either in-person or on the [kubernetes slack](https://kubernetes.slack.com). If you do not have a cluster, refer to the [kube101](https://github.com/IBM/kube101/tree/master/workshop/Lab0#lab-0-get-the-ibm-cloud-container-service) tutorial for how to create one.
 
 
 ## Access your cluster
