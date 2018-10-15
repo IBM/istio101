@@ -2,7 +2,7 @@
 
 ### Challenges with microservices
 
-We all know that microservice architecture is the perfect fit for cloud native applications and it increases the delivery velocities greatly.   Envision you have many microservices that are delivered by multiple teams, how do you observe the the overall platform and each of the service to find out exactly what is going on with each of the services?  When something goes wrong, how do you know which service or which communication among the few services are causing the problem?
+We all know that microservice architecture is the perfect fit for cloud native applications and it increases the delivery velocities greatly. Envision you have many microservices that are delivered by multiple teams, how do you observe the the overall platform and each of the service to find out exactly what is going on with each of the services?  When something goes wrong, how do you know which service or which communication among the few services are causing the problem?
 
 ### Istio telemetry
 
@@ -32,36 +32,39 @@ kubectl create -f guestbook-telemetry.yaml
 ```
 
    3. Obtain the guestbook endpoint to access the guestbook.
-   i. For paid cluster, you can acceess the guestbook via the external IP for your service as guestbook is deployed as a load blanacer service.  Get the EXTERNAL-IP of the guestbook service via output below:
+- For paid cluster, you can acceess the guestbook via the external IP for your service as guestbook is deployed as a load blanacer service.  Get the EXTERNAL-IP of the guestbook service via output below:
+
 ```shell
 kubectl get service guestbook -n default
 ```
-   ii. For lite cluster, first, get the worker's public IP:
+
+- For lite cluster, first, get the worker's public IP:
 ```shell
 bx cs workers <cluster_name>
 ```
-   Examples:
+
+Examples:
 ```shell
 bx cs workers cluster1
 ID             Public IP      Private IP      Machine Type        State    Status   Zone    Version
 kube-xxx       169.60.87.20   10.188.80.69    u2c.2x4.encrypted   normal   Ready    wdc06   1.9.7_1510*
 ```
 
-   Second, get the node port:
+- Second, get the node port:
 ```shell
 kubectl get svc guestbook -n default
 ```
 
-   Examples:
+Examples:
 ```shell
 kubectl get svc guestbook -n default
 NAME        TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
 guestbook   LoadBalancer   172.21.134.6   pending        80:31702/TCP   4d
 ```
 
-   The node port in above sample output is `169.60.87.20:31702`
+The node port in above sample output is `169.60.87.20:31702`
 
-   3. Generate a small load to the app.
+   4. Generate a small load to the app.
 ```shell
 while sleep 0.5; do curl http://<guestbook_endpoint/; done
 ```

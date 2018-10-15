@@ -67,6 +67,7 @@ In Kubernetes, a sidecar is a utility container in the pod, and its purpose is t
 kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml)
 kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml)
 ```
+
 These commands will inject the Istio Envoy sidecar into the guestbook pods, as well as deploy the Guestbook app on to the Kubernetes cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
 
 2. Create the guestbook service.
@@ -120,7 +121,7 @@ ibmcloud service key-create my-tone-analyzer-service myKey
 ibmcloud service key-show my-tone-analyzer-service myKey
 ```
 
-5. Open the `analyzer-deployment.yaml` and delete the `#` from the `env var` section to un-comment the username and password fields.
+5. Open the `analyzer-deployment.yaml` and delete the `#` from the `env` section to un-comment the username and password fields.
 
 6. Add the username and password that you retrieved earlier and save your changes.
 
@@ -130,7 +131,7 @@ ibmcloud service key-show my-tone-analyzer-service myKey
 kubectl apply -f <(istioctl kube-inject -f analyzer-deployment.yaml)
 kubectl apply -f analyzer-service.yaml
 ```
-   Great! With your Guestbook up and running, you can now expose the service mesh with the Istio Ingress Gateway.
 
+Great! With your Guestbook up and running, you can now expose the service mesh with the Istio Ingress Gateway.
 
 #### [Continue to Exercise 4 - Telemetry](../exercise-4/README.md)

@@ -15,7 +15,7 @@ ibmcloud login [--sso]
 or if you have an api key, use:
 
 ```shell
-ibmcloud login --apikey {apikey}
+ibmcloud login --apikey <apikey>
 ```
 
 3.  Install the IBM Cloud Kubernetes Service plug-in.
