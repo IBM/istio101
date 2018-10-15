@@ -31,7 +31,7 @@ ibmcloud plugin install container-service -r Bluemix
 Example:
 
 ```shell
-$ ibmcloud cs region-set
+ibmcloud cs region-set
 Choose a region:
 1. ap-north
 2. ap-south
