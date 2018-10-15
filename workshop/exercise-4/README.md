@@ -75,7 +75,7 @@ while sleep 0.5; do curl http://<guestbook_endpoint/; done
 
 1. Establish port forwarding from local port 16686 to the Tracing instance:
 
-```
+```shell
 kubectl port-forward -n istio-system $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath='{.items[0].metadata.name}') 16686:16686 &
 ```
 
@@ -87,7 +87,7 @@ kubectl port-forward -n istio-system $(kubectl get pod -n istio-system -l app=ja
 
 1. Establish port forwarding from local port 3000 to the Grafana instance:
 
-```
+```shell
 kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000
 ```
 

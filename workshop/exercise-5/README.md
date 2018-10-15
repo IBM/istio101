@@ -8,13 +8,13 @@ An Ingress Gateway resource can be created to allow external requests through th
 
 1. Configure the guestbook default route with the Istio Ingress Gateway. The `guestbook-gateway.yaml` file is in this repository (istio101) in the following directory: `workshop/plans/guestbook-gateway.yaml `
 
-```bash
+```shell
 kubectl create -f guestbook-gateway.yaml
 ```
 
 2. Get the **EXTERNAL-IP** of the Istio Ingress Gateway.
 
-```bash
+```shell
 kubectl get service istio-ingressgateway -n istio-system
 
 NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)                                       AGE
@@ -32,13 +32,13 @@ http://169.61.37.141
 ### Expose the Guestbook app with Ingress Gateway if you have lite cluster
 1. Configure the guestbook default route with the Istio Ingress Gateway.
 
-```bash
+```shell
 kubectl create -f guestbook-gateway.yaml
 ```
 
 2. Now check the node port of the ingress.
 
-```bash
+```shell
 kubectl get svc istio-ingressgateway -n istio-system
 NAME            TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)                      AGE
 istio-ingress   LoadBalancer                    *              80:31702/TCP,443:32290/TCP   10d
@@ -69,7 +69,7 @@ The IBM Ingress service provides IBM Cloud users with a secure, reliable, and sc
 
 1. Let's first check the IBM Ingress subdomain information.
 
-```bash
+```shell
 bx cs cluster-get <cluster_name>
 ...
 Ingress subdomain:	guestbook-242887.us-east.containers.mybluemix.net
@@ -79,13 +79,13 @@ Ingress subdomain:	guestbook-242887.us-east.containers.mybluemix.net
 
 3. Create the Ingress with the IBM-provided subdomain.
 
-```bash
+```shell
 kubectl apply -f guestbook-frontdoor.yaml
 ```
 
 4. List the details for your Ingress.
 
-```bash
+```shell
 kubectl get ingress guestbook-ingress  -o yaml
 ```
 
