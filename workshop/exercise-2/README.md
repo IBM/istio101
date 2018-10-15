@@ -34,20 +34,25 @@ kubectl get svc -n istio-system
 ```
 
 ```shell
-NAME                       CLUSTER-IP       EXTERNAL-IP   PORT(S)                                                               AGE
-grafana                    172.22.xxx.xxx   <none>        3000/TCP                                                              4d
-istio-citadel              172.22.xxx.xxx   <none>        8060/TCP,9093/TCP                                                     1m
-istio-egressgateway        172.22.xxx.xxx   <none>        80/TCP,443/TCP                                                        1m
-istio-ingressgateway       172.22.xxx.xxx   <pending>     80:31380/TCP,443:31390/TCP,31400:31400/TCP                            1m
-istio-pilot                172.22.xxx.xxx   <none>        15003/TCP,15005/TCP,15007/TCP,15010/TCP,15011/TCP,8080/TCP,9093/TCP   1m
-istio-policy               172.22.xxx.xxx   <none>        9091/TCP,15004/TCP,9093/TCP                                           1m
-istio-sidecar-injector     172.22.xxx.xxx   <none>        443/TCP                                                               1m
-istio-statsd-prom-bridge   172.22.xxx.xxx   <none>        9102/TCP,9125/UDP                                                     1m
-istio-telemetry            172.22.xxx.xxx   <none>        9091/TCP,15004/TCP,9093/TCP,42422/TCP                                 1m
-prometheus                 172.22.xxx.xxx   <none>        9090/TCP                                                              1m
-servicegraph               172.22.xxx.xxx   <none>        8088/TCP                                                              1m
-tracing                    172.22.xxx.xxx   <pending>     80:30132/TCP                                                          1m
-zipkin                     172.22.xxx.xxx   <none>        9411/TCP                                                              1m
+NAME                       TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                                                                                                                   AGE
+grafana                    ClusterIP      172.21.44.128    <none>           3000/TCP                                                                                                                  5d
+istio-citadel              ClusterIP      172.21.62.12     <none>           8060/TCP,9093/TCP                                                                                                         5d
+istio-egressgateway        ClusterIP      172.21.115.236   <none>           80/TCP,443/TCP                                                                                                            5d
+istio-galley               ClusterIP      172.21.7.201     <none>           443/TCP,9093/TCP                                                                                                          5d
+istio-ingressgateway       LoadBalancer   172.21.19.202    169.61.151.162   80:31380/TCP,443:31390/TCP,31400:31400/TCP,15011:32440/TCP,8060:32156/TCP,853:30932/TCP,15030:32259/TCP,15031:31292/TCP   5d
+istio-pilot                ClusterIP      172.21.115.9     <none>           15010/TCP,15011/TCP,8080/TCP,9093/TCP                                                                                     5d
+istio-policy               ClusterIP      172.21.165.123   <none>           9091/TCP,15004/TCP,9093/TCP                                                                                               5d
+istio-sidecar-injector     ClusterIP      172.21.164.224   <none>           443/TCP                                                                                                                   5d
+istio-statsd-prom-bridge   ClusterIP      172.21.57.144    <none>           9102/TCP,9125/UDP                                                                                                         5d
+istio-telemetry            ClusterIP      172.21.165.71    <none>           9091/TCP,15004/TCP,9093/TCP,42422/TCP                                                                                     5d
+jaeger-agent               ClusterIP      None             <none>           5775/UDP,6831/UDP,6832/UDP                                                                                                5d
+jaeger-collector           ClusterIP      172.21.154.138   <none>           14267/TCP,14268/TCP                                                                                                       5d
+jaeger-query               ClusterIP      172.21.224.97    <none>           16686/TCP                                                                                                                 5d
+prometheus                 ClusterIP      172.21.173.167   <none>           9090/TCP                                                                                                                  5d
+servicegraph               ClusterIP      172.21.190.31    <none>           8088/TCP                                                                                                                  5d
+tracing                    ClusterIP      172.21.2.208     <none>           80/TCP                                                                                                                    5d
+zipkin                     ClusterIP      172.21.76.162    <none>           9411/TCP                                                                                                                  5d
+
 ```
 
   **Note: For Lite clusters, the istio-ingressgateway service will be in `pending` state with no external ip. That is normal.**
@@ -59,19 +64,22 @@ kubectl get pods -n istio-system
 ```
 
 ```shell
-NAME                                        READY     STATUS    RESTARTS   AGE
-grafana-cd99bf478-kpwnk                     1/1       Running   0          1m
-istio-citadel-ff5696f6f-5pw9p               1/1       Running   0          1m
-istio-egressgateway-58d98d898c-d42f4        1/1       Running   0          1m
-istio-ingressgateway-6bc7c7c4bc-f78xr       1/1       Running   0          1m
-istio-pilot-6c5c6b586c-dv7fs                2/2       Running   0          1m
-istio-policy-5c7fbb4b9f-pj6zz               2/2       Running   0          1m
-istio-sidecar-injector-dbd67c88d-ds9xn      1/1       Running   0          1m
-istio-statsd-prom-bridge-6dbb7dcc7f-9z6h5   1/1       Running   0          1m
-istio-telemetry-54b5bf4847-gmgxt            2/2       Running   0          1m
-istio-tracing-67dbb5b89f-lwmzf              1/1       Running   0          1m
-prometheus-586d95b8d9-hqfn6                 1/1       Running   0          1m
-servicegraph-6d86dfc6cb-hprh2               1/1       Running   0          1m
+grafana-85dbf49c94-gccvp                    1/1       Running     0          5d
+istio-citadel-545f49c58b-j8tm5              1/1       Running     0          5d
+istio-cleanup-secrets-smtxn                 0/1       Completed   0          5d
+istio-egressgateway-79f4b99d6f-t2lvk        1/1       Running     0          5d
+istio-galley-5b6449c48f-sc92j               1/1       Running     0          5d
+istio-grafana-post-install-djzm9            0/1       Completed   0          5d
+istio-ingressgateway-6894bd895b-tvklg       1/1       Running     0          5d
+istio-pilot-cb58b65c9-sj8zb                 2/2       Running     0          5d
+istio-policy-69cc5c74d5-gz8kt               2/2       Running     0          5d
+istio-sidecar-injector-75b9866679-sldhs     1/1       Running     0          5d
+istio-statsd-prom-bridge-549d687fd9-hrhfs   1/1       Running     0          5d
+istio-telemetry-d8898f9bd-2gl49             2/2       Running     0          5d
+istio-telemetry-d8898f9bd-9r9jz             2/2       Running     0          5d
+istio-tracing-7596597bd7-tqwkr              1/1       Running     0          5d
+prometheus-6ffc56584f-6jqhg                 1/1       Running     0          5d
+servicegraph-5d64b457b4-z2ctz               1/1       Running     0          5d
 ```
 
 Before your continue, make sure all the pods are deployed and **`Running`**. If they're in `pending` state, wait a few minutes to let the deployment finish.
