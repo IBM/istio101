@@ -34,13 +34,13 @@ When Envoy proxies establish a connection, they exchange and validate certificat
 Citadel is Istio's in-cluster Certificate Authority (CA) and is required for generating and managing cryptographic identities in the cluster.
 Verify Citadel is running:
 
-```sh
+```shell
 kubectl get deployment -l istio=citadel -n istio-system
 ```
 
 Expected output:
 
-```sh
+```shell
 NAME            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 istio-citadel   1         1         1            1           15h
 ```
@@ -49,7 +49,7 @@ istio-citadel   1         1         1            1           15h
 
 Define mTLS authentication policy for the analyzer service:
 
-```sh
+```shell
 cat <<EOF | kubectl create -f -
 apiVersion: authentication.istio.io/v1alpha1
 kind: Policy
@@ -67,7 +67,7 @@ Created config policy/default/mtls-to-analyzer at revision 3934195
 
 Confirm the policy has been created:
 
-```sh
+```shell
 kubectl get policies.authentication.istio.io
 NAME              AGE
 mtls-to-analyzer  1m
@@ -75,7 +75,7 @@ mtls-to-analyzer  1m
 
 3. Enable mTLS from guestbook using a Destination rule
 
-```sh
+```shell
 cat <<EOF | kubectl create -f -
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
@@ -97,7 +97,7 @@ If mTLS is working correctly, the Guestbook app should continue to operate as ex
 
 1. Get the name of a guestbook pod. Make sure the pod is “Running”.
 
-```sh
+```shell
 kubectl get pods -l app=guestbook
 NAME                            READY     STATUS    RESTARTS   AGE
 guestbook-v2-784546fbb9-299jz   2/2       Running   0          13h
@@ -107,19 +107,19 @@ guestbook-v2-784546fbb9-lcxdz   2/2       Running   0          13h
 
 2. SSH into the Envoy container. Make sure to change the pod name into the corresponding one on your system. This command will execute into istio-proxy container (sidecar) of the pod.
 
-```sh
+```shell
 kubectl exec -it guestbook-v2-xxxxxxxx -c istio-proxy /bin/bash
 ```
 
 3. Verify that the certificate and keys are present.
 
-```sh
+```shell
 ls /etc/certs/
 ```
 
 You should see the following (plus some others):
 
-```sh
+```shell
 cert-chain.pem   key.pem   root-cert.pem
 ```
 

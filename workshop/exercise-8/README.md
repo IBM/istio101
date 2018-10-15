@@ -12,13 +12,13 @@ In this exercise we'll use the denier adapter.
 
 1. Block access to Guestbook service:
 
-    ```sh
-    kubectl create -f mixer-rule-denial.yaml
-    ```
+```shell
+kubectl create -f mixer-rule-denial.yaml
+```
 
-    Let's examine the rule:
+Let's examine the rule:
 
-    ```yaml
+```yaml
     apiVersion: "config.istio.io/v1alpha2"
     kind: denier
     metadata:
@@ -49,22 +49,24 @@ In this exercise we'll use the denier adapter.
       - handler: denyall.denier
         instances:
         - denyrequest.checknothing
-    ```
+```
 
 2. Verify that the service is denied:
 
-   In [Exercise 5](../exercise-5/README.md), we created the Ingress resource. Make sure the $INGRESS_IP environment variable   is still present. Then in the terminal, try:  
+   In [Exercise 5](../exercise-5/README.md), we created the Ingress resource. Make sure the $INGRESS_IP environment variable   is still present. Then in the terminal, try:
 
-    ```
-    curl http://$INGRESS_IP/
-    ```
-    You should see the error message `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
+```shell
+curl http://$INGRESS_IP/
+```
+
+You should see the error message `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
 
 3. Clean up the rule.
 
-    ```sh
-    kubectl delete -f mixer-rule-denial.yaml
-    ```
+```shell
+kubectl delete -f mixer-rule-denial.yaml
+```
+
 ## Quiz
 1. Does creating mixer rules require app code changes? (Yes/No) No
 2. The custom code that interacts with the backend system, i.e. Prometheus, is called
@@ -72,5 +74,5 @@ A. Rule B. Instance C. Adapter
 Answer is C
 
 ## Further reading
-[Istio Mixer](https://istio.io/docs/concepts/policy-and-control/mixer.html)    
+[Istio Mixer](https://istio.io/docs/concepts/policy-and-control/mixer.html)
 [How to write istio mixer policies](https://medium.com/@szihai_37982/how-to-write-istio-mixer-policies-50dc639acf75)
