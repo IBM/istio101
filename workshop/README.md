@@ -44,35 +44,10 @@ You should have a basic understanding of containers, IBM Cloud Kubernetes Servic
 
 ## Cleaning up the Workshop
 
-We have given you a [script](cleanup/nuke_the_workshop.sh) as a conveant way to remove Istio and the guestbook
+We have a script that will remove [ibmcloud](https://console.bluemix.net/docs/cli/index.html#overview) at [here](cleanup/clean_your_local_machine.sh) and unset your `KUBECONFIG` for you.
+
+We have given you a [script](cleanup/clean_your_k8s_cluster.sh) as a conveant way to remove Istio and the guestbook
 application from your instance.
 
 **NOTE**: This puts your kubernetes cluster in a empty state, so do not run this on anything other then
 a place you are willing to loose everything.
-
-```shell
-cd cleanup
-./nuke_the_workshop.sh
-
-You are about to remove EVERYTHING on your Kubernetes cluster, including Istio.
-
-You must put in Y as your answer.
-Are you sure? Y
-pod "guestbook-v1-5d956b6c57-8gjrw" deleted
-pod "guestbook-v1-5d956b6c57-gtwnh" deleted
-pod "guestbook-v1-5d956b6c57-q77sw" deleted
-pod "guestbook-v2-f7f8f789b-mtq57" deleted
-pod "guestbook-v2-f7f8f789b-qfn5f" deleted
-pod "guestbook-v2-f7f8f789b-zw88p" deleted
-pod "redis-master-67c878bfb4-psmdh" deleted
-pod "redis-slave-5596f694d8-96dtq" deleted
-pod "redis-slave-5596f694d8-vb7sk" deleted
-[-- snip --]
-
-deployment.extensions "istio-sidecar-injector" deleted
-deployment.extensions "istio-statsd-prom-bridge" deleted
-deployment.extensions "istio-telemetry" deleted
-deployment.extensions "istio-tracing" deleted
-deployment.extensions "prometheus" deleted
-deployment.extensions "servicegraph" deleted
-    ```
