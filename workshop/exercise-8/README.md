@@ -74,5 +74,5 @@ A. Rule B. Instance C. Adapter
 Answer is C
 
 ## Further reading
-[Istio Mixer](https://istio.io/docs/concepts/policy-and-control/mixer.html)
-[How to write istio mixer policies](https://medium.com/@szihai_37982/how-to-write-istio-mixer-policies-50dc639acf75)
+* [Istio Mixer](https://istio.io/docs/concepts/policy-and-control/mixer.html)
+* [How to write istio mixer policies](https://medium.com/@szihai_37982/how-to-write-istio-mixer-policies-50dc639acf75)

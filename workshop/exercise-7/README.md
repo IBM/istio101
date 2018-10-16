@@ -26,7 +26,7 @@ When Envoy proxies establish a connection, they exchange and validate certificat
 
 ## Steps
 
-> Version 2 of the guestbook application uses an external service (tone analyzer) which is not Istio-enabled. Current Istio release (0.8) has a [known limitation](https://istio.io/help/faq/security.html#istio-to-not-istio), where where an mTLS enabled service fails to communicate with a service without Istio. This limitation will be lifted in an upcoming release.
+> Version 2 of the guestbook application uses an external service (tone analyzer) which is not Istio-enabled.
 > Thus, we will disable mTLS globally and enable it only for communication between internal cluster services in this lab.
 
 1. Ensure Citadel is running
@@ -145,4 +145,4 @@ Note that `cert-chain.pem` is Envoy’s public certificate (i.e., presented to t
 
 * [Istio Concept](https://istio.io/docs/concepts/security/mutual-tls.html)
 
-## DON NOT USE IT - [Continue to Exercise 8 - Policy Enforcement](../exercise-8/README.md)
+## DO NOT USE IT - [Continue to Exercise 8 - Policy Enforcement](../exercise-8/README.md)
