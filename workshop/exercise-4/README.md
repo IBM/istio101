@@ -20,19 +20,19 @@ kubectl get services -n istio-system
 ```
 
 2. Configure Istio to automatically gather telemetry data for services that run in the service mesh.
-   1. Go back to your v2 directory.
+- Go back to your v2 directory.
 
 ```shell
 cd guestbook/v2
 ```
 
-   2. Create a rule to collect telemetry data.
+- Create a rule to collect telemetry data.
 ```shell
 kubectl create -f guestbook-telemetry.yaml
 ```
 
-   3. Obtain the guestbook endpoint to access the guestbook.
-- For paid cluster, you can acceess the guestbook via the external IP for your service as guestbook is deployed as a load blanacer service.  Get the EXTERNAL-IP of the guestbook service via output below:
+3. Obtain the guestbook endpoint to access the guestbook.
+- For a paid cluster, you can acceess the guestbook via the external IP for your service as guestbook is deployed as a load blanacer service.  Get the EXTERNAL-IP of the guestbook service via output below:
 
 ```shell
 kubectl get service guestbook -n default
@@ -64,7 +64,7 @@ guestbook   LoadBalancer   172.21.134.6   pending        80:31702/TCP   4d
 
 The node port in above sample output is `169.60.87.20:31702`
 
-   4. Generate a small load to the app.
+4. Generate a small load to the app.
 ```shell
 while sleep 0.5; do curl http://<guestbook_endpoint/; done
 ```
