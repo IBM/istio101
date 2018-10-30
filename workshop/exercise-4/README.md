@@ -122,6 +122,39 @@ kubectl -n istio-system port-forward \
 2. Browse to http://localhost:8088/dotviz
 
 
+## Another Option -- Kiali 
+Kiali is a service mesh visualization tool, and will be introduced as part of Istio in [next release](https://preliminary.istio.io/docs/tasks/telemetry/kiali/). It will work with Istio, to visualize service mesh topology, features like circuit breakers and request rates. You can find more information [on their website](https://www.kiali.io/) and in their [github repo](https://github.com/kiali/kiali)
+
+### Install Kiali and configure to work with your cluster
+You can follow [this technical](https://www.ibm.com/blogs/bluemix/2018/08/how-to-enable-kiali-for-istio-on-ibm-cloud-kubernetes-service/) blog we wrote for Kiali full configuration and installation, and to be short, installation steps are:
+```shell
+# Download required deployment files
+$ curl https://raw.githubusercontent.com/kiali/kiali/master/deploy/kubernetes/kiali-configmap.yaml | \
+VERSION_LABEL=master envsubst > kiali-configmap.yaml
+
+$ curl https://raw.githubusercontent.com/kiali/kiali/master/deploy/kubernetes/kiali-secrets.yaml | \
+VERSION_LABEL=master envsubst > kiali-secrets.yaml
+
+$ curl https://raw.githubusercontent.com/kiali/kiali/master/deploy/kubernetes/kiali.yaml | \
+IMAGE_NAME=kiali/kiali \
+IMAGE_VERSION=latest \
+NAMESPACE=istio-system \
+VERSION_LABEL=master \
+VERBOSE_MODE=4 envsubst > kiali.yaml
+```
+And `envsubst` in above command is packed with Ubuntu by default, and if you do not have envsubst installed, you can get it via the Gnu gettext package. 
+
+And then, under the directory of downloaded deployment files, install Kiali into the istio-system namespace:
+```shell
+kubectl create -f kiali-configmap.yaml -n istio-system
+kubectl create -f kiali-secrets.yaml -n istio-system
+kubectl create -f kiali.yaml -n istio-system
+```
+
+### Access Kiali dashboard
+You can expose your Kiali service and access it. Credentials are defined in `kiali-secrets.yaml`. Navigate around to explore Kiali dashboards, including Graph, service metrics details.
+
+
 ## Understand what happened
 
 Although Istio proxies are able to automatically send spans, they need some hints to tie together the entire trace. Apps need to propagate the appropriate HTTP headers so that when the proxies send span information to Zipkin or Jaeger, the spans can be correlated correctly into a single trace.
