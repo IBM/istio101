@@ -8,39 +8,39 @@ You must already have a [cluster created](https://console.bluemix.net/docs/conta
 
 2.  Log in to the IBM Cloud CLI. If you have a federated account, include the `[--sso]` flag.
 
-```shell
-ibmcloud login [--sso]
-```
+    ```shell
+    ibmcloud login [--sso]
+    ```
 
-or if you have an api key, use:
+    or if you have an api key, use:
 
-```shell
-ibmcloud login --apikey <apikey>
-```
+    ```shell
+    ibmcloud login --apikey <apikey>
+    ```
 
 3.  Install the IBM Cloud Kubernetes Service plug-in.
 
-```shell
-ibmcloud plugin install container-service -r Bluemix
-```
+    ```shell
+    ibmcloud plugin install container-service -r Bluemix
+    ```
 
 4. To verify that the plug-in is installed properly, run `ibmcloud plugin list`. The Container Service plug-in is displayed in the results as `container-service`.
 
 5.  Initialize the Container Service plug-in and point the endpoint to your region. For example when prompted, enter `5` for `us-east`.
 
-Example:
+    Example:
 
-```shell
-ibmcloud cs region-set
-Choose a region:
-1. ap-north
-2. ap-south
-3. eu-central
-4. uk-south
-5. us-east
-6. us-south
-Enter a number> 5
-```
+    ```shell
+    ibmcloud cs region-set
+    Choose a region:
+    1. ap-north
+    2. ap-south
+    3. eu-central
+    4. uk-south
+    5. us-east
+    6. us-south
+    Enter a number> 5
+    ```
 
 6. Install the Kubernetes CLI. Go to the [Kubernetes page](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl) to install the CLI and follow the steps.
 
@@ -49,59 +49,59 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
 
 1.  Set the context for your cluster in your CLI. Every time you log in to the IBM Cloud Kubernetes Service CLI to work with the cluster, you must run these commands to set the path to the cluster's configuration file as a session variable. The Kubernetes CLI uses this variable to find a local configuration file and certificates that are necessary to connect with the cluster in IBM Cloud.
 
-a. List the available clusters.
+    a. List the available clusters.
 
-```shell
-ibmcloud cs clusters
-```
+    ```shell
+    ibmcloud cs clusters
+    ```
 
-b. Download the configuration file and certificates for your cluster using the `cluster-config` command.
+    b. Download the configuration file and certificates for your cluster using the `cluster-config` command.
 
-```shell
-ibmcloud cs cluster-config <your_cluster_name>
-```
+    ```shell
+    ibmcloud cs cluster-config <your_cluster_name>
+    ```
 
-c. Copy and paste the output command from the previous step to set the `KUBECONFIG` environment variable and configure your CLI to run `kubectl` commands against your cluster.
+    c. Copy and paste the output command from the previous step to set the `KUBECONFIG` environment variable and configure your CLI to run `kubectl` commands against your cluster.
 
 2.  Get basic information about your cluster and its worker nodes. This information can help you manage your cluster and troubleshoot issues.
 
-a.  View details of your cluster.
+    a.  View details of your cluster.
 
-```shell
-ibmcloud cs cluster-get <your_cluster_name>
-```
+    ```shell
+    ibmcloud cs cluster-get <your_cluster_name>
+    ```
 
-b.  Verify the worker nodes in the cluster.
+    b.  Verify the worker nodes in the cluster.
 
-```shell
-ibmcloud cs workers <your_cluster_name>
-ibmcloud cs worker-get <worker_ID>
-```
+    ```shell
+    ibmcloud cs workers <your_cluster_name>
+    ibmcloud cs worker-get <worker_ID>
+    ```
 
 3.  Validate access to your cluster.
 
-a.  View nodes in the cluster.
+    a.  View nodes in the cluster.
 
-```shell
-kubectl get node
-```
+    ```shell
+    kubectl get node
+    ```
 
-b.  View services, deployments, and pods.
+    b.  View services, deployments, and pods.
 
-```shell
-kubectl get svc,deploy,po --all-namespaces
-```
+    ```shell
+    kubectl get svc,deploy,po --all-namespaces
+    ```
 
 ## Clone the lab repo
 
-From your command line, run:
+1. From your command line, run:
 
-```shell
-git clone https://github.com/IBM/istio101
+    ```shell
+    git clone https://github.com/IBM/istio101
 
-cd istio101/workshop
-```
+    cd istio101/workshop
+    ```
 
-This is the working directory for the workshop. You use the example `.yaml` files that are located in the _workshop/plans_ directory in the following exercises.
+    This is the working directory for the workshop. You use the example `.yaml` files that are located in the _workshop/plans_ directory in the following exercises.
 
 ### [Continue to Exercise 2 - Installing Istio](../exercise-2/README.md)

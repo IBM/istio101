@@ -12,60 +12,60 @@ In this exercise we'll use the denier adapter.
 
 1. Block access to Guestbook service:
 
-```shell
-kubectl create -f mixer-rule-denial.yaml
-```
+    ```shell
+    kubectl create -f mixer-rule-denial.yaml
+    ```
 
-Let's examine the rule:
+    Let's examine the rule:
 
-```yaml
-    apiVersion: "config.istio.io/v1alpha2"
-    kind: denier
-    metadata:
-      name: denyall
-      namespace: istio-system
-    spec:
-      status:
-        code: 7
-        message: Not allowed
-    ---
-    # The (empty) data handed to denyall at run time
-    apiVersion: "config.istio.io/v1alpha2"
-    kind: checknothing
-    metadata:
-      name: denyrequest
-      namespace: istio-system
-    spec:
-    ---
-    # The rule that uses denier to deny requests to the guestbook service
-    apiVersion: "config.istio.io/v1alpha2"
-    kind: rule
-    metadata:
-      name: deny-hello-world
-      namespace: istio-system
-    spec:
-      match: destination.service=="guestbook.default.svc.cluster.local"
-      actions:
-      - handler: denyall.denier
-        instances:
-        - denyrequest.checknothing
-```
+    ```yaml
+        apiVersion: "config.istio.io/v1alpha2"
+        kind: denier
+        metadata:
+          name: denyall
+          namespace: istio-system
+        spec:
+          status:
+            code: 7
+            message: Not allowed
+        ---
+        # The (empty) data handed to denyall at run time
+        apiVersion: "config.istio.io/v1alpha2"
+        kind: checknothing
+        metadata:
+          name: denyrequest
+          namespace: istio-system
+        spec:
+        ---
+        # The rule that uses denier to deny requests to the guestbook service
+        apiVersion: "config.istio.io/v1alpha2"
+        kind: rule
+        metadata:
+          name: deny-hello-world
+          namespace: istio-system
+        spec:
+          match: destination.service=="guestbook.default.svc.cluster.local"
+          actions:
+          - handler: denyall.denier
+            instances:
+            - denyrequest.checknothing
+    ```
 
 2. Verify that the service is denied:
 
    In [Exercise 5](../exercise-5/README.md), we created the Ingress resource. Make sure the $INGRESS_IP environment variable   is still present. Then in the terminal, try:
 
-```shell
-curl http://$INGRESS_IP/
-```
+    ```shell
+    curl http://$INGRESS_IP/
+    ```
 
-You should see the error message `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
+    You should see the error message `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
 
 3. Clean up the rule.
 
-```shell
-kubectl delete -f mixer-rule-denial.yaml
-```
+    ```shell
+    kubectl delete -f mixer-rule-denial.yaml
+    ```
 
 ## Quiz
 1. Does creating mixer rules require app code changes? (Yes/No) No
