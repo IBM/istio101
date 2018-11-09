@@ -7,7 +7,7 @@ In this module, you download and install Istio.
     curl -L https://git.io/getLatestIstio | sh -
     ```
 
-2. Extract the installation files, if the script doesn't do it for you.
+2. Extract the installation files if the script doesn't do it for you.
 
     ```shell
     tar -xvzf istio-<istio-version>-linux.tar.gz
@@ -21,10 +21,14 @@ In this module, you download and install Istio.
 
 4. Change the directory to the Istio file location.
 
+    ```shell
+    cd istio-<version-number>
+    ```
+
 5. Now let's install Istio into the `istio-system` namespace in your Kubernetes cluster:
 
     ```shell
-    kubectl apply -f $PWD/<istio-installation>/install/kubernetes/istio-demo.yaml
+    kubectl apply -f $PWD/install/kubernetes/istio-demo.yaml
     ```
 
 6. Ensure that the `istio-*` Kubernetes services are deployed before you continue.

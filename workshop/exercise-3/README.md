@@ -1,6 +1,6 @@
 # Exercise 3 - Deploy the Guestbook app with Istio Proxy
 
-The Guestbook app is a sample app for users to leave comments. It consists of a web front end, Redis master for storage, and replicated set of Redis slaves. We will also integrate the app with Watson Tone Analyzer that detects the sentiment in user's comments and replies with emoticons. Here are the steps to deploy the app on your Kubernetes cluster:
+The Guestbook app is a sample app for users to leave comments. It consists of a web front end, Redis master for storage, and a replicated set of Redis slaves. We will also integrate the app with Watson Tone Analyzer that detects the sentiment in user's comments and replies with emoticons. Here are the steps to deploy the app on your Kubernetes cluster:
 
 ### Download the Guestbook app
 1. Open your preferred terminal and download the Guestbook app from GitHub.
@@ -57,7 +57,7 @@ The Redis database is a service that you can use to persist the data of your app
 
 ## Sidecar injection
 
-In Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using istioctl CLI tool or automatically using the Istio Initializer. In this exercise, we will use the manual injection. Manual injection modifies the controller configuration, e.g. deployment. It does this by modifying the pod template spec such that all pods for that deployment are created with the injected sidecar.
+In Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using the istioctl CLI tool or automatically using the Istio Initializer. In this exercise, we will use the manual injection. Manual injection modifies the controller configuration, e.g. deployment. It does this by modifying the pod template spec such that all pods for that deployment are created with the injected sidecar.
 
 ## Install the Guestbook app with manual sidecar injection
 
@@ -104,7 +104,7 @@ These commands will inject the Istio Envoy sidecar into the guestbook pods, as w
 ### Use Watson Tone Analyzer
 Watson Tone Analyzer detects the tone from the words that users enter into the Guestbook app. The tone is converted to the corresponding emoticons.
 
-1. Use `bx target --cf` or `bx target -o ORG -s SPACE` to set the Cloud Foundry org and space where you want to provision the service.
+1. Use `ibmcloud target --cf` or `ibmcloud target -o ORG -s SPACE` to set the Cloud Foundry org and space where you want to provision the service.
 
 2. Create Watson Tone Analyzer in your account.
     ```shell
