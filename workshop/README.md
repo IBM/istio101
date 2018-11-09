@@ -41,3 +41,13 @@ You should have a basic understanding of containers, IBM Cloud Kubernetes Servic
 - [Exercise 6 - Perform traffic management](exercise-6/README.md)
 - [Exercise 7 - Secure your service mesh](exercise-7/README.md)
 - [Exercise 8 - Enforce policies for microservices](exercise-8/README.md)
+
+## Cleaning up the Workshop
+
+We have a script that will remove [ibmcloud](https://console.bluemix.net/docs/cli/index.html#overview) at [here](cleanup/clean_your_local_machine.sh) and unset your `KUBECONFIG` for you.
+
+We have given you a [script](cleanup/clean_your_k8s_cluster.sh) as a conveant way to remove Istio and the guestbook
+application from your instance.
+
+**NOTE**: This puts your kubernetes cluster in a empty state, so do not run this on anything other then
+a place you are willing to loose everything.
