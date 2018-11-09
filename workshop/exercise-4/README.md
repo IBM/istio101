@@ -41,12 +41,12 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     b. For a lite cluster, first, get the worker's public IP:
 
     ```shell
-    bx cs workers <cluster_name>
+    ibmcloud cs workers <cluster_name>
     ```
 
     Example:
     ```shell
-    bx cs workers cluster1
+    ibmcloud cs workers cluster1
     ID             Public IP      Private IP      Machine Type        State    Status   Zone    Version
     kube-xxx       169.60.87.20   10.188.80.69    u2c.2x4.encrypted   normal   Ready    wdc06   1.9.7_1510*
     ```

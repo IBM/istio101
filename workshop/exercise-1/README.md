@@ -6,13 +6,19 @@ You must already have a [cluster created](https://console.bluemix.net/docs/conta
 
 1. Install the IBM Cloud [command line interface](https://console.bluemix.net/docs/cli/reference/bluemix_cli/get_started.html#getting-started).
 
-2.  Log in to the IBM Cloud CLI. If you have a federated account, include the `[--sso]` flag.
+2.  Log in to the IBM Cloud CLI.
 
     ```shell
-    ibmcloud login [--sso]
+    ibmcloud login
     ```
 
-    or if you have an api key, use:
+    If you have a federated account, include the `--sso` flag.
+
+    ```shell
+    ibmcloud login --sso
+    ```
+
+    If you have an api key, use:
 
     ```shell
     ibmcloud login --apikey <apikey>
@@ -21,10 +27,10 @@ You must already have a [cluster created](https://console.bluemix.net/docs/conta
 3.  Install the IBM Cloud Kubernetes Service plug-in.
 
     ```shell
-    ibmcloud plugin install container-service -r Bluemix
+    ibmcloud plugin install container-service
     ```
 
-4. To verify that the plug-in is installed properly, run `ibmcloud plugin list`. The Container Service plug-in is displayed in the results as `container-service`.
+4. To verify that the plug-in is installed properly, run `ibmcloud plugin list`. The Container Service plug-in is displayed in the results as `container-service/kubernetes-service`.
 
 5.  Initialize the Container Service plug-in and point the endpoint to your region. For example when prompted, enter `5` for `us-east`.
 
@@ -42,7 +48,7 @@ You must already have a [cluster created](https://console.bluemix.net/docs/conta
     Enter a number> 5
     ```
 
-6. Install the Kubernetes CLI. Go to the [Kubernetes page](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl) to install the CLI and follow the steps.
+6. Install the Kubernetes CLI. Go to the [Kubernetes page](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl), and follow the steps to install the CLI.
 
 ## Access your cluster
 Learn how to set the context to work with your cluster by using the `kubectl` CLI, access the Kubernetes dashboard, and gather basic information about your cluster.
@@ -62,6 +68,11 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
     ```
 
     c. Copy and paste the output command from the previous step to set the `KUBECONFIG` environment variable and configure your CLI to run `kubectl` commands against your cluster.
+
+    Example:
+    ```shell
+    export KUBECONFIG=/Users/user-name/.bluemix/plugins/container-service/clusters/mycluster/kube-config-hou02-mycluster.yml
+    ```
 
 2.  Get basic information about your cluster and its worker nodes. This information can help you manage your cluster and troubleshoot issues.
 
@@ -102,6 +113,6 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
     cd istio101/workshop
     ```
 
-    This is the working directory for the workshop. You use the example `.yaml` files that are located in the _workshop/plans_ directory in the following exercises.
+    This is the working directory for the workshop. You will use the example `.yaml` files that are located in the _workshop/plans_ directory in the following exercises.
 
 ### [Continue to Exercise 2 - Installing Istio](../exercise-2/README.md)
