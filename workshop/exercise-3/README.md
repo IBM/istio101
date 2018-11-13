@@ -3,16 +3,16 @@
 The Guestbook app is a sample app for users to leave comments. It consists of a web front end, Redis master for storage, and a replicated set of Redis slaves. We will also integrate the app with Watson Tone Analyzer that detects the sentiment in user's comments and replies with emoticons. Here are the steps to deploy the app on your Kubernetes cluster:
 
 ### Download the Guestbook app
-1. Open your preferred terminal and download the Guestbook app from GitHub.
+1. Open your preferred terminal and download the Guestbook app from GitHub into the `workshop` directory.
 
     ```shell
-    git clone https://github.com/IBM/guestbook.git
+    git clone https://github.com/IBM/guestbook.git ../guestbook
     ```
 
 2. Navigate into the app directory.
 
     ```shell
-    cd guestbook/v2
+    cd ../guestbook/v2
     ```
 
 ### Create a Redis database
@@ -118,15 +118,17 @@ Watson Tone Analyzer detects the tone from the words that users enter into the G
 
 3. Open the `analyzer-deployment.yaml` and find the env section near the end of the file. Replace YOUR_API_KEY with your own API key, and replace YOUR_URL with the url value you saved before. YOUR_URL should look something like `gateway.watsonplatform.net/tone-analyzer/api`
 
-4. The analyzer service will use IBM Cloud Identity and Access management (IAM) tokens to make authenticated requests to the Tone Analyzer service. IAM authentication uses access tokens for authentication, which are acquired by sending a request to a url with an API key. As a result, we will need to set up egress rules to allow the analyzer service access to those external urls. Apply the egress rules.
+4. The analyzer service will use IBM Cloud Identity and Access management (IAM) tokens to make authenticated requests to the Tone Analyzer service. IAM authentication uses access tokens for authentication, which are acquired by sending a request to a url with an API key. As a result, we will need to set up egress rules to allow the analyzer service access to those external urls. Apply the egress rules found in the `istio101/workshop/plans` directory
 
     ```shell
+    cd ../../plans
     kubectl apply -f analyzer-egress.yaml
     ```
 
-5. Deploy the analyzer pods and service. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
+5. Deploy the analyzer pods and service, using the `analyzer-deployment.yaml` and `analyzer-service.yaml` files found in the `guestbook/v2` directory. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
 
     ```shell
+    cd ../guestbook/v2/
     kubectl apply -f <(istioctl kube-inject -f analyzer-deployment.yaml)
     kubectl apply -f analyzer-service.yaml
     ```
