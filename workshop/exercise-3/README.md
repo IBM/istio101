@@ -105,6 +105,7 @@ These commands will inject the Istio Envoy sidecar into the guestbook pods, as w
 Watson Tone Analyzer detects the tone from the words that users enter into the Guestbook app. The tone is converted to the corresponding emoticons.
 
 1. Create Watson Tone Analyzer in your account.
+
     ```shell
     ibmcloud resource service-instance-create my-tone-analyzer-service tone-analyzer lite us-south
     ```
