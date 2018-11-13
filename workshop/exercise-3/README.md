@@ -84,7 +84,7 @@ These commands will inject the Istio Envoy sidecar into the guestbook pods, as w
     guestbook      LoadBalancer   172.21.36.181   169.61.37.140   80:32149/TCP   5d
     ```
 
-    **Note: For Lite clusters, the external ip will not be avaiable. That is expected.**
+    **Note: For Lite clusters, the external ip will not be available. That is expected.**
 
 4. Verify that the pods are up and running.
 
@@ -104,28 +104,26 @@ These commands will inject the Istio Envoy sidecar into the guestbook pods, as w
 ### Use Watson Tone Analyzer
 Watson Tone Analyzer detects the tone from the words that users enter into the Guestbook app. The tone is converted to the corresponding emoticons.
 
-1. Use `ibmcloud target --cf` or `ibmcloud target -o ORG -s SPACE` to set the Cloud Foundry org and space where you want to provision the service.
-
-2. Create Watson Tone Analyzer in your account.
+1. Create Watson Tone Analyzer in your account.
     ```shell
-    ibmcloud service create tone_analyzer lite my-tone-analyzer-service
+    ibmcloud resource service-instance-create my-tone-analyzer-service tone-analyzer lite us-south
     ```
 
-3. Create a service key for the service.
+2. When this service was created, there were some credentials automatically created for you. Get those credentials and note the **apikey** and **url** fields from the credentials object.
+
     ```shell
-    ibmcloud service key-create my-tone-analyzer-service myKey
+    ibmcloud resource service-keys --instance-name my_tone_analyzer --output JSON
     ```
 
-4. Show the service key that you created and note the **password** and **username**.
+3. Open the `analyzer-deployment.yaml` and find the env section near the end of the file. Replace YOUR_API_KEY with your own API key, and replace YOUR_URL with the url value you saved before. YOUR_URL should look something like `gateway.watsonplatform.net/tone-analyzer/api`
+
+4. The analyzer service will use IBM Cloud Identity and Access management (IAM) tokens to make authenticated requests to the Tone Analyzer service. IAM authentication uses access tokens for authentication, which are acquired by sending a request to a url with an API key. As a result, we will need to set up egress rules to allow the analyzer service access to those external urls. Apply the egress rules.
+
     ```shell
-    ibmcloud service key-show my-tone-analyzer-service myKey
+    kubectl apply -f analyzer-egress.yaml
     ```
 
-5. Open the `analyzer-deployment.yaml` and delete the `#` from the `env` section to un-comment the username and password fields.
-
-6. Add the username and password that you retrieved earlier and save your changes.
-
-7. Deploy the analyzer pods and service. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
+5. Deploy the analyzer pods and service. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
 
     ```shell
     kubectl apply -f <(istioctl kube-inject -f analyzer-deployment.yaml)

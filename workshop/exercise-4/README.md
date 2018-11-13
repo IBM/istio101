@@ -65,6 +65,8 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
     The node port in above sample output is `169.60.87.20:31702`
 
+    Go to this address in the browser to try out your guestbook.
+
 4. Generate a small load to the app.
     ```shell
     while sleep 0.5; do curl http://<guestbook_endpoint/; done
