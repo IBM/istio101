@@ -40,21 +40,14 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
     b. For a lite cluster, first, get the worker's public IP:
 
-    ```shell
-    ibmcloud cs workers <cluster_name>
-    ```
-
     Example:
     ```shell
-    ibmcloud cs workers cluster1
+    ibmcloud cs workers <cluster_name>
     ID             Public IP      Private IP      Machine Type        State    Status   Zone    Version
     kube-xxx       169.60.87.20   10.188.80.69    u2c.2x4.encrypted   normal   Ready    wdc06   1.9.7_1510*
     ```
 
     Second, get the node port:
-    ```shell
-    kubectl get svc guestbook -n default
-    ```
 
     Example:
     ```shell

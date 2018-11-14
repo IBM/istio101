@@ -62,6 +62,10 @@ When Envoy proxies establish a connection, they exchange and validate certificat
       peers:
       - mtls:
     EOF
+    ```
+
+    You should see:
+    ```shell
     Created config policy/default/mtls-to-analyzer at revision 3934195
     ```
 
