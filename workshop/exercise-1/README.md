@@ -113,6 +113,6 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
     cd istio101/workshop
     ```
 
-    This is the working directory for the workshop. You will use the example `.yaml` files that are located in the _workshop/plans_ directory in the following exercises.
+    This is the working directory for the workshop. You will use the example `.yaml` files that are located in the `workshop/plans` directory in the following exercises.
 
 ### [Continue to Exercise 2 - Installing Istio](../exercise-2/README.md)

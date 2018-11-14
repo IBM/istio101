@@ -20,10 +20,10 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     ```
 
 2. Configure Istio to automatically gather telemetry data for services that run in the service mesh.
-    a. Go back to your v2 directory.
+    a. Go back to the plans directory at `istio101/workshop/plans`.
 
     ```shell
-    cd guestbook/v2
+    cd ../../plans
     ```
 
     b. Create a rule to collect telemetry data.
@@ -65,6 +65,8 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
     The node port in above sample output is `169.60.87.20:31702`
 
+    Go to this address in the browser to try out your guestbook.
+
 4. Generate a small load to the app.
     ```shell
     while sleep 0.5; do curl http://<guestbook_endpoint/; done
@@ -81,9 +83,9 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
       $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath='{.items[0].metadata.name}') \
       16686:16686 &
     ```
-
-2. From the **Services** menu, select either the **guestbook** or **analyzer** service.
-3. Scroll to the bottom and click on **Find Traces** button to see traces
+2. In your browser, go to `http://127.0.0.1:16686`
+3. From the **Services** menu, select either the **guestbook** or **analyzer** service.
+4. Scroll to the bottom and click on **Find Traces** button to see traces
 
 
 #### Grafana
@@ -92,7 +94,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
     ```shell
     kubectl -n istio-system port-forward \
-      $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name} \
+      $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') \
       3000:3000 &
     ```
 
