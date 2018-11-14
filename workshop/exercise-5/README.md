@@ -75,7 +75,7 @@ The IBM Ingress service provides IBM Cloud users with a secure, reliable, and sc
     Ingress subdomain:	guestbook-242887.us-east.containers.mybluemix.net
     ```
 
-2. Add the subdomain that you retrieved in the previous step as `host` in the `guestbook-frontdoor.yaml` file.
+2. Add the subdomain that you retrieved in the previous step as `host` in the `guestbook-frontdoor.yaml` file, which you can find in the `istio101/workshop/plans` directory.
 
 3. Create the Ingress with the IBM-provided subdomain.
 
