@@ -137,6 +137,12 @@ If mTLS is working correctly, the Guestbook app should continue to operate as ex
 
     Note that `cert-chain.pem` is Envoy’s public certificate (i.e., presented to the peer), and `key.pem` is the corresponding private key. The `root-cert.pem` file is Citadel's root certificate, used to verify peer certificates.
 
+4. Exit the container.
+
+    ``shell
+    exit
+    ```
+
 ## Quiz
 
 **True or False?**
