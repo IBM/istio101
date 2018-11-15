@@ -20,6 +20,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     ```
 
 2. Configure Istio to automatically gather telemetry data for services that run in the service mesh.
+
     a. Go back to the plans directory at `istio101/workshop/plans`.
 
     ```shell
@@ -32,6 +33,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     ```
 
 3. Obtain the guestbook endpoint to access the guestbook.
+
     a. For a paid cluster, you can access the guestbook via the external IP for your service as guestbook is deployed as a load balancer service. Get the EXTERNAL-IP of the guestbook service via output below:
 
     ```shell
