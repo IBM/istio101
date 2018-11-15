@@ -70,9 +70,11 @@ When Envoy proxies establish a connection, they exchange and validate certificat
     ```
 
     Confirm the policy has been created:
-
     ```shell
     kubectl get policies.authentication.istio.io
+    ```
+    Output:
+    ```shell
     NAME              AGE
     mtls-to-analyzer  1m
     ```
@@ -92,6 +94,9 @@ When Envoy proxies establish a connection, they exchange and validate certificat
         tls:
           mode: ISTIO_MUTUAL
     EOF
+    ```
+    Output:
+    ```
     Created config destination-rule/default/route-with-mtls-for-analyzer at revision 3934279
     ```
 
@@ -103,6 +108,9 @@ If mTLS is working correctly, the Guestbook app should continue to operate as ex
 
     ```shell
     kubectl get pods -l app=guestbook
+    ```
+    Output:
+    ```shell
     NAME                            READY     STATUS    RESTARTS   AGE
     guestbook-v2-784546fbb9-299jz   2/2       Running   0          13h
     guestbook-v2-784546fbb9-hsbnq   2/2       Running   0          13h
@@ -128,6 +136,12 @@ If mTLS is working correctly, the Guestbook app should continue to operate as ex
     ```
 
     Note that `cert-chain.pem` is Envoy’s public certificate (i.e., presented to the peer), and `key.pem` is the corresponding private key. The `root-cert.pem` file is Citadel's root certificate, used to verify peer certificates.
+
+4. Exit the container.
+
+    ``shell
+    exit
+    ```
 
 ## Quiz
 

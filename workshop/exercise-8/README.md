@@ -17,7 +17,6 @@ In this exercise we'll use the denier adapter.
     ```
 
     Let's examine the rule:
-
     ```yaml
         apiVersion: "config.istio.io/v1alpha2"
         kind: denier

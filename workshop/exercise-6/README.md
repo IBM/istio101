@@ -21,7 +21,7 @@ A/B testing is a method of performing identical tests against two separate servi
 ```shell
 kubectl replace -f virtualservice-all-v1.yaml
 ```
-
+Let's examine the rule:
 ```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -42,7 +42,7 @@ spec:
 ```shell
 kubectl create -f guestbook-destination.yaml
 ```
-
+Let's examine the rule:
 ```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
@@ -66,7 +66,7 @@ To enable the Istio service mesh for A/B testing against the new service version
 ```shell
 kubectl replace -f virtualservice-test.yaml
 ```
-
+Let's examine the rule:
 ```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -105,7 +105,7 @@ In `Canary Deployments`, newer versions of services are incrementally rolled out
 ```shell
 kubectl replace -f virtualservice-80-20.yaml
 ```
-
+Let's examine the rule:
 ```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService

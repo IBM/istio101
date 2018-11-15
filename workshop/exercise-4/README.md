@@ -44,18 +44,22 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
     b. For a lite cluster, first, get the worker's public IP:
 
-    Example:
     ```shell
     ibmcloud cs workers <cluster_name>
+    ```
+    Output:
+    ```shell
     ID             Public IP      Private IP      Machine Type        State    Status   Zone    Version
     kube-xxx       169.60.87.20   10.188.80.69    u2c.2x4.encrypted   normal   Ready    wdc06   1.9.7_1510*
     ```
 
     Second, get the node port:
 
-    Example:
     ```shell
     kubectl get svc guestbook -n default
+    ```
+    Output:
+    ```shell
     NAME        TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
     guestbook   LoadBalancer   172.21.134.6   pending        80:31702/TCP   4d
     ```
@@ -85,7 +89,6 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 3. From the **Services** menu, select either the **guestbook** or **analyzer** service.
 4. Scroll to the bottom and click on **Find Traces** button to see traces
 
-
 #### Grafana
 
 1. Establish port forwarding from local port 3000 to the Grafana instance:
@@ -97,7 +100,6 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     ```
 
 2. Browse to http://localhost:3000 and navigate to the Istio Mesh Dashboard by clicking on the Home menu on the top left.
-
 
 #### Prometheus
 
@@ -121,7 +123,6 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     ```
 
 2. Browse to http://localhost:8088/dotviz
-
 
 ## Understand what happened
 

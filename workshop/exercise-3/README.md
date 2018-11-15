@@ -31,6 +31,9 @@ The Redis database is a service that you can use to persist the data of your app
 
     ```shell
     kubectl get deployment
+    ```
+    Output:
+    ```shell
     NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
     redis-master   1         1         1            1           5d
     redis-slave    2         2         2            2           5d
@@ -40,6 +43,9 @@ The Redis database is a service that you can use to persist the data of your app
 
     ```shell
     kubectl get svc
+    ```
+    Output:
+    ```shell
     NAME           TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
     redis-master   ClusterIP      172.21.85.39    <none>          6379/TCP       5d
     redis-slave    ClusterIP      172.21.205.35   <none>          6379/TCP       5d
@@ -49,6 +55,9 @@ The Redis database is a service that you can use to persist the data of your app
 
     ```shell
     kubectl get pods
+    ```
+    Output:
+    ```shell
     NAME                            READY     STATUS    RESTARTS   AGE
     redis-master-4sswq              1/1       Running   0          5d
     redis-slave-kj8jp               1/1       Running   0          5d
@@ -80,6 +89,9 @@ These commands will inject the Istio Envoy sidecar into the guestbook pods, as w
 
     ```shell
     kubectl get svc
+    ```
+    Output:
+    ```shell
     NAME           TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
     guestbook      LoadBalancer   172.21.36.181   169.61.37.140   80:32149/TCP   5d
     ```
@@ -90,6 +102,9 @@ These commands will inject the Istio Envoy sidecar into the guestbook pods, as w
 
     ```shell
     kubectl get pods
+    ```
+    Output:
+    ```shell
     NAME                            READY     STATUS    RESTARTS   AGE
     guestbook-v1-89cd4b7c7-frscs    2/2       Running   0          5d
     guestbook-v1-89cd4b7c7-jn224    2/2       Running   0          5d

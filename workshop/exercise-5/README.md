@@ -18,7 +18,9 @@ An Ingress Gateway resource can be created to allow external requests through th
 
     ```shell
     kubectl get service istio-ingressgateway -n istio-system
-
+    ```
+    Output:
+    ```shell
     NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)                                       AGE
     istio-ingressgateway   LoadBalancer   172.21.254.53    169.6.1.1       80:31380/TCP,443:31390/TCP,31400:31400/TCP    1m
     2d
@@ -43,12 +45,18 @@ An Ingress Gateway resource can be created to allow external requests through th
 
     ```shell
     kubectl get svc istio-ingressgateway -n istio-system
+    ```
+    Output:
+    ```shell
     NAME            TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)                      AGE
     istio-ingress   LoadBalancer                    *              80:31702/TCP,443:32290/TCP   10d
-
-
+    ```
+    Get the Public IP of your cluster.
+    ```shell
     ibmcloud cs workers <cluster_name>
-
+    ```
+    Output:
+    ```shell
     ID             Public IP      Private IP      Machine Type        State    Status   Zone    Version
     kube-xxx       169.60.87.20   10.188.80.69    u2c.2x4.encrypted   normal   Ready    wdc06   1.9.7_1510*
     ```
@@ -74,7 +82,9 @@ The IBM Ingress service provides IBM Cloud users with a secure, reliable, and sc
 
     ```shell
     ibmcloud cs cluster-get <cluster_name>
-    ...
+    ```
+    Output:
+    ```shell
     Ingress subdomain:	guestbook-242887.us-east.containers.mybluemix.net
     ```
 
