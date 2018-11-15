@@ -154,6 +154,6 @@ Watson Tone Analyzer detects the tone from the words that users enter into the G
     kubectl apply -f analyzer-service.yaml
     ```
 
-Great! With your Guestbook up and running, you can now expose the service mesh with the Istio Ingress Gateway.
+Great! Your guestbook app is up and running. In Exercise 4, you'll be able to see the app in action by directly accessing the service endpoint. You'll also be able to view Telemetry data for the app.
 
 #### [Continue to Exercise 4 - Telemetry](../exercise-4/README.md)
