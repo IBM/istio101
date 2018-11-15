@@ -110,22 +110,28 @@ Watson Tone Analyzer detects the tone from the words that users enter into the G
     ibmcloud resource service-instance-create my-tone-analyzer-service tone-analyzer lite us-south
     ```
 
-2. When this service was created, there were some credentials automatically created for you. Get those credentials and note the **apikey** and **url** fields from the credentials object.
+2. Create the service key for the Tone Analyzer service. This command should output the credentials you just created. You will need the value for **apikey** & **url** later.
 
     ```shell
-    ibmcloud resource service-keys --instance-name my_tone_analyzer --output JSON
+    ibmcloud resource service-key-create tone-analyzer-key Manager --instance-name my-tone-analyzer-service
     ```
 
-3. Open the `analyzer-deployment.yaml` and find the env section near the end of the file. Replace YOUR_API_KEY with your own API key, and replace YOUR_URL with the url value you saved before. YOUR_URL should look something like `gateway.watsonplatform.net/tone-analyzer/api`. Save the file.
+3. If you need to get the service-keys later, you can use the following command:
 
-4. The analyzer service will use IBM Cloud Identity and Access management (IAM) tokens to make authenticated requests to the Tone Analyzer service. IAM authentication uses access tokens for authentication, which are acquired by sending a request to a url with an API key. As a result, we will need to set up egress rules to allow the analyzer service access to those external urls. Apply the egress rules found in the `istio101/workshop/plans` directory
+    ```shell
+    ibmcloud resource service-key tone-analyzer-key
+    ```
+
+4. Open the `analyzer-deployment.yaml` and find the env section near the end of the file. Replace YOUR_API_KEY with your own API key, and replace YOUR_URL with the url value you saved before. YOUR_URL should look something like `gateway.watsonplatform.net/tone-analyzer/api`. Save the file.
+
+5. The analyzer service will use IBM Cloud Identity and Access management (IAM) tokens to make authenticated requests to the Tone Analyzer service. IAM authentication uses access tokens for authentication, which are acquired by sending a request to a url with an API key. As a result, we will need to set up egress rules to allow the analyzer service access to those external urls. Apply the egress rules found in the `istio101/workshop/plans` directory
 
     ```shell
     cd ../../plans
     kubectl apply -f analyzer-egress.yaml
     ```
 
-5. Deploy the analyzer pods and service, using the `analyzer-deployment.yaml` and `analyzer-service.yaml` files found in the `guestbook/v2` directory. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
+6. Deploy the analyzer pods and service, using the `analyzer-deployment.yaml` and `analyzer-service.yaml` files found in the `guestbook/v2` directory. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
 
     ```shell
     cd ../guestbook/v2/
@@ -133,6 +139,6 @@ Watson Tone Analyzer detects the tone from the words that users enter into the G
     kubectl apply -f analyzer-service.yaml
     ```
 
-    Great! With your Guestbook up and running, you can now expose the service mesh with the Istio Ingress Gateway.
+Great! With your Guestbook up and running, you can now expose the service mesh with the Istio Ingress Gateway.
 
 #### [Continue to Exercise 4 - Telemetry](../exercise-4/README.md)
