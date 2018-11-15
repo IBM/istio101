@@ -103,6 +103,9 @@ If mTLS is working correctly, the Guestbook app should continue to operate as ex
 
     ```shell
     kubectl get pods -l app=guestbook
+    ```
+    Output:
+    ```shell
     NAME                            READY     STATUS    RESTARTS   AGE
     guestbook-v2-784546fbb9-299jz   2/2       Running   0          13h
     guestbook-v2-784546fbb9-hsbnq   2/2       Running   0          13h
