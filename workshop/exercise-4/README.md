@@ -32,7 +32,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     ```
 
 3. Obtain the guestbook endpoint to access the guestbook.
-    a. For a paid cluster, you can access the guestbook via the external IP for your service as guestbook is deployed as a load balancer service.  Get the EXTERNAL-IP of the guestbook service via output below:
+    a. For a paid cluster, you can access the guestbook via the external IP for your service as guestbook is deployed as a load balancer service. Get the EXTERNAL-IP of the guestbook service via output below:
 
     ```shell
     kubectl get service guestbook -n default
@@ -40,21 +40,14 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
     b. For a lite cluster, first, get the worker's public IP:
 
-    ```shell
-    ibmcloud cs workers <cluster_name>
-    ```
-
     Example:
     ```shell
-    ibmcloud cs workers cluster1
+    ibmcloud cs workers <cluster_name>
     ID             Public IP      Private IP      Machine Type        State    Status   Zone    Version
     kube-xxx       169.60.87.20   10.188.80.69    u2c.2x4.encrypted   normal   Ready    wdc06   1.9.7_1510*
     ```
 
     Second, get the node port:
-    ```shell
-    kubectl get svc guestbook -n default
-    ```
 
     Example:
     ```shell
@@ -129,14 +122,14 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 Although Istio proxies are able to automatically send spans, they need some hints to tie together the entire trace. Apps need to propagate the appropriate HTTP headers so that when the proxies send span information to Zipkin or Jaeger, the spans can be correlated correctly into a single trace.
 
-In the example, when a user visits the Guestbook app, the HTTP request is sent from the guestbook service to Watson Tone Analyzer. In order for the individual spans of guestbook service and Watson Tone Analyzer to be tied together, we have modified the guestbook service to extract the required headers (x-request-id, x-b3-traceid, x-b3-spanid, x-b3-parentspanid, x-b3-sampled, x-b3-flags, x-ot-span-context) and forward them onto the analyzer service when calling the analyzer service from the guestbook service.  The change is in the `v2/guestbook/main.go`. By using the `getForwardHeaders()` method, we are able to extract the required headers, and then we use the required headers further when calling the analyzer service via the `getPrimaryTone()` method.
+In the example, when a user visits the Guestbook app, the HTTP request is sent from the guestbook service to Watson Tone Analyzer. In order for the individual spans of guestbook service and Watson Tone Analyzer to be tied together, we have modified the guestbook service to extract the required headers (x-request-id, x-b3-traceid, x-b3-spanid, x-b3-parentspanid, x-b3-sampled, x-b3-flags, x-ot-span-context) and forward them onto the analyzer service when calling the analyzer service from the guestbook service. The change is in the `v2/guestbook/main.go`. By using the `getForwardHeaders()` method, we are able to extract the required headers, and then we use the required headers further when calling the analyzer service via the `getPrimaryTone()` method.
 
 
 ## Questions
 
-1. Does a user need to modify their app to get metrics for their apps?   A: 1. Yes 2. No.  (2 is correct)
+1. Does a user need to modify their app to get metrics for their apps?   A: 1. Yes 2. No. (2 is correct)
 
-2. Does a user need to modify their app to get distributed tracing for their app to work properly? A: 1. Yes 2. No.  (1 is correct)
+2. Does a user need to modify their app to get distributed tracing for their app to work properly? A: 1. Yes 2. No. (1 is correct)
 
 3. What distributed tracing system does Istio support by default?  A: 1. Zipkin 2. Kibana 3. LogStash 4. Jaeger. (1 and 4 are correct)
 

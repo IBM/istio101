@@ -52,11 +52,11 @@ Example:
 
     The node port in above sample output is `169.60.87.20:31702`.
 
-3. Make note of the IP and node port that you retrieved in the previous step as it will be used to access the Guestbook app in later parts of the course.
+3. Make note of the IP and node port that you retrieved in the previous step as it will be used to access the Guestbook app in later parts of the course. You can create an environment variable called $INGRESS_IP with your IP address.
 
     Example:
     ```
-    http://169.60.72.58:31702
+    export INGRESS_IP=169.60.72.58:31702
     ```
 
 ## **DO NOT RUN THIS, please continue to [exercise-6](../exercise-6/README.md)** (Optional) Set up the Istio Ingress Gateway to work with IBM Cloud Kubernetes Service
