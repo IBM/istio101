@@ -70,9 +70,11 @@ When Envoy proxies establish a connection, they exchange and validate certificat
     ```
 
     Confirm the policy has been created:
-
     ```shell
     kubectl get policies.authentication.istio.io
+    ```
+    Output:
+    ```shell
     NAME              AGE
     mtls-to-analyzer  1m
     ```
@@ -92,6 +94,9 @@ When Envoy proxies establish a connection, they exchange and validate certificat
         tls:
           mode: ISTIO_MUTUAL
     EOF
+    ```
+    Output:
+    ```
     Created config destination-rule/default/route-with-mtls-for-analyzer at revision 3934279
     ```
 
