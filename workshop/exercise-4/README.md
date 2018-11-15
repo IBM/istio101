@@ -40,6 +40,8 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     kubectl get service guestbook -n default
     ```
 
+    Go to this external ip address in the browser to try out your guestbook.
+
     b. For a lite cluster, first, get the worker's public IP:
 
     Example:
@@ -63,6 +65,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     Go to this address in the browser to try out your guestbook.
 
 4. Generate a small load to the app.
+
     ```shell
     while sleep 0.5; do curl http://<guestbook_endpoint/; done
     ```
