@@ -20,6 +20,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     ```
 
 2. Configure Istio to automatically gather telemetry data for services that run in the service mesh.
+
     a. Go back to the plans directory at `istio101/workshop/plans`.
 
     ```shell
@@ -32,11 +33,14 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     ```
 
 3. Obtain the guestbook endpoint to access the guestbook.
+
     a. For a paid cluster, you can access the guestbook via the external IP for your service as guestbook is deployed as a load balancer service. Get the EXTERNAL-IP of the guestbook service via output below:
 
     ```shell
     kubectl get service guestbook -n default
     ```
+
+    Go to this external ip address in the browser to try out your guestbook.
 
     b. For a lite cluster, first, get the worker's public IP:
 
@@ -61,6 +65,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     Go to this address in the browser to try out your guestbook.
 
 4. Generate a small load to the app.
+
     ```shell
     while sleep 0.5; do curl http://<guestbook_endpoint/; done
     ```
