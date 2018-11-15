@@ -163,4 +163,4 @@ If mTLS is working correctly, the Guestbook app should continue to operate as ex
 
 * [Istio Concept](https://istio.io/docs/concepts/security/mutual-tls.html)
 
-## DO NOT USE IT - [Continue to Exercise 8 - Policy Enforcement](../exercise-8/README.md)
+## [Continue to Exercise 8 - Policy Enforcement](../exercise-8/README.md)
