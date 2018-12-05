@@ -19,6 +19,26 @@ In the Guestbook app, there is one service: guestbook. The guestbook service has
 A/B testing is a method of performing identical tests against two separate service versions in order to determine which performs better. To prevent Istio from performing the default routing behavior between the original and modernized guestbook service, define the following rules (found in [istio101/workshop/plans](https://github.com/IBM/istio101/tree/master/workshop/plans)):
 
 ```shell
+kubectl create -f guestbook-destination.yaml
+```
+Let's examine the rule:
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: destination-guestbook
+spec:
+  host: guestbook
+  subsets:
+    - name: v1
+      labels:
+        version: '1.0'
+    - name: v2
+      labels:
+        version: '2.0'
+```
+
+```shell
 kubectl replace -f virtualservice-all-v1.yaml
 ```
 Let's examine the rule:
@@ -37,26 +57,6 @@ spec:
         - destination:
             host: guestbook
             subset: v1
-```
-
-```shell
-kubectl create -f guestbook-destination.yaml
-```
-Let's examine the rule:
-```yaml
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: destination-guestbook
-spec:
-  host: guestbook
-  subsets:
-    - name: v1
-      labels:
-        version: '1.0'
-    - name: v2
-      labels:
-        version: '2.0'
 ```
 
 The `VirtualService` defines a rule that captures all HTTP traffic coming in through the Istio ingress gateway, `guestbook-gateway`, and routes 100% of the traffic to pods of the guestbook service with label "version: v1". A subset or version of a route destination is identified with a reference to a named service subset which must be declared in a corresponding `DestinationRule`. Since there are three instances matching the criteria of hostname `guestbook` and subset `version: v1`, by default Envoy will send traffic to all three instances in a round robin manner. You can view the guestbook service UI using the IP address and port obtained in [Exercise 5](../exercise-5/README.md) and enter it as a URL in Firefox or Chrome web browsers.
