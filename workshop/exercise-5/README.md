@@ -8,7 +8,7 @@ An Ingress Gateway resource can be created to allow external requests through th
 
 1. If you have a paid cluster:
 
-    a. Configure the guestbook default route with the Istio Ingress Gateway. The `guestbook-gateway.yaml` file is in this repository (istio101) in the `workshop/plans` directory
+    a. Configure the guestbook default route with the Istio Ingress Gateway. The `guestbook-gateway.yaml` file is in this repository (istio101) in the `workshop/plans` directory.
 
     ```shell
     kubectl create -f guestbook-gateway.yaml

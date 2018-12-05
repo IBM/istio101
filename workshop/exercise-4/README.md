@@ -87,7 +87,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     ```
 2. In your browser, go to `http://127.0.0.1:16686`
 3. From the **Services** menu, select either the **guestbook** or **analyzer** service.
-4. Scroll to the bottom and click on **Find Traces** button to see traces
+4. Scroll to the bottom and click on **Find Traces** button to see traces.
 
 #### Grafana
 
