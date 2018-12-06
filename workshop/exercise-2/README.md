@@ -30,7 +30,7 @@ In this module, you download and install Istio.
     ```shell
     kubectl apply -f $PWD/install/kubernetes/helm/istio/templates/crds.yaml
     ```
-    
+
 6. Now let's install Istio into the `istio-system` namespace in your Kubernetes cluster:
 
     ```shell
@@ -92,7 +92,7 @@ In this module, you download and install Istio.
     servicegraph-5d64b457b4-z2ctz               1/1       Running     0          5d
     ```
 
-    Before your continue, make sure all the pods are deployed and **`Running`**. If they're in `pending` state, wait a few minutes to let the deployment finish.
+    Before you continue, make sure all the pods are deployed and either in the **`Running`** or **`Completed`** state. If they're in `pending` state, wait a few minutes to let the deployment finish.
 
     Congratulations! You successfully installed Istio into your cluster.
 
