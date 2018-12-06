@@ -66,7 +66,7 @@ When Envoy proxies establish a connection, they exchange and validate certificat
 
     You should see:
     ```shell
-    Created config policy/default/mtls-to-analyzer at revision 3934195
+    policy.authentication.istio.io/mtls-to-analyzer created
     ```
 
     Confirm the policy has been created:
@@ -97,7 +97,7 @@ When Envoy proxies establish a connection, they exchange and validate certificat
     ```
     Output:
     ```
-    Created config destination-rule/default/route-with-mtls-for-analyzer at revision 3934279
+    destinationrule.networking.istio.io/route-with-mtls-for-analyzer created
     ```
 
 ## Verifying the Authenticated Connection
