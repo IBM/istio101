@@ -92,7 +92,7 @@ In this module, you download and install Istio.
     servicegraph-5d64b457b4-z2ctz               1/1       Running     0          5d
     ```
 
-    Before you continue, make sure all the pods are deployed and either in the **`Running`** or **`Completed`** state. If they're in `pending` state, wait a few minutes to let the deployment finish.
+    Before you continue, make sure all the pods are deployed and are either in the **`Running`** or **`Completed`** state. If they're in `pending` state, wait a few minutes to let the deployment finish.
 
     Congratulations! You successfully installed Istio into your cluster.
 
