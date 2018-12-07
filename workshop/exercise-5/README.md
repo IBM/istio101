@@ -30,7 +30,7 @@ An Ingress Gateway resource can be created to allow external requests through th
 
     Example:
     ```
-    export INGRESS_IP=169.61.37.141
+    export INGRESS_IP=169.6.1.1
     ```
 
 2. If you have a lite cluster:
@@ -67,7 +67,7 @@ An Ingress Gateway resource can be created to allow external requests through th
 
     Example:
     ```
-    export INGRESS_IP=169.60.72.58:31702
+    export INGRESS_IP=169.60.87.20:31702
     ```
 
 ## (Optional) Connect Istio Ingress Gateway to the IBM Cloud Kubernetes Service Provided Domain Name
@@ -87,7 +87,7 @@ To use this IBM provided DNS for the Guestbook app, you must set the Kubernetes 
     ```
     Output:
     ```shell
-    Ingress subdomain:	mycluster.us-east.containers.mybluemix.net
+    Ingress subdomain:	mycluster.us-east.containers.appdomain.cloud
     ```
 
 2. Prepend `guestbook.` to the subdomain that you retrieved in the previous step. This new url will serve as `host` in the `guestbook-frontdoor.yaml` file, which you can find and edit in the `istio101/workshop/plans` directory.
