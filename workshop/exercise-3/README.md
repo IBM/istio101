@@ -137,7 +137,7 @@ Watson Tone Analyzer detects the tone from the words that users enter into the G
     ibmcloud resource service-key tone-analyzer-key
     ```
 
-4. Open the `analyzer-deployment.yaml` and find the env section near the end of the file. Replace YOUR_API_KEY with your own API key, and replace YOUR_URL with the url value you saved before. YOUR_URL should look something like `gateway.watsonplatform.net/tone-analyzer/api`. Save the file.
+4. Open the `analyzer-deployment.yaml` and find the env section near the end of the file. Replace YOUR_API_KEY with your own API key, and replace YOUR_URL with the url value you saved before. YOUR_URL should look something like `https://gateway.watsonplatform.net/tone-analyzer/api`. Save the file.
 
 5. Deploy the analyzer pods and service, using the `analyzer-deployment.yaml` and `analyzer-service.yaml` files found in the `guestbook/v2` directory. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
 
