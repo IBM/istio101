@@ -21,13 +21,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 2. Configure Istio to automatically gather telemetry data for services that run in the service mesh.
 
-    a. Go back to the plans directory at `istio101/workshop/plans`.
-
-    ```shell
-    cd ../../plans
-    ```
-
-    b. Create a rule to collect telemetry data.
+    a. Create a rule to collect telemetry data.
     ```shell
     kubectl create -f guestbook-telemetry.yaml
     ```
