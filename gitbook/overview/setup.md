@@ -54,11 +54,6 @@ For the lab we will need a few plugins.
   ibmcloud plugin install container-service
   ```
 
-* container-registry
-
-  ```bash
-  ibmcloud plugin install container-registry
-  ```
 
 ## Install kubectl tooling
 
@@ -77,6 +72,8 @@ For the lab we will need a few plugins.
     sudo port selfupdate
     sudo port install kubectl
     ```
+
+
 * Linux
   * Ubuntu, Debian or HypriotOS
 
@@ -108,6 +105,8 @@ For the lab we will need a few plugins.
     ```bash
     sudo snap install helm --classic
     ```
+
+
 * Windows
   * Powershell
 
@@ -132,35 +131,17 @@ Once Kubernetes is installed, test that the CLI works.
 kubectl version
 ```
 
-## Install Helm
 
-[Install Helm for your OS](https://docs.helm.sh/using_helm/#installing-helm)
+## Clone the repository
 
-* MacOS
-  * Homebrew
-
-    ```bash
-    brew install kubernetes-helm
-    ```
-* Linux
-  * Snap
-
-    ```bash
-    sudo snap install helm --classic
-    ```
-* Windows
-  * Chocolatey
-
-    ```bash
-    choco install kubernetes-helm
-    ```
-
-## Clone the workshop repository
-
-In this step, we'll clone the workshop branch of the repository.
+In this step, we'll clone the istio101 and guestbook repository. Istio101 holds istio related yaml files. Guestbook is the application we will deploy.
 
 ```bash
-git clone --single-branch -b workshop https://github.com/moficodes/innovate-digital-bank.git
+git clone https://github.com/IBM/istio101.git
+```
+
+```bash
+git clone https://github.com/IBM/guestbook.git
 ```
 
 ## Next Steps
