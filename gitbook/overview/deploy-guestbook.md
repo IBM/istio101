@@ -3,19 +3,21 @@
 The Guestbook app is a sample app for users to leave comments. It consists of a web front end, Redis master for storage, and a replicated set of Redis slaves. We will also integrate the app with Watson Tone Analyzer that detects the sentiment in users' comments and replies with emoticons. Here are the steps to deploy the app on your Kubernetes cluster:
 
 ### Download the Guestbook app
-1. Open your preferred terminal and download the Guestbook app from GitHub into the `workshop` directory.
+
+1. If you haven't already on the setup steps, clone the guestbook repository.
 
     ```shell
-    git clone https://github.com/IBM/guestbook.git ../guestbook
+    git clone https://github.com/IBM/guestbook.git
     ```
 
 2. Navigate into the app directory.
 
     ```shell
-    cd ../guestbook/v2
+    cd guestbook/v2
     ```
 
 ### Create a Redis database
+
 The Redis database is a service that you can use to persist the data of your app. The Redis database comes with a master and slave modules.
 
 1. Create the Redis controllers and services for both the master and the slave.
@@ -32,7 +34,9 @@ The Redis database is a service that you can use to persist the data of your app
     ```shell
     kubectl get deployment
     ```
+
     Output:
+
     ```shell
     NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
     redis-master   1         1         1            1           5d
@@ -44,6 +48,7 @@ The Redis database is a service that you can use to persist the data of your app
     ```shell
     kubectl get svc
     ```
+
     Output:
     ```shell
     NAME           TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE

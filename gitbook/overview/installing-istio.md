@@ -1,43 +1,45 @@
 # Exercise 2 - Installing Istio on IBM Cloud Kubernetes Service
 In this module, you download and install Istio.
 
-1.  Either download Istio directly from [https://github.com/istio/istio/releases](https://github.com/istio/istio/releases) or get the latest version by using curl:
+1;  Either download Istio directly from [https://github.com/istio/istio/releases](https://github.com/istio/istio/releases) or get the latest version by using curl:
 
     ```shell
     curl -L https://git.io/getLatestIstio | sh -
     ```
 
-2. Extract the installation files if the script doesn't do it for you.
+> Note : At the time of testing this workshop the latest version of Istio was 1.0.5 If the latest version of Istio updates (which is very possible) it should still work. But in case it doesnt, contact the instructor or download 1.0.5 from the releases.
+
+2; Extract the installation files if the script doesn't do it for you.
 
     ```shell
     tar -xvzf istio-<istio-version>-linux.tar.gz
     ```
 
-3. Add the `istioctl` client to your PATH. The `<version-number>` is in the directory name. For example, run the following command on a MacOS or Linux system:
+3; Add the `istioctl` client to your PATH. The `<version-number>` is in the directory name. For example, run the following command on a MacOS or Linux system:
 
     ```shell
     export PATH=$PWD/istio-<version-number>/bin:$PATH
     ```
 
-4. Change the directory to the Istio file location.
+4; Change the directory to the Istio file location.
 
     ```shell
     cd istio-<version-number>
     ```
 
-5. Install Istio’s Custom Resource Definitions via kubectl apply, and wait a few seconds for the CRDs to be committed in the kube-apiserver:
+5; Install Istio’s Custom Resource Definitions via kubectl apply, and wait a few seconds for the CRDs to be committed in the kube-apiserver:
 
     ```shell
     kubectl apply -f $PWD/install/kubernetes/helm/istio/templates/crds.yaml
     ```
 
-6. Now let's install Istio into the `istio-system` namespace in your Kubernetes cluster:
+6; Now let's install Istio into the `istio-system` namespace in your Kubernetes cluster:
 
     ```shell
     kubectl apply -f $PWD/install/kubernetes/istio-demo.yaml
     ```
 
-7. Ensure that the `istio-*` Kubernetes services are deployed before you continue.
+7; Ensure that the `istio-*` Kubernetes services are deployed before you continue.
 
     ```shell
     kubectl get svc -n istio-system
@@ -67,7 +69,7 @@ In this module, you download and install Istio.
 
   **Note: For Lite clusters, the istio-ingressgateway service will be in `pending` state with no external ip. That is normal.**
 
-8. Ensure the corresponding pods `istio-citadel-*`, `istio-ingressgateway-*`, `istio-pilot-*`, and `istio-policy-*` are all in **`Running`** state before you continue.
+8; Ensure the corresponding pods `istio-citadel-*`, `istio-ingressgateway-*`, `istio-pilot-*`, and `istio-policy-*` are all in **`Running`** state before you continue.
 
     ```shell
     kubectl get pods -n istio-system
@@ -93,5 +95,29 @@ In this module, you download and install Istio.
     ```
 
     Before you continue, make sure all the pods are deployed and are either in the **`Running`** or **`Completed`** state. If they're in `pending` state, wait a few minutes to let the deployment finish.
+
+9; (Optional) We will enable automatic sidecar injection.
+
+    ```bash
+    kubectl label namespace default istio-injection=enabled
+    ```
+
+    To Check if it worked. 
+
+    ```bash
+    kubectl get ns --show-labels
+    ```
+
+    Output:
+
+    ```shell
+    NAME             STATUS    AGE       LABELS
+    default          Active    23d       istio-injection=enabled
+    ibm-cert-store   Active    23d       <none>
+    ibm-system       Active    23d       <none>
+    istio-system     Active    2d        istio-injection=disabled
+    kube-public      Active    23d       <none>
+    kube-system      Active    23d       <none>
+    ```
 
     Congratulations! You successfully installed Istio into your cluster.
