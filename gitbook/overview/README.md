@@ -1,6 +1,6 @@
 # Workshop
 
-## Beyond the Basics: Istio and IBM Cloud Kubernetes Service
+## Beyond the Basics
 
 [Istio](https://www.ibm.com/cloud/info/istio) is an open platform to connect, secure, control and observe microservices, also known as a service mesh, on cloud platforms such as Kubernetes in IBM Cloud Kubernetes Service and VMs. With Istio, You can manage network traffic, load balance across microservices, enforce access policies, verify service identity, secure service communication and observe what exactly is going on with your services.
 
