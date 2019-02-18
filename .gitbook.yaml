@@ -1,0 +1,4 @@
+root: ./gitbook/
+
+structure:
+  readme: gitbook/workshop.md
