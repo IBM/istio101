@@ -178,18 +178,18 @@ Click of View Credentials.
 
 ![name](../.gitbook/assets/view.png)
 
-4. Open the `analyzer-deployment.yaml` and find the env section near the end of the file. Replace YOUR_API_KEY with your own API key, and replace YOUR_URL with the url value you saved before. YOUR_URL should look something like `https://gateway.watsonplatform.net/tone-analyzer/api`. Save the file.
+4 Open the `analyzer-deployment.yaml` and find the env section near the end of the file. Replace YOUR_API_KEY with your own API key, and replace YOUR_URL with the url value you saved before. YOUR_URL should look something like `https://gateway.watsonplatform.net/tone-analyzer/api`. Save the file.
 
 ![name](../.gitbook/assets/analyzer.png)
 
-5. Deploy the analyzer pods and service, using the `analyzer-deployment.yaml` and `analyzer-service.yaml` files found in the `guestbook/v2` directory. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
+5 Deploy the analyzer pods and service, using the `analyzer-deployment.yaml` and `analyzer-service.yaml` files found in the `guestbook/v2` directory. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
 
     ```shell
     kubectl apply -f <(istioctl kube-inject -f analyzer-deployment.yaml)
     kubectl apply -f analyzer-service.yaml
     ```
     
-6. The analyzer service will use IBM Cloud Identity and Access management (IAM) tokens to make authenticated requests to the Tone Analyzer service. IAM authentication uses access tokens for authentication, which are acquired by sending a request to a url with an API key. As a result, we will need to set up egress rules to allow the analyzer service access to those external urls. Apply the egress rules found in the `istio101/workshop/plans` directory.
+6 The analyzer service will use IBM Cloud Identity and Access management (IAM) tokens to make authenticated requests to the Tone Analyzer service. IAM authentication uses access tokens for authentication, which are acquired by sending a request to a url with an API key. As a result, we will need to set up egress rules to allow the analyzer service access to those external urls. Apply the egress rules found in the `istio101/workshop/plans` directory.
 
     ```shell
     cd ../../istio101/workshop/plans
