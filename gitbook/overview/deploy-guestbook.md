@@ -153,27 +153,34 @@ Watson Tone Analyzer detects the tone from the words that users enter into the G
 
 1b. Login to [IBM Cloud Account](cloud.ibm.com). 
 Click on Catalog.
-    ![catalog](../.gitbook/assets/catalog.png)
+
+![catalog](../.gitbook/assets/catalog.png)
 
 Search for tone in the search box and selct `Tone Analyzer`.
-    ![tone](../.gitbook/assets/tone.png)
+
+![tone](../.gitbook/assets/tone.png)
 
 Give it a name, region should be Dallas. Click create.
-    ![name](../.gitbook/assets/name.png)  
+
+![name](../.gitbook/assets/name.png)  
 
 2b. Create Service Key for the service.
 Click on `service credentials` on the left then click `New credential +`
-    ![name](../.gitbook/assets/service.png)
+
+![name](../.gitbook/assets/service.png)
 
 Give the credential a name. Keep the role `Manager` for Service ID select `Auto Generate`
-    ![name](../.gitbook/assets/creds.png)
+
+![name](../.gitbook/assets/creds.png)
 
 3b. To view the credentials. 
 Click of View Credentials.
-    ![name](../.gitbook/assets/view.png)
+
+![name](../.gitbook/assets/view.png)
 
 4. Open the `analyzer-deployment.yaml` and find the env section near the end of the file. Replace YOUR_API_KEY with your own API key, and replace YOUR_URL with the url value you saved before. YOUR_URL should look something like `https://gateway.watsonplatform.net/tone-analyzer/api`. Save the file.
-    ![name](../.gitbook/assets/analyzer.png)
+
+![name](../.gitbook/assets/analyzer.png)
 
 5. Deploy the analyzer pods and service, using the `analyzer-deployment.yaml` and `analyzer-service.yaml` files found in the `guestbook/v2` directory. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
 
