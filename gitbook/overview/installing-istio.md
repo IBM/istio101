@@ -102,14 +102,11 @@ In this module, you download and install Istio.
     kubectl label namespace default istio-injection=enabled
     ```
 
-To Check if it worked.
-
+    To Check if it worked.
     ```shell
     kubectl get ns --show-labels
     ```
-
     Output:
-
     ```shell
     NAME             STATUS    AGE       LABELS
     default          Active    23d       istio-injection=enabled
@@ -120,4 +117,4 @@ To Check if it worked.
     kube-system      Active    23d       <none>
     ```
 
-    Congratulations! You successfully installed Istio into your cluster.
+Congratulations! You successfully installed Istio into your cluster.

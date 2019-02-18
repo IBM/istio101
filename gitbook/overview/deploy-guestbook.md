@@ -64,14 +64,14 @@ The Redis database is a service that you can use to persist the data of your app
     Output:
     ```shell
     NAME                            READY     STATUS    RESTARTS   AGE
-    redis-master-4sswq              1/1       Running   0          5d
-    redis-slave-kj8jp               1/1       Running   0          5d
-    redis-slave-nslps               1/1       Running   0          5d
+    redis-master-4sswq              2/2       Running   0          5d
+    redis-slave-kj8jp               2/2       Running   0          5d
+    redis-slave-nslps               2/2       Running   0          5d
     ```
 
 ## Sidecar injection
 
-In Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using the istioctl CLI tool or automatically using the Istio Initializer. In this exercise, we will use the manual injection. Manual injection modifies the controller configuration, e.g. deployment. It does this by modifying the pod template spec such that all pods for that deployment are created with the injected sidecar.
+In Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using the istioctl CLI tool or automatically using the Istio Initializer. If we followed step 9 in the Setup Steps we should have automatic sidecar injection enabled already. If not we can always inject the sidecar manually.
 
 ## Install the Guestbook app with manual sidecar injection
 
@@ -111,12 +111,15 @@ These commands will inject the Istio Envoy sidecar into the guestbook pods, as w
     Output:
     ```shell
     NAME                            READY     STATUS    RESTARTS   AGE
-    guestbook-v1-89cd4b7c7-frscs    2/2       Running   0          5d
-    guestbook-v1-89cd4b7c7-jn224    2/2       Running   0          5d
-    guestbook-v1-89cd4b7c7-m7hmd    2/2       Running   0          5d
-    guestbook-v2-56d98b558c-7fvd5   2/2       Running   0          5d
-    guestbook-v2-56d98b558c-dshkh   2/2       Running   0          5d
-    guestbook-v2-56d98b558c-mzbxk   2/2       Running   0          5d
+    guestbook-v1-88d7cdfb5-54sp9    2/2       Running   0          3h
+    guestbook-v1-88d7cdfb5-lmnq9    2/2       Running   0          3h
+    guestbook-v1-88d7cdfb5-mt2l9    2/2       Running   0          3h
+    guestbook-v2-597f9cd8b6-b2jj2   2/2       Running   0          3h
+    guestbook-v2-597f9cd8b6-v8vhc   2/2       Running   0          3h
+    guestbook-v2-597f9cd8b6-vrmc4   2/2       Running   0          3h
+    redis-master-67c878bfb4-49dkq   2/2       Running   0          3h
+    redis-slave-5596f694d8-5g5tn    2/2       Running   0          3h
+    redis-slave-5596f694d8-t2vd7    2/2       Running   0          3h
     ```
 
     Note that each guestbook pod has 2 containers in it. One is the guestbook container, and the other is the Envoy proxy sidecar.
@@ -124,25 +127,53 @@ These commands will inject the Istio Envoy sidecar into the guestbook pods, as w
 ### Use Watson Tone Analyzer
 Watson Tone Analyzer detects the tone from the words that users enter into the Guestbook app. The tone is converted to the corresponding emoticons.
 
-1. Create Watson Tone Analyzer in your account.
+#### Do it via the CLI
+
+1a. Create Watson Tone Analyzer in your account.
 
     ```shell
     ibmcloud resource service-instance-create my-tone-analyzer-service tone-analyzer lite us-south
     ```
 
-2. Create the service key for the Tone Analyzer service. This command should output the credentials you just created. You will need the value for **apikey** & **url** later.
+2a. Create the service key for the Tone Analyzer service. This command should output the credentials you just created. You will need the value for **apikey** & **url** later.
 
     ```shell
     ibmcloud resource service-key-create tone-analyzer-key Manager --instance-name my-tone-analyzer-service
     ```
 
-3. If you need to get the service-keys later, you can use the following command:
+3a. If you need to get the service-keys later, you can use the following command:
 
     ```shell
     ibmcloud resource service-key tone-analyzer-key
     ```
 
+
+
+#### Do it from the UI
+
+1b. Login to [IBM Cloud Account](cloud.ibm.com). 
+Click on Catalog.
+    ![catalog](../.gitbook/assets/catalog.png)
+
+Search for tone in the search box and selct `Tone Analyzer`.
+    ![tone](../.gitbook/assets/tone.png)
+
+Give it a name, region should be Dallas. Click create.
+    ![name](../.gitbook/assets/name.png)  
+
+2b. Create Service Key for the service.
+Click on `service credentials` on the left then click `New credential +`
+    ![name](../.gitbook/assets/service.png)
+
+Give the credential a name. Keep the role `Manager` for Service ID select `Auto Generate`
+    ![name](../.gitbook/assets/creds.png)
+
+3b. To view the credentials. 
+Click of View Credentials.
+    ![name](../.gitbook/assets/view.png)
+
 4. Open the `analyzer-deployment.yaml` and find the env section near the end of the file. Replace YOUR_API_KEY with your own API key, and replace YOUR_URL with the url value you saved before. YOUR_URL should look something like `https://gateway.watsonplatform.net/tone-analyzer/api`. Save the file.
+    ![name](../.gitbook/assets/analyzer.png)
 
 5. Deploy the analyzer pods and service, using the `analyzer-deployment.yaml` and `analyzer-service.yaml` files found in the `guestbook/v2` directory. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
 
