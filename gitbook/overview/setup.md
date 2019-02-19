@@ -16,7 +16,7 @@ In this section, you will create your own IBM Cloud account, and then get access
 
 Generally to get started with Kubernetes, the first step is to provision a cluster which can take up to 10 minutes. In addition, free clusters come with limited features and a single worker VM/node. For this workshop, we've created Standard \(paid\) clusters with full Kubernetes functionality.
 
-To get a cluster, head to the [Get Cluster](https://get-cluster.mybluemix.net/) tool.
+To get a cluster, head to the [Get Cluster](https://kubernetes-istio-workshop.mybluemix.net) tool.
 
 ![](../.gitbook/assets/image%20%281%29.png)
 
