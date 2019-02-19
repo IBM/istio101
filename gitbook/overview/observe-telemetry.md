@@ -28,7 +28,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 3. Obtain the guestbook endpoint to access the guestbook.
 
-    a. For a paid cluster, you can access the guestbook via the external IP for your service as guestbook is deployed as a load balancer service. Get the EXTERNAL-IP of the guestbook service via output below:
+    For a standard cluster, you can access the guestbook via the external IP for your service as guestbook is deployed as a load balancer service. Get the EXTERNAL-IP of the guestbook service via output below:
 
     ```shell
     kubectl get service guestbook -n default
@@ -36,37 +36,14 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
     Go to this external ip address in the browser to try out your guestbook.
 
-    b. For a lite cluster, first, get the worker's public IP:
+![browser-guestbook](../.gitbook/assets/browser-app.png)
+
+4. Generate a small load to the app. 
 
     ```shell
-    ibmcloud cs workers <cluster_name>
+    for i in {1..50}; do sleep 0.5; curl -s <guestbook-url> | grep "<title>" ; done
     ```
-    Output:
-    ```shell
-    ID             Public IP      Private IP      Machine Type        State    Status   Zone    Version
-    kube-xxx       169.60.87.20   10.188.80.69    u2c.2x4.encrypted   normal   Ready    wdc06   1.9.7_1510*
-    ```
-
-    Second, get the node port:
-
-    ```shell
-    kubectl get svc guestbook -n default
-    ```
-    Output:
-    ```shell
-    NAME        TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
-    guestbook   LoadBalancer   172.21.134.6   pending        80:31702/TCP   4d
-    ```
-
-    The node port in above sample output is `169.60.87.20:31702`
-
-    Go to this address in the browser to try out your guestbook.
-
-4. Generate a small load to the app.
-
-    ```shell
-    while sleep 0.5; do curl http://<guestbook_endpoint/; done
-    ```
+     We did a grep on the `<title>` from the curl response to show that the loadbalancer was sending the traffic to both v1 and v2 of the app.
 
 ## View guestbook telemetry data
 
@@ -77,11 +54,18 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     ```shell
     kubectl port-forward -n istio-system \
       $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath='{.items[0].metadata.name}') \
-      16686:16686 &
+      16686:16686
     ```
 2. In your browser, go to `http://127.0.0.1:16686`
+
+![jaeger](../.gitbook/assets/jaegar.png)
+
 3. From the **Services** menu, select either the **guestbook** or **analyzer** service.
 4. Scroll to the bottom and click on **Find Traces** button to see traces.
+
+![jaeger-trace](../.gitbook/assets/jaegar-trace.png)
+
+5. ctrl-c on the terminal when you are done looking at the traces.
 
 #### Grafana
 
@@ -95,6 +79,8 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 2. Browse to http://localhost:3000 and navigate to the Istio Mesh Dashboard by clicking on the Home menu on the top left.
 
+![graphana](../.gitbook/assets/graphana.png)
+
 #### Prometheus
 
 1. Establish port forwarding from local port 9090 to the Prometheus instance.
@@ -105,6 +91,8 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
       9090:9090 &
     ```
 2. Browse to http://localhost:9090/graph, and in the “Expression” input box, enter: `istio_request_byte_count`. Click Execute.
+
+![prometheus](../.gitbook/assets/prometheus.png)
 
 #### Service Graph
 

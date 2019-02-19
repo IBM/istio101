@@ -2,6 +2,8 @@
 
 The Guestbook app is a sample app for users to leave comments. It consists of a web front end, Redis master for storage, and a replicated set of Redis slaves. We will also integrate the app with Watson Tone Analyzer that detects the sentiment in users' comments and replies with emoticons. Here are the steps to deploy the app on your Kubernetes cluster:
 
+![guestbook](../.gitbook/assets/guesbook.jpg)
+
 ### Download the Guestbook app
 
 1. If you haven't already on the setup steps, clone the guestbook repository.
@@ -196,4 +198,4 @@ Click of View Credentials.
     kubectl apply -f analyzer-egress.yaml
     ```
 
-Great! Your guestbook app is up and running. In Exercise 4, you'll be able to see the app in action by directly accessing the service endpoint. You'll also be able to view Telemetry data for the app.
+Great! Your guestbook app is up and running.

@@ -147,4 +147,3 @@ git clone https://github.com/IBM/guestbook.git
 ## Next Steps
 
 You've completed the pre-requisite steps to start the lab. In the next step, you'll configure access to your cluster.
-
