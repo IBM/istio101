@@ -9,7 +9,7 @@
   * [Metrics and Tracing](overview/observe-telemetry.md)
   * [Expose with Istio Gateway](overview/expose-service.md)
   * [Traffic Management](overview/traffic-management.md)
-* [Optional Steps](lab-2.md)
-  * [Secure Service](overview/secure-service.md)
-  * [Enforce Policies](overview/enforce-policy.md)
+* [Optional Steps](lab-2/README.md)
+  * [Secure Service](lab-2/secure-service.md)
+  * [Enforce Policies](lab-2/enforce-policy.md)
 

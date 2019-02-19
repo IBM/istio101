@@ -24,12 +24,11 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
    ```
 
    c. Copy and paste the output export command from the previous step to set the `KUBECONFIG` environment variable and configure your CLI to run `kubectl` commands against your cluster. Example:  
-   `export KUBECONFIG=/Users...`   
+   `export KUBECONFIG=/Users...`
 
+> Note: Every time you log in to the IBM Cloud Kubernetes Service CLI to work with the cluster, you must run these commands to set the path to the cluster's configuration file as a session variable. The Kubernetes CLI uses this variable to find a local configuration file and certificates that are necessary to connect with the cluster in IBM Cloud.
 
-   > Note: Every time you log in to the IBM Cloud Kubernetes Service CLI to work with the cluster, you must run these commands to set the path to the cluster's configuration file as a session variable. The Kubernetes CLI uses this variable to find a local configuration file and certificates that are necessary to connect with the cluster in IBM Cloud.
-
-3. Get basic information about your cluster and its worker nodes. This information can help you manage your cluster and troubleshoot issues.
+1. Get basic information about your cluster and its worker nodes. This information can help you manage your cluster and troubleshoot issues.
 
    a. View details of your cluster.
 
@@ -44,7 +43,7 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
    ibmcloud ks worker-get <worker_ID>
    ```
 
-4. Validate access to your cluster.
+2. Validate access to your cluster.
 
    a. View nodes in the cluster.
 

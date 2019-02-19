@@ -18,7 +18,7 @@ Generally to get started with Kubernetes, the first step is to provision a clust
 
 To get a cluster, head to the [Get Cluster](https://get-cluster.mybluemix.net/) tool.
 
-![](../.gitbook/assets/grantcluster.png)
+![](https://github.com/moficodes/istio101/tree/287839800ef9645b7134078650fe3644c04d1128/gitbook/.gitbook/assets/grantcluster.png)
 
 Use the key `ibmcloudroadshow` and input the email you used to sign up for IBM Cloud. Ensure that US South is chosen as we've created clusters in the Dallas data center for this lab.
 
@@ -54,7 +54,6 @@ For the lab we will need a few plugins.
   ibmcloud plugin install container-service
   ```
 
-
 ## Install kubectl tooling
 
 [Install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to enable access to your cluster.
@@ -72,8 +71,6 @@ For the lab we will need a few plugins.
     sudo port selfupdate
     sudo port install kubectl
     ```
-
-
 * Linux
   * Ubuntu, Debian or HypriotOS
 
@@ -105,8 +102,6 @@ For the lab we will need a few plugins.
     ```bash
     sudo snap install helm --classic
     ```
-
-
 * Windows
   * Powershell
 
@@ -131,7 +126,6 @@ Once Kubernetes is installed, test that the CLI works.
 kubectl version
 ```
 
-
 ## Clone the repository
 
 In this step, we'll clone the istio101 and guestbook repository. Istio101 holds istio related yaml files. Guestbook is the application we will deploy.
@@ -147,3 +141,4 @@ git clone https://github.com/IBM/guestbook.git
 ## Next Steps
 
 You've completed the pre-requisite steps to start the lab. In the next step, you'll configure access to your cluster.
+
