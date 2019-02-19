@@ -20,7 +20,7 @@ To get a cluster, head to the [Get Cluster](https://get-cluster.mybluemix.net/) 
 
 ![](../.gitbook/assets/image%20%281%29.png)
 
-Use the key `ibmcloudroadshow` and input the email you used to sign up for IBM Cloud. Ensure that US South is chosen as we've created clusters in the Dallas data center for this lab.
+Use the key `istio_rocks_2019` and input the email you used to sign up for IBM Cloud. Ensure that US South is chosen as we've created clusters in the Dallas data center for this lab.
 
 ## Install IBM Cloud CLI
 
