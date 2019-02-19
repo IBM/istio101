@@ -139,7 +139,7 @@ Kiali is an open-source project that installs on top of Istio to visualize your 
     IMAGE_PULL_POLICY_TOKEN="imagePullPolicy: Always" envsubst | kubectl create -n istio-system -f -
     ```
 
-> For mac users when the above commands are run you could see an error for `envsubst`. [This Stackoverflow Thread will solve this problem](https://stackoverflow.com/a/23622446/10272405)
+> For mac users when the above commands are run you could see an error for `envsubst`. [This Stackoverflow Thread](https://stackoverflow.com/a/23622446/10272405) should solve the problem.
 
 
 2. Establish port forwarding from local port 8084.
