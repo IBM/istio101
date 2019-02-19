@@ -6,13 +6,13 @@ An Ingress Gateway resource can be created to allow external requests through th
 
 ### Expose the Guestbook app with Ingress Gateway
 
-    a. Configure the guestbook default route with the Istio Ingress Gateway. The `guestbook-gateway.yaml` file is in this repository (istio101) in the `workshop/plans` directory.
+1. Configure the guestbook default route with the Istio Ingress Gateway. The `guestbook-gateway.yaml` file is in this repository (istio101) in the `workshop/plans` directory.
 
     ```shell
     kubectl create -f guestbook-gateway.yaml
     ```
 
-    b. Get the **EXTERNAL-IP** of the Istio Ingress Gateway.
+2. Get the **EXTERNAL-IP** of the Istio Ingress Gateway.
 
     ```shell
     kubectl get service istio-ingressgateway -n istio-system
@@ -24,7 +24,7 @@ An Ingress Gateway resource can be created to allow external requests through th
     2d
     ```
 
-    c. Make note of the external IP address that you retrieved in the previous step, as it will be used to access the Guestbook app in later parts of the course. You can create an environment variable called $INGRESS_IP with your IP address.
+3. Make note of the external IP address that you retrieved in the previous step, as it will be used to access the Guestbook app in later parts of the course. You can create an environment variable called $INGRESS_IP with your IP address.
 
     Example:
     ```
