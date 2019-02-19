@@ -7,7 +7,7 @@ In this module, you download and install Istio.
     curl -L https://git.io/getLatestIstio | sh -
     ```
 
-> Note : At the time of testing this workshop the latest version of Istio was 1.0.5 If the latest version of Istio updates (which is very possible) it should still work. But in case it doesn't, contact the instructor or download 1.0.5 from the releases.
+> Note : At the time of testing this workshop the latest version of Istio was 1.0.6 If the latest version of Istio updates (which is very possible) it should still work. But in case it doesn't, contact the instructor or download 1.0.6 from the releases.
 
 2. Extract the installation files if the script doesn't do it for you.
 
