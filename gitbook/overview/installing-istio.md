@@ -13,19 +13,19 @@ In this module, you download and install Istio.
 1. Extract the installation files if the script doesn't do it for you.
 
    ```text
-    tar -xvzf istio-<istio-version>-linux.tar.gz
+    tar -xvzf istio-1.0.6-linux.tar.gz
    ```
 
 2. Add the `istioctl` client to your PATH. The `<version-number>` is in the directory name. For example, run the following command on a MacOS or Linux system:
 
    ```text
-    export PATH=$PWD/istio-<version-number>/bin:$PATH
+    export PATH=$PWD/istio-1.0.6/bin:$PATH
    ```
 
 3. Change the directory to the Istio file location.
 
    ```text
-    cd istio-<version-number>
+    cd istio-1.0.6
    ```
 
 4. Install Istio’s Custom Resource Definitions via kubectl apply, and wait a few seconds for the CRDs to be committed in the kube-apiserver:
