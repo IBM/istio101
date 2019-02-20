@@ -16,141 +16,109 @@ A [DestinationRule](https://istio.io/docs/reference/config/istio.networking.v1al
 
 A [ServiceEntry](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#ServiceEntry) configuration enables services within the mesh to access a service not necessarily managed by Istio. The rule describes the endpoints, ports and protocols of a white-listed set of mesh-external domains and IP blocks that services in the mesh are allowed to access.
 
-## The Guestbook app
+## The Bookinfo app
 
-In the Guestbook app, there is one service: guestbook. The guestbook service has two distinct versions: the base version \(version 1\) and the modernized version \(version 2\). Each version of the service has three instances based on the number of replicas in [guestbook-deployment.yaml](https://github.com/linsun/examples/blob/master/guestbook-go/guestbook-deployment.yaml) and [guestbook-v2-deployment.yaml](https://github.com/linsun/examples/blob/master/guestbook-go/guestbook-v2-deployment.yaml). By default, prior to creating any rules, Istio will route requests equally across version 1 and version 2 of the guestbook service and their respective instances in a round robin manner. However, new versions of a service can easily introduce bugs to the service mesh, so following A/B Testing and Canary Deployments is good practice.
+Guest book app was interesting and allowed us to see few of the istio features like egress and metrics and such. But to totally get the routing power of istio we will make use of the official istio app Bookinfo. If you have  gone through the istio docs you may have seen this app.
 
-### A/B testing with Istio
+If you want to clear your cluster and remove the Guestbook app for now you can run the following script from the `guestbook/v2` folder.
 
-A/B testing is a method of performing identical tests against two separate service versions in order to determine which performs better. To prevent Istio from performing the default routing behavior between the original and modernized guestbook service, define the following rules \(found in [istio101/workshop/plans](https://github.com/IBM/istio101/tree/master/workshop/plans)\):
+{% code-tabs %}
+{% code-tabs-item title="clean.sh" %}
+```bash
+ #!/bin/bash
+ kubectl delete -f redis-master-deployment.yaml
+ kubectl delete -f redis-master-service.yaml
+ kubectl delete -f redis-slave-deployment.yaml
+ kubectl delete -f redis-slave-service.yaml
+
+ kubectl delete -f ../v1/guestbook-deployment.yaml
+ kubectl delete -f guestbook-deployment.yaml
+
+ kubectl delete -f guestbook-service.yaml
+
+ kubectl delete -f analyzer-deployment.yaml
+ kubectl delete -f analyzer-service.yaml
+
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+and from the istio101/workshop/plans folder run the following 
+
+{% code-tabs %}
+{% code-tabs-item title="clean-plans.sh" %}
+```bash
+kubectl delete -f guestbook-gateway.yaml
+kubectl get gateways.networking.istio.io
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+In the install istio step we downloaded the `istio-1.0.6` folder. Go to that folder. The rest of the traffic management stuff will be run from there.
+
+### App Overview
+
+
+
+The Bookinfo application is broken into four separate microservices:
+
+* `productpage`. The `productpage` microservice calls the `details` and `reviews` microservices to populate the page.
+* `details`. The `details` microservice contains book information.
+* `reviews`. The `reviews` microservice contains book reviews. It also calls the `ratings` microservice.
+* `ratings`. The `ratings` microservice contains book ranking information that accompanies a book review.
+
+There are 3 versions of the `reviews` microservice:
+
+* Version v1 doesn’t call the `ratings` service.
+* Version v2 calls the `ratings` service, and displays each rating as 1 to 5 black stars.
+* Version v3 calls the `ratings` service, and displays each rating as 1 to 5 red stars.
+
+![](../.gitbook/assets/image%20%284%29.png)
+
+## Deploying the app
+
+```bash
+kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+```
+
+The command above deploys following pods
 
 ```text
-kubectl create -f guestbook-destination.yaml
+NAME                             READY     STATUS    RESTARTS   AGE
+details-v1-6764bbc7f7-qx9lq      2/2       Running   0          5m
+productpage-v1-54b8b9f55-l2n48   2/2       Running   0          5m
+ratings-v1-7bc85949-gxdpt        2/2       Running   0          5m
+reviews-v1-fdbf674bb-29cnw       2/2       Running   0          5m
+reviews-v2-5bdc5877d6-2jwc2      2/2       Running   0          5m
+reviews-v3-dd846cc78-fgxzx       2/2       Running   0          5m
 ```
 
-Let's examine the rule:
+We would like to access the app from outside the cluster like from our browser or curl from terminal. We define a Istio Gateway for that.
 
-```yaml
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: destination-guestbook
-spec:
-  host: guestbook
-  subsets:
-    - name: v1
-      labels:
-        version: '1.0'
-    - name: v2
-      labels:
-        version: '2.0'
+```bash
+kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
 ```
 
-```text
-kubectl replace -f virtualservice-all-v1.yaml
+Confirm the gateway was created by running `kubectl get gateway`
+
+Lets find out Ingress Host and Ingress Port.
+
+```bash
+export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
 ```
 
-Let's examine the rule:
+Now lets combine this two to find out gateway url.
 
-```yaml
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: virtual-service-guestbook
-spec:
-  hosts:
-    - '*'
-  gateways:
-    - guestbook-gateway
-  http:
-    - route:
-        - destination:
-            host: guestbook
-            subset: v1
+```bash
+export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
 ```
 
-The `VirtualService` defines a rule that captures all HTTP traffic coming in through the Istio ingress gateway, `guestbook-gateway`, and routes 100% of the traffic to pods of the guestbook service with label "version: v1". A subset or version of a route destination is identified with a reference to a named service subset which must be declared in a corresponding `DestinationRule`. Since there are three instances matching the criteria of hostname `guestbook` and subset `version: v1`, by default Envoy will send traffic to all three instances in a round robin manner. You can view the guestbook service UI using the IP address and port obtained in [Exercise 5](https://github.com/moficodes/istio101/tree/12e72c45e55b4a37638f8cd217128b951b989af6/gitbook/exercise-5/README.md) and enter it as a URL in Firefox or Chrome web browsers.
+### Confirm the app is running
 
-To enable the Istio service mesh for A/B testing against the new service version, modify the original `VirtualService` rule:
 
-```text
-kubectl replace -f virtualservice-test.yaml
-```
 
-Let's examine the rule:
-
-```yaml
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: virtual-service-guestbook
-spec:
-  hosts:
-    - '*'
-  gateways:
-    - guestbook-gateway
-  http:
-    - match:
-        - headers:
-            user-agent:
-              regex: '.*Firefox.*'
-      route:
-        - destination:
-            host: guestbook
-            subset: v2
-    - route:
-        - destination:
-            host: guestbook
-            subset: v1
-```
-
-In Istio `VirtualService` rules, there can be only one rule for each service and therefore when defining multiple [HTTPRoute](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#HTTPRoute) blocks, the order in which they are defined in the yaml matters. Hence, the original `VirtualService` rule is modified rather than creating a new rule. With the modified rule, incoming requests originating from `Firefox` browsers will go to the newer version of guestbook. All other requests fall-through to the next block, which routes all traffic to the original version of guestbook.
-
-![](../.gitbook/assets/screen-shot-2019-02-19-at-10.44.39-pm.png)
-
-In exercise 3, we set up some egress rules to allow the guestbook service to call the Watson Tone Analyzer service created in Deploy Guestbook step. By default Istio blocks calls to services outside the service mesh. In order for calls to reach the Watson service, we applied the `VirtualService` and `ServiceEntry` found in `/istio101/workshop/plans/analyzer-egress.yaml`.
-
-The `ServiceEntry` defines addresses and ports services within the mesh are allowed to make requests to. If two browsers are available on your system, observe the modernized guestbook service in Firefox and the original guestbook service in any other browser.
-
-### Canary deployment
-
-In `Canary Deployments`, newer versions of services are incrementally rolled out to users to minimize the risk and impact of any bugs introduced by the newer version. To begin incrementally routing traffic to the newer version of the guestbook service, modify the original `VirtualService` rule:
-
-```text
-kubectl replace -f virtualservice-80-20.yaml
-```
-
-Let's examine the rule:
-
-```yaml
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: virtual-service-guestbook
-spec:
-  hosts:
-    - '*'
-  gateways:
-    - guestbook-gateway
-  http:
-    - route:
-        - destination:
-            host: guestbook
-            subset: v1
-          weight: 80
-        - destination:
-            host: guestbook
-            subset: v2
-          weight: 20
-```
-
-In the modified rule, the routed traffic is split between two different subsets of the guestbook service. In this manner, traffic to the modernized version 2 of guestbook is controlled on a percentage basis to limit the impact of any unforeseen bugs. This rule can be modified over time until eventually all traffic is directed to the newer version of the service.
-
-You can see this in action by going to the ingress ip address \(that you saved in exercise 5\) in your browser. Ensure that you are using a hard refresh \(command + Shift + R on Mac or Ctrl + F5 on windows\) to remove any browser caching. You should notice that the guestbook should swap between V1 or V2 at about the weight you specified.
-
-If you have a paid cluster, you can also access the guestbook app via the subdomain you saved in exercise 5.
-
-### Implementing circuit breakers with destination rules
+## Implementing circuit breakers with destination rules
 
 Istio `DestinationRules` allow users to configure Envoy's implementation of [circuit breakers](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/circuit_breaking). Circuit breakers are critical for defining the behavior for service-to-service communication in the service mesh. In the event of a failure for a particular service, circuit breakers allow users to set global defaults for failure recovery on a per service and/or per service version basis. Users can apply a [traffic policy](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#TrafficPolicy) at the top level of the `DestinationRule` to create circuit breaker settings for an entire service, or it can be defined at the subset level to create settings for a particular version of a service.
 
