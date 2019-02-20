@@ -12,4 +12,5 @@
 * [Optional Steps](lab-2/README.md)
   * [Secure Service](lab-2/secure-service.md)
   * [Enforce Policies](lab-2/enforce-policy.md)
+* [Knative: What, Why and How](https://www.meetup.com/ibmcodenyc/events/258674314/)
 

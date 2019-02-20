@@ -49,7 +49,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
  for i in {1..50}; do sleep 0.5; curl -s $GUESTBOOK_URL | grep "<title>" ; done
 ```
 
-We did a grep on the `<title>` from the curl response to show that the loadbalancer was sending the traffic to both v1 and v2 of the app.
+We did a grep on the `<title>` from the curl response to show that the loadbalancer was sending the traffic to both `v1` and `v2` of the app.
 
 ## View guestbook telemetry data
 

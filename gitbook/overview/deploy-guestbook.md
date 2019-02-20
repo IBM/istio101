@@ -201,5 +201,5 @@ Give the credential a name. Keep the role `Manager` for Service ID select `Auto 
     kubectl apply -f analyzer-egress.yaml
 ```
 
-Great! Your guestbook app is up and running.
+Great! Your guestbook app is up and running. 
 

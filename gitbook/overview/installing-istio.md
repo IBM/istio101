@@ -96,7 +96,7 @@ In this module, you download and install Istio.
 
    Before you continue, make sure all the pods are deployed and are either in the `Running` or `Completed` state. If they're in `pending` state, wait a few minutes to let the deployment finish.
 
-8. \(Optional\) We will enable automatic sidecar injection.
+8. We will enable automatic sidecar injection.
 
    ```text
     kubectl label namespace default istio-injection=enabled

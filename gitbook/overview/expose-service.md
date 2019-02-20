@@ -36,6 +36,8 @@ An Ingress Gateway resource can be created to allow external requests through th
     export INGRESS_IP=169.6.1.1
    ```
 
+4. You could look at your guestbook service and and see what port its running on. You can access your service using  `INGRESS_IP/INGRESS_PORT` where INGRESS\_PORT is the port of your service.
+
 ## References:
 
 [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) [Istio Ingress](https://istio.io/docs/tasks/traffic-management/ingress.html)
