@@ -35,17 +35,21 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     kubectl get service guestbook -n default
    ```
 
-   Go to this external ip address in the browser to try out your guestbook.
-
-![browser-guestbook](../.gitbook/assets/browser-app%20%281%29.png)
-
-1. Generate a small load to the app.
-
-   ```text
-    for i in {1..50}; do sleep 0.5; curl -s <guestbook-url> | grep "<title>" ; done
+   ```bash
+   export GUESTBOOK_URL=$(kl get svc guestbook -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
    ```
 
-   We did a grep on the `<title>` from the curl response to show that the loadbalancer was sending the traffic to both v1 and v2 of the app.
+4.  Go to this external ip address in the browser to try out your guestbook.
+
+![](../.gitbook/assets/browser-app%20%281%29.png)
+
+5. Generate a small load to the app.
+
+```text
+ for i in {1..50}; do sleep 0.5; curl -s $GUESTBOOK_URL | grep "<title>" ; done
+```
+
+We did a grep on the `<title>` from the curl response to show that the loadbalancer was sending the traffic to both v1 and v2 of the app.
 
 ## View guestbook telemetry data
 
