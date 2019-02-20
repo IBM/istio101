@@ -53,7 +53,7 @@ We did a grep on the `<title>` from the curl response to show that the loadbalan
 
 ## View guestbook telemetry data
 
-#### Jaeger
+### Jaeger
 
 1. Establish port forwarding from local port 16686 to the Tracing instance:
 
@@ -74,7 +74,7 @@ We did a grep on the `<title>` from the curl response to show that the loadbalan
 
 1. ctrl-c on the terminal when you are done looking at the traces.
 
-#### Grafana
+### Grafana
 
 1. Establish port forwarding from local port 3000 to the Grafana instance:
 
@@ -90,7 +90,7 @@ We did a grep on the `<title>` from the curl response to show that the loadbalan
 
 1. ctrl-c on the terminal when you are done looking at the graph.
 
-#### Prometheus
+### Prometheus
 
 1. Establish port forwarding from local port 9090 to the Prometheus instance.
 
@@ -106,7 +106,7 @@ We did a grep on the `<title>` from the curl response to show that the loadbalan
 
 1. ctrl-c on the terminal when you are done looking at the logs.
 
-#### Service Graph
+### Service Graph
 
 1. Establish port forwarding from local port 8088 to the Service Graph instance:
 
@@ -120,7 +120,7 @@ We did a grep on the `<title>` from the curl response to show that the loadbalan
 
 ![service-logs](../.gitbook/assets/service-logs%20%281%29.png)
 
-#### Kiali
+### Kiali
 
 Kiali is an open-source project that installs on top of Istio to visualize your service mesh. It provides deeper insight into how your microservices interact with one another, and provides features such as circuit breakers and request rates for your services.
 
@@ -161,7 +161,10 @@ Kiali is an open-source project that installs on top of Istio to visualize your 
 
 2. Go to [http://localhost:8084](http://localhost:8084) to access kiali dashboard. Use admin/admin as username and password.
 3. Click the "Graph" tab on the left side to see the a visual service graph of the various services in your Istio mesh. You can see request rates as well by clicking the "Edge Labels" tab and choosing "Traffic rate per second".
-4. When done ctrl-c on terminal to close connection.
+
+![](../.gitbook/assets/image.png)
+
+4. On the terminal ctrl-c to close connection.
 
 ## Understand what happened
 

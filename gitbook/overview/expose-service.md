@@ -4,7 +4,7 @@ The components deployed on the service mesh by default are not exposed outside t
 
 An Ingress Gateway resource can be created to allow external requests through the Istio Ingress Gateway to the backing services.
 
-![](../.gitbook/assets/image%20%282%29.png)
+![](../.gitbook/assets/image%20%284%29.png)
 
 ### Expose the Guestbook app with Ingress Gateway
 
@@ -46,7 +46,7 @@ The Ingress resource provides IBM Cloud users with a secure, reliable, and scala
 
 To use this IBM provided DNS for the Guestbook app, you must set the Kubernetes Ingress application load balancer \(ALB\) to route traffic to the Istio Ingress Gateway.
 
-![](../.gitbook/assets/image.png)
+![](../.gitbook/assets/image%20%282%29.png)
 
 1. Let's first check the IBM Ingress subdomain information.
 

@@ -18,7 +18,7 @@ Generally to get started with Kubernetes, the first step is to provision a clust
 
 To get a cluster, head to the [Get Cluster](https://kubernetes-istio-workshop.mybluemix.net) tool.
 
-![](../.gitbook/assets/image%20%281%29.png)
+![](../.gitbook/assets/image%20%283%29.png)
 
 Use the key `istio_rocks_2019` and input the email you used to sign up for IBM Cloud. Ensure that US South is chosen as we've created clusters in the Dallas data center for this lab.
 
