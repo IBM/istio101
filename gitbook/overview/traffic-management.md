@@ -357,6 +357,18 @@ Istio `DestinationRules` allow users to configure Envoy's implementation of [cir
 
 Depending on whether a service handles [HTTP](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ConnectionPoolSettings.HTTPSettings) requests or [TCP](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ConnectionPoolSettings.TCPSettings) connections, `DestinationRules` expose a number of ways for Envoy to limit traffic to a particular service as well as define failure recovery behavior for services initiating the connection to an unhealthy service.
 
+## Clean Up
+
+For the rest of the workshop we won't use the Bookinfo app. So it might be a good idea to cleanup.
+
+Delete the routing rules and terminate the application pods, run the following shell script from `istio-1.0.6`
+
+folder.
+
+```text
+./samples/bookinfo/platform/kube/cleanup.sh
+```
+
 ## Further reading
 
 * [Istio Concept](https://istio.io/docs/concepts/traffic-management/)
