@@ -100,7 +100,7 @@ We did a grep on the `<title>` from the curl response to show that the loadbalan
       9090:9090
    ```
 
-2. Browse to [http://localhost:9090/graph](http://localhost:9090/graph), and in the “Expression” input box, enter: `istio_request_byte_count`. Click Execute.
+2. Browse to [http://localhost:9090/graph](http://localhost:9090/graph), and in the “Expression” input box, enter: `istio_request_bytes_count`. Click Execute.
 
 ![prometheus](../.gitbook/assets/prometheus%20%281%29.png)
 
