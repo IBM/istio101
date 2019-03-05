@@ -12,5 +12,4 @@
   * [Expose with Istio Gateway](lab-2/expose-service.md)
   * [Secure Service](lab-2/secure-service.md)
   * [Enforce Policies](lab-2/enforce-policy.md)
-* [Knative: What, Why and How](https://www.meetup.com/ibmcodenyc/events/258674314/)
 
