@@ -10,7 +10,7 @@ In this section, you will create your own IBM Cloud account, and then get access
 
 ## Create your IBM Cloud account
 
-[Sign up for IBM Cloud](https://ibm.biz/Bd2Gpd)
+[Sign up for IBM Cloud](https://ibm.biz/Bd2LH7)
 
 ## Get a Kubernetes Cluster
 
