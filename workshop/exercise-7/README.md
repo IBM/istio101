@@ -49,20 +49,20 @@ When Envoy proxies establish a connection, they exchange and validate certificat
 
     Define mTLS authentication policy for the analyzer service:
 
-    ```shell
-    cat <<EOF | kubectl create -f -
-    apiVersion: authentication.istio.io/v1alpha1
-    kind: Policy
-    metadata:
-      name: mtls-to-analyzer
-      namespace: default
-    spec:
-      targets:
-      - name: analyzer
-      peers:
-      - mtls:
-    EOF
-    ```
+```shell
+cat <<EOF | kubectl create -f -
+apiVersion: authentication.istio.io/v1alpha1
+kind: Policy
+metadata:
+  name: mtls-to-analyzer
+  namespace: default
+spec:
+  targets:
+  - name: analyzer
+  peers:
+  - mtls:
+EOF
+```
 
     You should see:
     ```shell
@@ -81,20 +81,20 @@ When Envoy proxies establish a connection, they exchange and validate certificat
 
 3. Enable mTLS from guestbook using a Destination rule
 
-    ```shell
-    cat <<EOF | kubectl create -f -
-    apiVersion: networking.istio.io/v1alpha3
-    kind: DestinationRule
-    metadata:
-      name: route-with-mtls-for-analyzer
-      namespace: default
-    spec:
-      host: "analyzer.default.svc.cluster.local"
-      trafficPolicy:
-        tls:
-          mode: ISTIO_MUTUAL
-    EOF
-    ```
+```shell
+cat <<EOF | kubectl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: route-with-mtls-for-analyzer
+  namespace: default
+spec:
+  host: "analyzer.default.svc.cluster.local"
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+EOF
+```
     Output:
     ```
     destinationrule.networking.istio.io/route-with-mtls-for-analyzer created
@@ -102,46 +102,8 @@ When Envoy proxies establish a connection, they exchange and validate certificat
 
 ## Verifying the Authenticated Connection
 
-If mTLS is working correctly, the Guestbook app should continue to operate as expected, without any user visible impact. Istio will automatically add (and manage) the required certificates and private keys. To confirm their presence in the Envoy containers, do the following:
+If mTLS is working correctly, the Guestbook app should continue to operate as expected, without any user visible impact. Istio will automatically add (and manage) the required certificates and private keys. 
 
-1. Get the name of a guestbook pod. Make sure the pod is “Running”.
-
-    ```shell
-    kubectl get pods -l app=guestbook
-    ```
-    Output:
-    ```shell
-    NAME                            READY     STATUS    RESTARTS   AGE
-    guestbook-v2-784546fbb9-299jz   2/2       Running   0          13h
-    guestbook-v2-784546fbb9-hsbnq   2/2       Running   0          13h
-    guestbook-v2-784546fbb9-lcxdz   2/2       Running   0          13h
-    ```
-
-2. SSH into the Envoy container. Make sure to change the pod name into the corresponding one on your system. This command will execute into istio-proxy container (sidecar) of the pod.
-
-    ```shell
-    kubectl exec -it guestbook-v2-xxxxxxxx -c istio-proxy /bin/bash
-    ```
-
-3. Verify that the certificate and keys are present.
-
-    ```shell
-    ls /etc/certs/
-    ```
-
-    You should see the following (plus some others):
-
-    ```shell
-    cert-chain.pem   key.pem   root-cert.pem
-    ```
-
-    Note that `cert-chain.pem` is Envoy’s public certificate (i.e., presented to the peer), and `key.pem` is the corresponding private key. The `root-cert.pem` file is Citadel's root certificate, used to verify peer certificates.
-
-4. Exit the container.
-
-    ``shell
-    exit
-    ```
 
 ## Quiz
 
