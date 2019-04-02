@@ -143,23 +143,25 @@ for file in ${mdFiles}; do
 
     # An external href (ie. starts with http)
     if [ "${ref:0:4}" == "http" ]; then
-      try=0
-      while true ; do
-        if curl -f -s -k --connect-timeout 10 ${ref} > /dev/null 2>&1 ; then
-          break
-        fi
-        let try=try+1
-        if [ ${try} -eq ${maxRetries} ]; then
-          extra=""
-          if [ ${try} -gt 1 ]; then
-            extra="(tried ${try} times) "
+      if [ "${ref:8:16}" != "localhost"]; then
+        try=0
+        while true ; do
+          if curl -f -s -k --connect-timeout 10 ${ref} > /dev/null 2>&1 ; then
+            break
           fi
-          echo $file: Can\'t load url: ${ref} ${extra} | tee -a ${tmp}3
-          break
-        fi
-        sleep 1
-      done
-      continue
+          let try=try+1
+          if [ ${try} -eq ${maxRetries} ]; then
+            extra=""
+            if [ ${try} -gt 1 ]; then
+              extra="(tried ${try} times) "
+            fi
+            echo $file: Can\'t load url: ${ref} ${extra} | tee -a ${tmp}3
+            break
+          fi
+          sleep 1
+        done
+        continue
+      fi
     fi
 
     # Skip "mailto:" refs
