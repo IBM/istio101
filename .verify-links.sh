@@ -144,7 +144,7 @@ for file in ${mdFiles}; do
 
     # An external href (ie. starts with http)
     if [ "${ref:0:4}" == "http" ]; then
-      if [ "${ref:0:16}" != "http://localhost"]; then
+      if [ "${ref:0:16}" == 'http://localhost' ]; then
         continue
       else 
         try=0
