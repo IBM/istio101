@@ -141,9 +141,12 @@ for file in ${mdFiles}; do
     # Show all hrefs - mainly for verifying in our tests
     debug "Checking: '$ref'"
 
+
     # An external href (ie. starts with http)
     if [ "${ref:0:4}" == "http" ]; then
-      if [ "${ref:8:16}" != "localhost"]; then
+      if [ "${ref:0:16}" != "http://localhost"]; then
+        continue
+      else 
         try=0
         while true ; do
           if curl -f -s -k --connect-timeout 10 ${ref} > /dev/null 2>&1 ; then
