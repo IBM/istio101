@@ -4,7 +4,7 @@ Backend systems such as access control systems, telemetry capturing systems, quo
 
 Istio Mixer provides a generic intermediation layer between app code and infrastructure backends. Its design moves policy decisions out of the app layer and into configuration instead, under operator control. Instead of having app code integrate with specific backends, the app code instead does a fairly simple integration with Mixer, and Mixer takes responsibility for interfacing with the backend systems.
 
-Given that individual infrastructure backends each have different interfaces and operational models, Mixer needs custom code to deal with each and we call these custom bundles of code **adapters**. Here are some built-in adapters: denier, prometheus,  memquota, and stackdriver.
+Given that individual infrastructure backends each have different interfaces and operational models, Mixer needs custom code to deal with each and we call these custom bundles of code **adapters**. Some built-in adapters include denier, prometheus,  memquota, and stackdriver.
 
 In this exercise we'll use the denier adapter.
 
@@ -59,6 +59,8 @@ In this exercise we'll use the denier adapter.
     ```
 
     You should see the error message `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
+
+    You can also try visiting the guestbook app in the browser, and you should see the same error message.
 
 3. Clean up the rule.
 

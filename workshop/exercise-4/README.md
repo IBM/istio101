@@ -66,7 +66,13 @@ Read more about [Jaeger](https://www.jaegertracing.io/docs/)
       3000:3000 &
     ```
 
-2. Browse to http://localhost:3000 and navigate to the `Istio Service Dashboard` by clicking on the Home menu on the top left.
+2. Browse to http://localhost:3000 and navigate to the `Istio Service Dashboard` by clicking on the Home menu on the top left, then Istio, then Istio Service Dashboard.
+
+3. Select guestbook in the Service drop down.
+
+4. In a different tab, visit the guestbook application and refresh the page multiple times to generate some load, or run the load script you used previously. Switch back to the Grafana tab.
+
+This Grafana dashboard provides metrics for each workload. Explore the other dashboard provided as well. 
 
 Read more about [Grafana](http://docs.grafana.org/).
 
@@ -81,9 +87,13 @@ Read more about [Grafana](http://docs.grafana.org/).
     ```
 2. Browse to http://localhost:9090/graph, and in the “Expression” input box, enter: `istio_request_bytes_count`. Click Execute and then select Graph.
 
+3. Then try another query: `istio_requests_total{destination_service="guestbook.default.svc.cluster.local", destination_version="2.0"}`
+
 #### Kiali
 
-1. Establish port forwarding from local port 9090 to the Prometheus instance.
+Kiali is an open-source project that installs on top of Istio to visualize your service mesh. It provides deeper insight into how your microservices interact with one another, and provides features such as circuit breakers and request rates for your services
+
+1. Establish port forwarding from local port 20001 to the Kiali instance.
 
     ```shell
     kubectl -n istio-system port-forward \
@@ -92,8 +102,9 @@ Read more about [Grafana](http://docs.grafana.org/).
     ```
 
 2. Browse to [http://localhost:20001/kiali/](http://localhost:20001/kiali/), and login with `admin` for both username and password.
-3. Select Graph and then choose `default` namespace.
-4. Use the `Edge Labels` dropdown and select `Traffic rate per second`
+3. Select Graph and then choose `default` namespace. You should see a visual service graph of the various services in your Istio mesh.
+4. Use the `Edge Labels` dropdown and select `Traffic rate per second` to see the request rates as well.
+5. Kiali has a number of views to help you visualize your services. Click through the vairous tabs to explore the service graph, and the various views for workloads, applications, and services.
 
 ## Understand what happened
 
