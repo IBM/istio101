@@ -1,6 +1,6 @@
 # Exercise 3 - Deploy the Guestbook app with Istio Proxy
 
-The Guestbook app is a sample app for users to leave comments. It consists of a web front end, Redis master for storage, and a replicated set of Redis slaves. We will also integrate the app with Watson Tone Analyzer that detects the sentiment in users' comments and replies with emoticons. Here are the steps to deploy the app on your Kubernetes cluster:
+The Guestbook app is a sample app for users to leave comments. It consists of a web front end, Redis master for storage, and a replicated set of Redis slaves. We will also integrate the app with Watson Tone Analyzer which detects the sentiment in users' comments and replies with emoticons.
 
 ### Download the Guestbook app
 1. Clone the Guestbook app into the `workshop` directory.
@@ -70,7 +70,7 @@ In Kubernetes, a sidecar is a utility container in the pod, and its purpose is t
 
 ## Install the Guestbook app with manual sidecar injection
 
-1. Inject the Istio Envoy sidecar into the guestbook pods, and deploy the Guestbook app on to the Kubernetes cluster.
+1. Inject the Istio Envoy sidecar into the guestbook pods, and deploy the Guestbook app on to the Kubernetes cluster. Deploy both the v1 and v2 versions of the app:
 
     ```shell
     kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml)
