@@ -13,10 +13,12 @@ In this workshop we will see how istio can be used to manage traffic in a demo a
 ## Lab Instructors
 
 * Mofizur Rahman, IBM Developer Advocate \([@moficodes](https://twitter.com/moficodes)\)
+* Spencer Krum, IBM Developer Advocate \([@nibalizer](https://twitter.com/nibalizer)\)
 
 ## Agenda
 
-* 6:30 PM - 7:00 PM Meet and Greet
-* 7:00 PM - 7:20 PM Setup Steps
-* 7:20 PM - 8:20 PM Workshop
+* 3:00 PM - 3:20 PM Intro to Istio
+* 3:00 PM - 3:30 PM Setup
+* 3:30 PM - 4:40 PM Workshop
+* 4:40 PM - 5:00 Q/A
 

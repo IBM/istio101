@@ -10,7 +10,7 @@ In this section, you will create your own IBM Cloud account, and then get access
 
 ## Create your IBM Cloud account
 
-[Sign up for IBM Cloud](https://ibm.biz/Bd2LH7)
+[Sign up for IBM Cloud](https://cloud.ibm.com/registration?cm_mmc=Email_Events-_-Developer_Innovation-_-WW_WW-_-Mofizur-Rahman\skrum\devopsdaysmidwest2019-stlouis-4152019-4162019\Apr2019\conference\global-devadvgrp\st.louis\unitedstates\cloud\containers\databases\java\microservices\node-js\paas\python\manage-microservices-traffic-using-istio&cm_mmca1=000019RS&cm_mmca2=10004805&cm_mmca3=M99938765&cvosrc=email.Events.M99938765&cvo_campaign=000019RS)
 
 ## Get a Kubernetes Cluster
 
@@ -20,7 +20,7 @@ To get a cluster, head to the [Get Cluster](https://kubernetes-istio-workshop.my
 
 ![](../.gitbook/assets/image%20%287%29.png)
 
-Use the key `istio_rocks_2019` and input the email you used to sign up for IBM Cloud. Ensure that US South is chosen as we've created clusters in the Dallas data center for this lab.
+Use the key `istio_rocks_2019` and input the email you used to sign up for IBM Cloud. Ensure that US East is chosen as we've created clusters in the Washington data center for this lab.
 
 ## Install IBM Cloud CLI
 
