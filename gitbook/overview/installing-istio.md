@@ -5,45 +5,42 @@ In this module, you download and install Istio.
 1. Either download Istio directly from [https://github.com/istio/istio/releases](https://github.com/istio/istio/releases) or get the latest version by using curl:
 
    ```text
-   curl -L https://git.io/getLatestIstio | sh -
+   curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.1.2 sh -
    ```
 
-> Note : At the time of testing this workshop the latest version of Istio was 1.0.6 If the latest version of Istio updates \(which is very possible\) it should still work. But in case it doesn't, contact the instructor or download 1.0.6 from the releases.
+> Note : At the time of testing this workshop the latest version of Istio was 1.1.2 If the latest version of Istio updates \(which is very possible\) it should still work. But in case it doesn't, contact the instructor or download 1.1.2 from the releases.
 
-1. Extract the installation files if the script doesn't do it for you.
+
+
+1. Add the `istioctl` client to your PATH. The `<version-number>` is in the directory name. For example, run the following command on a MacOS or Linux system:
 
    ```text
-    tar -xvzf istio-1.0.6-linux.tar.gz
+   export PATH="$PATH:$PWD/istio-1.1.2/bin"
    ```
 
-2. Add the `istioctl` client to your PATH. The `<version-number>` is in the directory name. For example, run the following command on a MacOS or Linux system:
+2. Change the directory to the Istio file location.
 
    ```text
-    export PATH=$PWD/istio-1.0.6/bin:$PATH
+   cd istio-1.1.2
    ```
 
-3. Change the directory to the Istio file location.
+3. Install Istio’s Custom Resource Definitions via kubectl apply, and wait a few seconds for the CRDs to be committed in the kube-apiserver:
 
    ```text
-    cd istio-1.0.6
+   for i in install/kubernetes/helm/istio-init/files/crd*yaml; do kubectl apply -f $i; done
    ```
 
-4. Install Istio’s Custom Resource Definitions via kubectl apply, and wait a few seconds for the CRDs to be committed in the kube-apiserver:
+4. Now let's install Istio into the `istio-system` namespace in your Kubernetes cluster:
 
    ```text
-    kubectl apply -f $PWD/install/kubernetes/helm/istio/templates/crds.yaml
+   kubectl apply -f install/kubernetes/istio-demo.yaml
    ```
 
-5. Now let's install Istio into the `istio-system` namespace in your Kubernetes cluster:
+5. Ensure that the `istio-*` Kubernetes services are deployed before you continue.
 
    ```text
-    kubectl apply -f $PWD/install/kubernetes/istio-demo.yaml
-   ```
 
-6. Ensure that the `istio-*` Kubernetes services are deployed before you continue.
-
-   ```text
-    kubectl get svc -n istio-system
+   kubectl get svc -n istio-system
    ```
 
    ```text
@@ -69,7 +66,7 @@ In this module, you download and install Istio.
 
    **Note: For Lite clusters, the istio-ingressgateway service will be in** `pending` **state with no external ip. That is normal.**
 
-7. Ensure the corresponding pods `istio-citadel-*`, `istio-ingressgateway-*`, `istio-pilot-*`, and `istio-policy-*` are all in `Running` state before you continue.
+6. Ensure the corresponding pods `istio-citadel-*`, `istio-ingressgateway-*`, `istio-pilot-*`, and `istio-policy-*` are all in `Running` state before you continue.
 
    ```text
     kubectl get pods -n istio-system
@@ -96,7 +93,7 @@ In this module, you download and install Istio.
 
    Before you continue, make sure all the pods are deployed and are either in the `Running` or `Completed` state. If they're in `pending` state, wait a few minutes to let the deployment finish.
 
-8. We will enable automatic sidecar injection.
+7. We will enable automatic sidecar injection.
 
    ```text
     kubectl label namespace default istio-injection=enabled
