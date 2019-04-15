@@ -369,7 +369,7 @@ Depending on whether a service handles [HTTP](https://istio.io/docs/reference/co
 
 For the rest of the workshop we won't use the Bookinfo app. So it might be a good idea to cleanup.
 
-Delete the routing rules and terminate the application pods, run the following shell script from `istio-1.0.6`
+Delete the routing rules and terminate the application pods, run the following shell script from `istio-1.1.2`
 
 folder.
 
