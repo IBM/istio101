@@ -191,9 +191,63 @@ Give the credential a name. Keep the role `Manager` for Service ID select `Auto 
 6 The analyzer service will use IBM Cloud Identity and Access management \(IAM\) tokens to make authenticated requests to the Tone Analyzer service. IAM authentication uses access tokens for authentication, which are acquired by sending a request to a url with an API key. As a result, we will need to set up egress rules to allow the analyzer service access to those external urls. Apply the egress rules found in the `istio101/workshop/plans` directory.
 
 ```text
-    cd ../../istio101/workshop/plans
-    kubectl apply -f analyzer-egress.yaml
+cd ../../istio101/workshop/plans
+kubectl apply -f analyzer-egress.yaml
 ```
 
+{% code-tabs %}
+{% code-tabs-item title="analyzer-egress.yaml" %}
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: iam-watson
+spec:
+  hosts:
+  - logs.us-south.logging.cloud.ibm.com
+  - "*.cloud.ibm.com"
+  - iam.bluemix.net
+  - "*.watsonplatform.net"
+  ports:
+  - number: 443
+    name: https
+    protocol: HTTPS
+  resolution: NONE
+  location: MESH_EXTERNAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: iam-watson
+spec:
+  hosts:
+  - iam.bluemix.net
+  - "*.watsonplatform.net"
+  tls:
+  - match:
+    - port: 443
+      sni_hosts:
+      - iam.bluemix.net
+    route:
+    - destination:
+        host: iam.bluemix.net
+        port:
+          number: 443
+      weight: 100
+  - match:
+    - port: 443
+      sni_hosts:
+      - "*.watsonplatform.net"
+    route:
+    - destination:
+        host: "*.watsonplatform.net"
+        port:
+          number: 443
+      weight: 100
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+  
 Great! Your guestbook app is up and running. 
 
