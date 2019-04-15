@@ -74,10 +74,6 @@ The Redis database is a service that you can use to persist the data of your app
     redis-slave-nslps               2/2       Running   0          5d
    ```
 
-## Sidecar injection
-
-In Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using the istioctl CLI tool or automatically using the Istio Initializer. If we followed step 9 in the Setup Steps we should have automatic sidecar injection enabled already. If not we can always inject the sidecar manually.
-
 ## Install the Guestbook app with manual sidecar injection
 
 1. Inject the Istio Envoy sidecar into the guestbook pods, and deploy the Guestbook app on to the Kubernetes cluster.
