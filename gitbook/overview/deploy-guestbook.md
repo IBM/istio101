@@ -74,27 +74,25 @@ The Redis database is a service that you can use to persist the data of your app
     redis-slave-nslps               2/2       Running   0          5d
    ```
 
-## Install the Guestbook app with manual sidecar injection
+## Install the Guestbook app
 
-1. Inject the Istio Envoy sidecar into the guestbook pods, and deploy the Guestbook app on to the Kubernetes cluster.
+1.  Deploy the Guestbook app on to the Kubernetes cluster.
 
    ```text
-    kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml)
-    kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml)
+    kubectl apply -f ../v1/guestbook-deployment.yaml
+    kubectl apply -f guestbook-deployment.yaml
    ```
 
-These commands will inject the Istio Envoy sidecar into the guestbook pods, as well as deploy the Guestbook app on to the Kubernetes cluster. Here we have two versions of deployments, a new version \(`v2`\) in the current directory, and a previous version \(`v1`\) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
-
-1. Create the guestbook service.
+2. Create the guestbook service.
 
    ```text
-    kubectl create -f guestbook-service.yaml
+   kubectl create -f guestbook-service.yaml
    ```
 
-2. Verify that the service was created.
+3. Verify that the service was created.
 
    ```text
-    kubectl get svc
+   kubectl get svc
    ```
 
    Output:
@@ -106,10 +104,10 @@ These commands will inject the Istio Envoy sidecar into the guestbook pods, as w
 
    **Note: For Lite clusters, the external ip will not be available. That is expected.**
 
-3. Verify that the pods are up and running.
+4. Verify that the pods are up and running.
 
    ```text
-    kubectl get pods
+   kubectl get pods
    ```
 
    Output:
@@ -186,7 +184,7 @@ Give the credential a name. Keep the role `Manager` for Service ID select `Auto 
 5 Deploy the analyzer pods and service, using the `analyzer-deployment.yaml` and `analyzer-service.yaml` files found in the `guestbook/v2` directory. The analyzer service talks to Watson Tone Analyzer to help analyze the tone of a message.
 
 ```text
-    kubectl apply -f <(istioctl kube-inject -f analyzer-deployment.yaml)
+    kubectl apply -f analyzer-deployment.yaml
     kubectl apply -f analyzer-service.yaml
 ```
 
