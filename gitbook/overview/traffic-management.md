@@ -16,6 +16,10 @@ A [DestinationRule](https://istio.io/docs/reference/config/istio.networking.v1al
 
 A [ServiceEntry](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#ServiceEntry) configuration enables services within the mesh to access a service not necessarily managed by Istio. The rule describes the endpoints, ports and protocols of a white-listed set of mesh-external domains and IP blocks that services in the mesh are allowed to access.
 
+### Gateways
+
+A [Gateway](https://istio.io/docs/reference/config/networking/v1alpha3/gateway/) configures a load balancer for HTTP/TCP traffic operating at the edge of the mesh, most commonly to enable ingress traffic for an application.
+
 ## Sidecar injection
 
 In Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using the istioctl CLI tool or automatically using the Istio Initializer. If we followed step 9 in the Setup Steps we should have automatic sidecar injection enabled already. If not we can always inject the sidecar manually.
