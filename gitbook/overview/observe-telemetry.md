@@ -106,60 +106,18 @@ We did a grep on the `<title>` from the curl response to show that the loadbalan
 
 1. ctrl-c on the terminal when you are done looking at the logs.
 
-### Service Graph
-
-1. Establish port forwarding from local port 8088 to the Service Graph instance:
-
-   ```text
-    kubectl -n istio-system port-forward \
-      $(kubectl -n istio-system get pod -l app=servicegraph -o jsonpath='{.items[0].metadata.name}') \
-      8088:8088
-   ```
-
-2. Browse to [http://localhost:8088/dotviz](http://localhost:8088/dotviz)
-
-![service-logs](../.gitbook/assets/service-logs%20%281%29.png)
-
 ### Kiali
 
 Kiali is an open-source project that installs on top of Istio to visualize your service mesh. It provides deeper insight into how your microservices interact with one another, and provides features such as circuit breakers and request rates for your services.
 
-1. To get started with Kiali, you'll need to install it to your cluster. Run the full script below:
-
-   ```text
-    JAEGER_URL="http://jaeger-query-istio-system.127.0.0.1.nip.io"
-    GRAFANA_URL="http://grafana-istio-system.127.0.0.1.nip.io"
-    VERSION_LABEL="v0.10.0"
-
-    curl https://raw.githubusercontent.com/kiali/kiali/${VERSION_LABEL}/deploy/kubernetes/kiali-configmap.yaml | \
-    VERSION_LABEL=${VERSION_LABEL} \
-    JAEGER_URL=${JAEGER_URL}  \
-    ISTIO_NAMESPACE=istio-system  \
-    GRAFANA_URL=${GRAFANA_URL} envsubst | kubectl create -n istio-system -f -
-
-    curl https://raw.githubusercontent.com/kiali/kiali/${VERSION_LABEL}/deploy/kubernetes/kiali-secrets.yaml | \
-    VERSION_LABEL=${VERSION_LABEL} envsubst | kubectl create -n istio-system -f -
-
-    curl https://raw.githubusercontent.com/kiali/kiali/${VERSION_LABEL}/deploy/kubernetes/kiali.yaml | \
-    VERSION_LABEL=${VERSION_LABEL}  \
-    IMAGE_NAME=kiali/kiali \
-    IMAGE_VERSION=${VERSION_LABEL}  \
-    NAMESPACE=istio-system  \
-    VERBOSE_MODE=4  \
-    IMAGE_PULL_POLICY_TOKEN="imagePullPolicy: Always" envsubst | kubectl create -n istio-system -f -
-   ```
-
-> For mac users when the above commands are run you could see an error for `envsubst`. [This Stackoverflow Thread](https://stackoverflow.com/a/23622446/10272405) should solve the problem.
-
 1. Establish port forwarding from local port 8084.
 
    ```text
-    kubectl -n istio-system port-forward \
-     $(kubectl -n istio-system get pod -l app=kiali -o jsonpath='{.items[0].metadata.name}') \
-     8084:20001
+    kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=kiali -o jsonpath='{.items[0].metadata.name}') 20001:20001
+
    ```
 
-2. Go to [http://localhost:8084](http://localhost:8084) to access kiali dashboard. Use admin/admin as username and password.
+2. Go to [http://localhost:20001/kiali/console](http://localhost:20001/kiali/console) to access kiali dashboard. Use admin/admin as username and password.
 3. Click the "Graph" tab on the left side to see the a visual service graph of the various services in your Istio mesh. You can see request rates as well by clicking the "Edge Labels" tab and choosing "Traffic rate per second".
 
 ![](../.gitbook/assets/image.png)
