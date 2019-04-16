@@ -126,6 +126,10 @@ Once Kubernetes is installed, test that the CLI works.
 kubectl version
 ```
 
+## If you are having Trouble
+
+[https://cloudshell-kube101.us-south.cf.cloud.ibm.com/](https://cloudshell-kube101.us-south.cf.cloud.ibm.com/)
+
 ## Clone the repository
 
 In this step, we'll clone the istio101 and guestbook repository. Istio101 holds istio related yaml files. Guestbook is the application we will deploy.
