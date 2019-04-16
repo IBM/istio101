@@ -17,8 +17,8 @@ In this workshop we will see how istio can be used to manage traffic in a demo a
 
 ## Agenda
 
-* 3:00 PM - 3:20 PM Intro to Istio
-* 3:00 PM - 3:30 PM Setup
-* 3:30 PM - 4:40 PM Workshop
+* 3:00 PM - 3:20 PM Setup
+* 3:20 PM - 3:40 PM Kubernetes Shallow Dive
+* 3:50 PM - 4:40 PM Istio Goodness
 * 4:40 PM - 5:00 Q/A
 
