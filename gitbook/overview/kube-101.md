@@ -1,4 +1,4 @@
-# Kube 101?
+# Kube Shallow Dive
 
 ## Deploy your application
 
