@@ -5,6 +5,7 @@
   * [Setup Steps](overview/setup.md)
   * [Access Your Cluster](overview/access-your-cluster.md)
   * [Install Istio](overview/installing-istio.md)
+  * [Basic Kubernetes](overview/basic-kubernetes.md)
   * [Traffic Management](overview/traffic-management.md)
   * [Deploy Guestbook](overview/deploy-guestbook.md)
   * [Expose with Istio Gateway](overview/expose-service.md)
