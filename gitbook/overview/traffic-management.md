@@ -230,7 +230,7 @@ When a new service is created we sometimes want to test the service by allowing 
 1. To get started, run this command to route all traffic to the `v1` version of each microservice. 
 
    ```text
-   $ kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
+   kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
    ```
 
 2. Open the Bookinfo site in your browser. The URL is `http://$GATEWAY_URL/productpage`, where `$GATEWAY_URL` is the External IP address of the ingress, as explained in the [Bookinfo](https://istio.io/docs/examples/bookinfo/#determining-the-ingress-ip-and-port) doc.
@@ -240,7 +240,7 @@ When a new service is created we sometimes want to test the service by allowing 
 3. Transfer 50% of the traffic from `reviews:v1` to `reviews:v3` with the following command:
 
    ```text
-   $ kubectl apply -f samples/bookinfo/networking/virtual-service-reviews-50-v3.yaml
+   kubectl apply -f samples/bookinfo/networking/virtual-service-reviews-50-v3.yaml
    ```
 
    Wait a few seconds for the new rules to propagate. Now if you refresh a few times, you should see it change between no stars and red stars.
@@ -252,7 +252,7 @@ When a new service is created we sometimes want to test the service by allowing 
 5. Assuming you decide that the `reviews:v3` microservice is stable, you can route 100% of the traffic to `reviews:v3` by applying this virtual service:
 
 ```text
-$ kubectl apply -f samples/bookinfo/networking/virtual-service-reviews-v3.yaml
+kubectl apply -f samples/bookinfo/networking/virtual-service-reviews-v3.yaml
 ```
 
 Now when you refresh the `/productpage` you will always see book reviews with _red_ colored star ratings for each review.
@@ -272,7 +272,7 @@ We can set request timeouts to service. Microservices take a fail fast approach 
 Initialize the application version routing by running the following command:
 
 ```text
-$ kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
+kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
 ```
 
 ### Request timeouts <a id="request-timeouts"></a>
