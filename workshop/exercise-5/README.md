@@ -43,7 +43,7 @@ You can run the IBM Cloud Kubernetes Service ALB, an API gateway of your choice,
     
 Let's leverage this feature with Istio ingress gateway:
 
-1. Let's first check if you have any host names for your cluster:
+1. Let's first check if you have any NLB host names for your cluster:
 
     ```shell
     ibmcloud ks nlb-dnss --cluster <cluster_name>
@@ -62,7 +62,7 @@ Let's leverage this feature with Istio ingress gateway:
     ibmcloud ks nlb-dns-create --cluster <cluster_name> --ip <istio-ingressgateway_external_ip>
     ```
 
-4. List the host names for your cluster:
+4. List the NLB host names for your cluster:
 
     ```shell
     ibmcloud ks nlb-dnss --cluster <cluster_name>
@@ -80,7 +80,7 @@ Let's leverage this feature with Istio ingress gateway:
 
     Example:
     ```
-    http://mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud
+    curl http://mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud
     ```
 
 6. Enable health check of the NLB host for Istio ingress gateway:
@@ -95,7 +95,7 @@ Let's leverage this feature with Istio ingress gateway:
     ibmcloud ks nlb-dns-monitor-status --cluster <cluster_name>
     ```
     
-    After waiting for a bit, you should start to see the health monitor's status changed to Enabled
+    After waiting for a bit, you should start to see the health monitor's status changed to Enabled.
     
     Example output:
     ```
