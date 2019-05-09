@@ -33,9 +33,9 @@ export INGRESS_IP=169.6.1.1
 
 ## Connect Istio Ingress Gateway to the IBM Cloud Kubernetes Service NLB Host Name
 
-NLB host names are the DNS host names you can generate for each IBM Cloud Kubernetes deployment exposed with the NLB (LoadBalancer service). These host names come with SSL certificate, the DNS registration, and health checks so you can benefit from them for any deployments that you expose via the NLB on IBM Cloud Kubernetes Service.
+NLB host names are the DNS host names you can generate for each IBM Cloud Kubernetes deployment exposed with the Network LoadBalancer(NLB) service. These host names come with SSL certificate, the DNS registration, and health checks so you can benefit from them for any deployments that you expose via the NLB on IBM Cloud Kubernetes Service.
 
-This means you can run the IBM Cloud Kubernetes Service ALB, an API gateway of your choice, an Istio ingress gateway, and an MQTT server in parallel in your IBM Cloud Kubernetes Service cluster. Each one will have its own:
+You can run the IBM Cloud Kubernetes Service ALB, an API gateway of your choice, an Istio ingress gateway, and an MQTT server in parallel in your IBM Cloud Kubernetes Service cluster. Each one will have its own:
 
     1. Publicly available wildcard host name
     2. Wildcard SSL certificate associated with the host name
@@ -76,11 +76,33 @@ Hostname                                                                        
 mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud   ["169.1.1.1"]   None             created           mycluster-85f044fc29ce613c264409c04a76c95d-0001   
     ```
 
-5. Make note of the NLB host name, as it will be used to access your Guestbook app in later parts of the course.
+5. Make note of the NLB host name (<nlb_host_name>), as it will be used to access your Guestbook app in later parts of the course.
 
     Example:
     ```
     http://mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud
+    ```
+
+6. Enable health check of the NLB host for Istio ingress gateway:
+
+    ```shell
+    ibmcloud ks nlb-dns-monitor-configure --cluster <cluster_name> --nlb-host <nlb_host_name> --type HTTP --description "Istio ingress gateway health check" --path "/healthz/ready" --port 15020 --enable
+    ```
+
+7. Monitor the health check of the NLB host for Istio ingress gateway:
+
+    ```shell
+    ibmcloud ks nlb-dns-monitor-status --cluster <cluster_name>
+    ```
+    
+    After waiting for a bit, you should start to see the health monitor's status changed to Enabled
+    
+    Example output:
+    ```
+    Retrieving health check monitor statuses for NLB pods...
+OK
+Hostname                                                                             IP              Health Monitor   H.Monitor Status   
+mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud   169.1.1.1   Enabled          Healthy
     ```
 
 Congratulations! You extended the base Ingress features by providing a DNS entry to the Istio service.
@@ -88,5 +110,6 @@ Congratulations! You extended the base Ingress features by providing a DNS entry
 ## References:
 [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 [Istio Ingress](https://istio.io/docs/tasks/traffic-management/ingress.html)
+[Bring your own ALB](https://www.ibm.com/blogs/bluemix/2019/04/bring-your-own-alb-dns-with-health-checks-and-ssl-certificates-beta/)
 
 #### [Continue to Exercise 6 - Traffic Management](../exercise-6/README.md)
