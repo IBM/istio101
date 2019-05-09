@@ -71,9 +71,9 @@ Let's leverage this feature with Istio ingress gateway:
     Example output:
     ```
    Retrieving host names, certificates, IPs, and health check monitors for network load balancer (NLB) pods in cluster <cluster_name>...
-OK
-Hostname                                                                             IP(s)               Health Monitor   SSL Cert Status   SSL Cert Secret Name   
-mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud   ["169.1.1.1"]   None             created           mycluster-85f044fc29ce613c264409c04a76c95d-0001   
+    OK
+    Hostname                                                                             IP(s)               Health Monitor   SSL Cert Status   SSL Cert Secret Name   
+    mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud   ["169.1.1.1"]   None             created           mycluster-85f044fc29ce613c264409c04a76c95d-0001   
     ```
 
 5. Make note of the NLB host name (<nlb_host_name>), as it will be used to access your Guestbook app in later parts of the course.
@@ -99,10 +99,10 @@ mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.clo
     
     Example output:
     ```
-    Retrieving health check monitor statuses for NLB pods...
-OK
-Hostname                                                                             IP              Health Monitor   H.Monitor Status   
-mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud   169.1.1.1   Enabled          Healthy
+        Retrieving health check monitor statuses for NLB pods...
+    OK
+    Hostname                                                                             IP              Health Monitor   H.Monitor Status   
+    mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud   169.1.1.1   Enabled          Healthy
     ```
 
 Congratulations! You extended the base Ingress features by providing a DNS entry to the Istio service.
