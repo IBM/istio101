@@ -31,68 +31,56 @@ Example:
 export INGRESS_IP=169.6.1.1
 ```
 
-## Connect Istio Ingress Gateway to the IBM Cloud Kubernetes Service Provided Domain Name
+## Connect Istio Ingress Gateway to the IBM Cloud Kubernetes Service NLB Host Name
 
-Standard IBM Cloud Kubernetes Clusters can expose applications deployed within your cluster using a Kubernetes Ingress application load balancer (ALB). IBM Cloud Kubernetes Service automatically creates a highly available ALB for your cluster and assigns a unique public route to it in the format: <cluster_name>.<region_or_zone>.containers.appdomain.cloud.
+NLB host names are the DNS host names you can generate for each IBM Cloud Kubernetes deployment exposed with the NLB (LoadBalancer service). These host names come with SSL certificate, the DNS registration, and health checks so you can benefit from them for any deployments that you expose via the NLB on IBM Cloud Kubernetes Service.
 
-The Ingress resource provides IBM Cloud users with a secure, reliable, and scalable network stack to distribute incoming network traffic to apps in IBM Cloud. You can enhance the IBM-provided Ingress application load balancer by adding annotations. Learn more about [Ingress for IBM Cloud Kubernetes Service](https://console.bluemix.net/docs/containers/cs_ingress.html#ingress).
+This means you can run the IBM Cloud Kubernetes Service ALB, an API gateway of your choice, an Istio ingress gateway, and an MQTT server in parallel in your IBM Cloud Kubernetes Service cluster. Each one will have its own:
 
-To use this IBM provided DNS for the Guestbook app, you must set the Kubernetes Ingress application load balancer (ALB) to route traffic to the Istio Ingress Gateway.
+    1. Publicly available wildcard host name
+    2. Wildcard SSL certificate associated with the host name
+    3. Health checks that you can configure if you use multizone deployments. 
+    
+Let's leverage this feature with Istio ingress gateway:
 
-1. Let's first check the IBM Ingress subdomain information.
-
-    ```shell
-    ibmcloud ks cluster-get <cluster_name>
-    ```
-    Output:
-    ```shell
-    Ingress subdomain:	mycluster.us-east.containers.appdomain.cloud
-    ```
-
-2. Prepend `guestbook.` to the subdomain that you retrieved in the previous step. This new url will serve as `host` in the `guestbook-frontdoor.yaml` file, which you can find and edit in the `istio101/workshop/plans` directory.
-
-    The file should now look something like this:
-
-    ```yaml
-    apiVersion: extensions/v1beta1
-    kind: Ingress
-    metadata:
-      name: guestbook-ingress
-      namespace: istio-system
-    spec:
-      rules:
-        - host: guestbook.mycluster.us-east.containers.appdomain.cloud
-          http:
-            paths:
-              - path: /
-                backend:
-                  serviceName: istio-ingressgateway
-                  servicePort: 80
-    ```
-
-3. Create the Ingress with the IBM-provided subdomain.
+1. Let's first check if you have any host names for your cluster:
 
     ```shell
-    kubectl apply -f guestbook-frontdoor.yaml
+    ibmcloud ks nlb-dnss --cluster <cluster_name>
     ```
+   If you haven't used this feature before, you will get an empty list.
 
-4. List the details for your Ingress.
+2. Obtain the Istio ingress gateway's external IP. Get the EXTERNAL-IP of the istio-ingressgateway service via output below:
 
     ```shell
-    kubectl get ingress guestbook-ingress -n istio-system
+    kubectl get service istio-ingressgateway -n istio-system
+    ```
+    
+3. Create the NLB host with the Istio ingress gateway's public IP address:
+
+    ```shell
+    ibmcloud ks nlb-dns-create --cluster <cluster_name> --ip <istio-ingressgateway_external_ip>
+    ```
+
+4. List the host names for your cluster:
+
+    ```shell
+    ibmcloud ks nlb-dnss --cluster <cluster_name>
     ```
 
     Example output:
     ```
-    NAME                HOSTS                                                          ADDRESS          PORTS   AGE
-    guestbook-ingress   guestbook.mycluster.us-south.containers.appdomain.cloud   169.60.168.238   80      6s
+   Retrieving host names, certificates, IPs, and health check monitors for network load balancer (NLB) pods in cluster <cluster_name>...
+OK
+Hostname                                                                             IP(s)               Health Monitor   SSL Cert Status   SSL Cert Secret Name   
+mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud   ["169.1.1.1"]   None             created           mycluster-85f044fc29ce613c264409c04a76c95d-0001   
     ```
 
-5. Make note of the IBM-provided subdomain as it will be used to access your Guestbook app in later parts of the course.
+5. Make note of the NLB host name, as it will be used to access your Guestbook app in later parts of the course.
 
     Example:
     ```
-    http://guestbook.mycluster.us-south.containers.appdomain.cloud
+    http://mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud
     ```
 
 Congratulations! You extended the base Ingress features by providing a DNS entry to the Istio service.
