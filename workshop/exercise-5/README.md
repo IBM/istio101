@@ -101,7 +101,7 @@ Let's leverage this feature with Istio ingress gateway:
     
     Example output:
     ```
-        Retrieving health check monitor statuses for NLB pods...
+    Retrieving health check monitor statuses for NLB pods...
     OK
     Hostname                                                                             IP              Health Monitor   H.Monitor Status   
     mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud   169.1.1.1   Enabled          Healthy
