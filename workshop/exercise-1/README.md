@@ -61,13 +61,19 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
     ibmcloud ks clusters
     ```
 
-    b. Download the configuration file and certificates for your cluster using the `cluster-config` command.
+    b. Set an environment variable for your cluster name:
 
     ```shell
-    ibmcloud ks cluster-config <your_cluster_name>
+    export MYCLUSTER=<your_cluster_name>
     ```
 
-    c. Copy and paste the output command from the previous step to set the `KUBECONFIG` environment variable and configure your CLI to run `kubectl` commands against your cluster.
+    c. Download the configuration file and certificates for your cluster using the `cluster-config` command.
+
+    ```shell
+    ibmcloud ks cluster-config $MYCLUSTER
+    ```
+
+    d. Copy and paste the output command from the previous step to set the `KUBECONFIG` environment variable and configure your CLI to run `kubectl` commands against your cluster.
 
     Example:
     ```shell
@@ -79,13 +85,13 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
     a.  View details of your cluster.
 
     ```shell
-    ibmcloud ks cluster-get <your_cluster_name>
+    ibmcloud ks cluster-get $MYCLUSTER
     ```
 
     b.  Verify the worker nodes in the cluster.
 
     ```shell
-    ibmcloud ks workers <your_cluster_name>
+    ibmcloud ks workers $MYCLUSTER
     ibmcloud ks worker-get <worker_ID>
     ```
 
