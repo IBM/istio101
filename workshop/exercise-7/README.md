@@ -119,12 +119,12 @@ kubectl create sa analyzer
 
 2. Modify guestbook and analyzer deployments to use leverage the service accounts.
 
-- Navigate to your guestbook dir first, for example:
+* Navigate to your guestbook dir first, for example:
 ```shell
 cd ../../../guestbook
 ```
 
-- Add serviceaccount to your guestbook and analyzer deployments
+* Add serviceaccount to your guestbook and analyzer deployments
 
 ```shell
 echo "      serviceAccountName: guestbook" >> v1/guestbook-deployment.yaml
@@ -132,7 +132,7 @@ echo "      serviceAccountName: guestbook" >> v2/guestbook-deployment.yaml
 echo "      serviceAccountName: analyzer" >> v2/analyzer-deployment.yaml
 ```
 
-- redeploy the guestbook and analyzer deployments
+* redeploy the guestbook and analyzer deployments
 ```shell
 kubectl replace -f v1/guestbook-deployment.yaml
 kubectl replace -f v2/guestbook-deployment.yaml
@@ -159,9 +159,9 @@ EOF
    rbacconfig.rbac.istio.io/default created
    ```
    
-2.  Visit the Guestbook app from your favorite browser and validate that Guestbook V1 continue to work while Guestbook V2 will not run correctly.   For every message you wrote on the Guestbook v2 app, you will get a message such as "Error - unable to detect Tone from the Analyzer service".  It can take up to 15 seconds for the change to propogate to the envoy sidecar(s) so you may not see the error right away.
+4.  Visit the Guestbook app from your favorite browser and validate that Guestbook V1 continue to work while Guestbook V2 will not run correctly.   For every message you wrote on the Guestbook v2 app, you will get a message such as "Error - unable to detect Tone from the Analyzer service".  It can take up to 15 seconds for the change to propogate to the envoy sidecar(s) so you may not see the error right away.
 
-3. Configure the Analyzer service to only allow access from the Guestbook service using service role and service role binding:
+5. Configure the Analyzer service to only allow access from the Guestbook service using service role and service role binding:
 
 ```
 cat <<EOF | kubectl apply -f -
@@ -189,7 +189,7 @@ spec:
 EOF
 ```
 
-4.  Visit the Guestbook app from your favorite browser and validate that Guestbook V1 and V2 both work now.  It can take up to 15 seconds for the change to propogate to the envoy sidecar(s) so you may not observe Guestbook V2 to function right away.
+6.  Visit the Guestbook app from your favorite browser and validate that Guestbook V1 and V2 both work now.  It can take up to 15 seconds for the change to propogate to the envoy sidecar(s) so you may not observe Guestbook V2 to function right away.
 
 ## Cleanup
 
