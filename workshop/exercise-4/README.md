@@ -12,7 +12,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 ### Configure Istio to receive telemetry data
 
-1. Verify that the Grafana, Prometheus, ServiceGraph and Jaeger add-ons were installed successfully. All add-ons are installed into the `istio-system` namespace.
+1. Verify that the Grafana, Prometheus, Kiali and Jaeger add-ons were installed successfully. All add-ons are installed into the `istio-system` namespace.
 
     ```shell
     kubectl get pods -n istio-system
