@@ -15,6 +15,29 @@ The Guestbook app is a sample app for users to leave comments. It consists of a 
     cd ../guestbook/v2
     ```
 
+### Enable the automatic sidecar injection for the default namespace
+In Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using the istioctl CLI tool or automatically using the Istio sidecar injector. In this exercise, we will use the automatic sidecar injection provided by Istio.
+
+1. Annotate the default namespace to enable automatic sidecar injection:
+    
+    ``` shell
+    kubectl label namespace default istio-injection=enabled
+    ```
+    
+2. Validate the namespace is annotated for automatic sidecar injection:
+    
+    ``` shell
+    kubectl get namespace -L istio-injection
+    ```
+    
+    Sample output:
+    ``` shell
+    NAME             STATUS   AGE    ISTIO-INJECTION
+    default          Active   271d   enabled
+    istio-system     Active   5d2h
+    ...
+    ```
+
 ### Create a Redis database
 The Redis database is a service that you can use to persist the data of your app. The Redis database comes with a master and slave modules.
 
@@ -59,22 +82,18 @@ The Redis database is a service that you can use to persist the data of your app
     Output:
     ```shell
     NAME                            READY     STATUS    RESTARTS   AGE
-    redis-master-4sswq              1/1       Running   0          5d
-    redis-slave-kj8jp               1/1       Running   0          5d
-    redis-slave-nslps               1/1       Running   0          5d
+    redis-master-4sswq              2/2       Running   0          5d
+    redis-slave-kj8jp               2/2       Running   0          5d
+    redis-slave-nslps               2/2       Running   0          5d
     ```
 
-## Sidecar injection
-
-In Kubernetes, a sidecar is a utility container in the pod, and its purpose is to support the main container. For Istio to work, Envoy proxies must be deployed as sidecars to each pod of the deployment. There are two ways of injecting the Istio sidecar into a pod: manually using the istioctl CLI tool or automatically using the Istio Initializer. In this exercise, we will use the manual injection. Manual injection modifies the controller configuration, e.g. deployment. It does this by modifying the pod template spec such that all pods for that deployment are created with the injected sidecar.
-
-## Install the Guestbook app with manual sidecar injection
+## Install the Guestbook app
 
 1. Inject the Istio Envoy sidecar into the guestbook pods, and deploy the Guestbook app on to the Kubernetes cluster. Deploy both the v1 and v2 versions of the app:
 
     ```shell
-    kubectl apply -f <(istioctl kube-inject -f ../v1/guestbook-deployment.yaml)
-    kubectl apply -f <(istioctl kube-inject -f guestbook-deployment.yaml)
+    kubectl apply -f ../v1/guestbook-deployment.yaml
+    kubectl apply -f guestbook-deployment.yaml
     ```
 
 These commands will inject the Istio Envoy sidecar into the guestbook pods, as well as deploy the Guestbook app on to the Kubernetes cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
@@ -101,14 +120,10 @@ These commands will inject the Istio Envoy sidecar into the guestbook pods, as w
     ```shell
     kubectl get pods
     ```
-    Output:
+    Sample output:
     ```shell
     NAME                            READY     STATUS    RESTARTS   AGE
     guestbook-v1-89cd4b7c7-frscs    2/2       Running   0          5d
-    guestbook-v1-89cd4b7c7-jn224    2/2       Running   0          5d
-    guestbook-v1-89cd4b7c7-m7hmd    2/2       Running   0          5d
-    guestbook-v2-56d98b558c-7fvd5   2/2       Running   0          5d
-    guestbook-v2-56d98b558c-dshkh   2/2       Running   0          5d
     guestbook-v2-56d98b558c-mzbxk   2/2       Running   0          5d
     ```
 
