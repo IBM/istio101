@@ -12,33 +12,3 @@ spec:
     protocol: HTTPS
   resolution: NONE
   location: MESH_EXTERNAL
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: iam-watson
-spec:
-  hosts:
-  - iam.bluemix.net
-  - "*.watsonplatform.net"
-  tls:
-  - match:
-    - port: 443
-      sni_hosts:
-      - iam.bluemix.net
-    route:
-    - destination:
-        host: iam.bluemix.net
-        port:
-          number: 443
-      weight: 100
-  - match:
-    - port: 443
-      sni_hosts:
-      - "*.watsonplatform.net"
-    route:
-    - destination:
-        host: "*.watsonplatform.net"
-        port:
-          number: 443
-      weight: 100
