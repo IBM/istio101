@@ -24,10 +24,7 @@ When an application microservice connects to another microservice, the communica
 
 When Envoy proxies establish a connection, they exchange and validate certificates to confirm that each is indeed connected to a valid and expected peer. The established identities can later be used as basis for policy checks (e.g., access authorization).
 
-## Steps
-
-> Version 2 of the guestbook application uses an external service (tone analyzer) which is not Istio-enabled.
-> Thus, we will disable mTLS globally and enable it only for communication between internal cluster services in this lab.
+## Enforce mTLS between guestbook and analyzer services
 
 1. Ensure Citadel is running
 
@@ -108,6 +105,103 @@ EOF
 
 If mTLS is working correctly, the Guestbook app should continue to operate as expected, without any user visible impact. Istio will automatically add (and manage) the required certificates and private keys. 
 
+## Control Access to the Analyzer Service
+
+Istio support Role Based Access Control(RBAC) for HTTP services in the service mesh.  Let's leverage this to configure access among guestbook and analyzer services.
+
+1. Create service accounts for the guestbook and analyzer services.
+
+
+```shell
+kubectl create sa guestbook
+kubectl create sa analyzer
+```
+
+2. Modify guestbook and analyzer deployments to use leverage the service accounts.
+
+* Navigate to your guestbook dir first, for example:
+```shell
+cd ../../../guestbook
+```
+
+* Add serviceaccount to your guestbook and analyzer deployments
+
+```shell
+echo "      serviceAccountName: guestbook" >> v1/guestbook-deployment.yaml
+echo "      serviceAccountName: guestbook" >> v2/guestbook-deployment.yaml
+echo "      serviceAccountName: analyzer" >> v2/analyzer-deployment.yaml
+```
+
+* redeploy the guestbook and analyzer deployments
+```shell
+kubectl replace -f v1/guestbook-deployment.yaml
+kubectl replace -f v2/guestbook-deployment.yaml
+kubectl replace -f v2/analyzer-deployment.yaml
+```
+
+3. Create a RBAC configuration to disable all access to analyzer service.  This will effectively not allow guestbook or any services to access it.
+
+```shell
+cat <<EOF | kubectl create -f -
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: RbacConfig
+metadata:
+  name: default
+spec:
+  mode: 'ON_WITH_INCLUSION'
+  inclusion:
+    services: ["analyzer.default.svc.cluster.local"]
+EOF
+```
+
+   Output:
+   ```
+   rbacconfig.rbac.istio.io/default created
+   ```
+   
+4.  Visit the Guestbook app from your favorite browser and validate that Guestbook V1 continue to work while Guestbook V2 will not run correctly.   For every message you wrote on the Guestbook v2 app, you will get a message such as "Error - unable to detect Tone from the Analyzer service".  It can take up to 15 seconds for the change to propogate to the envoy sidecar(s) so you may not see the error right away.
+
+5. Configure the Analyzer service to only allow access from the Guestbook service using service role and service role binding:
+
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRole
+metadata:
+  name: analyzer-viewer
+  namespace: default
+spec:
+  rules:
+  - services: ["analyzer.default.svc.cluster.local"]
+    methods: ["POST"]
+---
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRoleBinding
+metadata:
+  name: bind-analyzer
+  namespace: default
+spec:
+  subjects:
+  - user: "cluster.local/ns/default/sa/guestbook"
+  roleRef:
+    kind: ServiceRole
+    name: "analyzer-viewer"
+EOF
+```
+
+6.  Visit the Guestbook app from your favorite browser and validate that Guestbook V1 and V2 both work now.  It can take up to 15 seconds for the change to propogate to the envoy sidecar(s) so you may not observe Guestbook V2 to function right away.
+
+## Cleanup
+
+Run the following commands to clean up the Istio configuration resources as part of this exercise:
+
+    ```
+    kubectl delete policy mtls-to-analyzer
+    kubectl delete dr route-with-mtls-for-analyzer
+    kubectl delete rbacconfig default
+    kubectl delete servicerole analyzer-viewer 
+    kubectl delete servicerolebinding bind-analyzer
+    ```
 
 ## Quiz
 
