@@ -154,16 +154,16 @@ spec:
 EOF
 ```
 
-   Output:
-   ```
-   rbacconfig.rbac.istio.io/default created
-   ```
+Output:
+```
+rbacconfig.rbac.istio.io/default created
+```
    
 4.  Visit the Guestbook app from your favorite browser and validate that Guestbook V1 continue to work while Guestbook V2 will not run correctly.   For every message you wrote on the Guestbook v2 app, you will get a message such as "Error - unable to detect Tone from the Analyzer service".  It can take up to 15 seconds for the change to propogate to the envoy sidecar(s) so you may not see the error right away.
 
 5. Configure the Analyzer service to only allow access from the Guestbook service using service role and service role binding:
 
-```
+```shell
 cat <<EOF | kubectl apply -f -
 apiVersion: "rbac.istio.io/v1alpha1"
 kind: ServiceRole
@@ -195,13 +195,13 @@ EOF
 
 Run the following commands to clean up the Istio configuration resources as part of this exercise:
 
-    ```
-    kubectl delete policy mtls-to-analyzer
-    kubectl delete dr route-with-mtls-for-analyzer
-    kubectl delete rbacconfig default
-    kubectl delete servicerole analyzer-viewer 
-    kubectl delete servicerolebinding bind-analyzer
-    ```
+```shell
+kubectl delete policy mtls-to-analyzer
+kubectl delete dr route-with-mtls-for-analyzer
+kubectl delete rbacconfig default
+kubectl delete servicerole analyzer-viewer 
+kubectl delete servicerolebinding bind-analyzer
+```
 
 ## Quiz
 
