@@ -1,10 +1,10 @@
 # Exercise 2 - Installing Istio on IBM Cloud Kubernetes Service
 In this module, you download and install Istio.
 
-1.  Either download Istio directly from [https://github.com/istio/istio/releases](https://github.com/istio/istio/releases) or get the latest version by using curl:
+1.  Either download Istio 1.2 directly from [https://github.com/istio/istio/releases](https://github.com/istio/istio/releases) or get Istio v1.2.4 by using curl:
 
     ```shell
-    curl -L https://git.io/getLatestIstio | sh -
+    curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.2.4 sh -
     ```
 
 2. Change the directory to the Istio file location.
