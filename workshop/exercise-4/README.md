@@ -19,12 +19,6 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     kubectl get services -n istio-system
     ```
 
-2. Configure Istio to automatically gather telemetry data for services that run in the service mesh. Create a rule to collect telemetry data.
-    ```shell
-    cd ../../plans/
-    kubectl create -f guestbook-telemetry.yaml
-    ```
-
 1. Obtain the guestbook endpoint to access the guestbook. You can access the guestbook via the external IP for your service as guestbook is deployed as a load balancer service. Get the EXTERNAL-IP of the guestbook service via output below:
 
     ```shell
@@ -36,7 +30,7 @@ Go to this external ip address in the browser to try out your guestbook.
 4. Generate a small load to the app.
 
     ```shell
-    for i in {1..20}; do sleep 0.5; curl http://<guestbook_IP>/; done
+    for i in {1..40}; do sleep 0.2; curl http://<guestbook_IP>/; done
     ```
 
 ## View guestbook telemetry data
