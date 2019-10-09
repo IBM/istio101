@@ -10,17 +10,17 @@ In this section, you will create your own IBM Cloud account, and then get access
 
 ## Create your IBM Cloud account
 
-[Sign up for IBM Cloud](https://cloud.ibm.com/registration?cm_mmc=Email_Events-_-Developer_Innovation-_-WW_WW-_-Mofizur-Rahman\skrum\devopsdaysmidwest2019-stlouis-4152019-4162019\Apr2019\conference\global-devadvgrp\st.louis\unitedstates\cloud\containers\databases\java\microservices\node-js\paas\python\manage-microservices-traffic-using-istio&cm_mmca1=000019RS&cm_mmca2=10004805&cm_mmca3=M99938765&cvosrc=email.Events.M99938765&cvo_campaign=000019RS)
+[Sign up for IBM Cloud](https://ibm.biz/BdzgGs)
 
 ## Get a Kubernetes Cluster
 
 Generally to get started with Kubernetes, the first step is to provision a cluster which can take up to 10 minutes. In addition, free clusters come with limited features and a single worker VM/node. For this workshop, we've created Standard \(paid\) clusters with full Kubernetes functionality.
 
-To get a cluster, head to the [Get Cluster](https://devops-midwest-istio.mybluemix.net/) tool.
+To get a cluster, head to the[ Get Cluster](https://apiworld.mybluemix.net/) tool.
 
 ![](../.gitbook/assets/screen-shot-2019-04-15-at-4.42.49-pm.png)
 
-Use the key `istio_rocks_2019` and input the email you used to sign up for IBM Cloud. Ensure that US East is chosen as we've created clusters in the Washington data center for this lab.
+Use the key `k8slab` and input the email you used to sign up for IBM Cloud. Ensure that US East is chosen as we've created clusters in the Washington data center for this lab.
 
 {% tabs %}
 {% tab title="Using Cloudshell" %}
