@@ -5,7 +5,7 @@ In this module, you download and install Istio.
 1. Either download Istio directly from [https://github.com/istio/istio/releases](https://github.com/istio/istio/releases) or get the latest version by using curl:
 
    ```text
-   curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.1.2 sh -
+   curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.3.2 sh -
    ```
 
 > Note : At the time of testing this workshop the latest version of Istio was 1.1.2 If the latest version of Istio updates \(which is very possible\) it should still work. But in case it doesn't, contact the instructor or download 1.1.2 from the releases.
@@ -15,13 +15,13 @@ In this module, you download and install Istio.
 1. Add the `istioctl` client to your PATH. The `<version-number>` is in the directory name. For example, run the following command on a MacOS or Linux system:
 
    ```text
-   export PATH="$PATH:$PWD/istio-1.1.2/bin"
+   export PATH="$PATH:$PWD/istio-1.3.2/bin"
    ```
 
 2. Change the directory to the Istio file location.
 
    ```text
-   cd istio-1.1.2
+   cd istio-1.3.2
    ```
 
 3. Install Istio’s Custom Resource Definitions via kubectl apply, and wait a few seconds for the CRDs to be committed in the kube-apiserver:
@@ -39,7 +39,6 @@ In this module, you download and install Istio.
 5. Ensure that the `istio-*` Kubernetes services are deployed before you continue.
 
    ```text
-
    kubectl get svc -n istio-system
    ```
 
@@ -63,8 +62,6 @@ In this module, you download and install Istio.
     tracing                    ClusterIP      172.21.2.208     <none>           80/TCP                                                                                                                    5d
     zipkin                     ClusterIP      172.21.76.162    <none>           9411/TCP                                                                                                                  5d
    ```
-
-   **Note: For Lite clusters, the istio-ingressgateway service will be in** `pending` **state with no external ip. That is normal.**
 
 6. Ensure the corresponding pods `istio-citadel-*`, `istio-ingressgateway-*`, `istio-pilot-*`, and `istio-policy-*` are all in `Running` state before you continue.
 

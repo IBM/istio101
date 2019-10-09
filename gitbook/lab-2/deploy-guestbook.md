@@ -4,19 +4,25 @@ The Guestbook app is a sample app for users to leave comments. It consists of a 
 
 ![guestbook](../.gitbook/assets/guesbook.jpg)
 
-### Download the Guestbook app
+## Clone the repository
 
-1. If you haven't already on the setup steps, clone the guestbook repository.
+In this step, we'll clone the istio101 and guestbook repository. Istio101 holds istio related yaml files. Guestbook is the application we will deploy.
 
-   ```text
-    git clone https://github.com/IBM/guestbook.git
-   ```
+```bash
+git clone https://github.com/IBM/istio101.git
+```
 
-2. Navigate into the app directory.
+```bash
+git clone https://github.com/IBM/guestbook.git
+```
 
-   ```text
-    cd guestbook/v2
-   ```
+### Navigate to Guestbook app
+
+1. Navigate into the app directory. 
+
+```text
+cd guestbook/v2
+```
 
 ### Create a Redis database
 

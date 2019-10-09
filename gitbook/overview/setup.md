@@ -22,6 +22,14 @@ To get a cluster, head to the [Get Cluster](https://devops-midwest-istio.mybluem
 
 Use the key `istio_rocks_2019` and input the email you used to sign up for IBM Cloud. Ensure that US East is chosen as we've created clusters in the Washington data center for this lab.
 
+{% tabs %}
+{% tab title="Using Cloudshell" %}
+## Access the Cloud Shell
+
+[https://workshop.shell.cloud.ibm.com](https://workshop.shell.cloud.ibm.com)
+{% endtab %}
+
+{% tab title="Locally Install CLI tools" %}
 ## Install IBM Cloud CLI
 
 You use the [IBM Cloud CLI installer](https://console.bluemix.net/docs/cli/reference/ibmcloud/download_cli.html#install_use) or the OS-specific shell installers below.
@@ -125,22 +133,8 @@ Once Kubernetes is installed, test that the CLI works.
 ```bash
 kubectl version
 ```
-
-## If you are having Trouble
-
-[https://cloudshell-kube101.us-south.cf.cloud.ibm.com/](https://cloudshell-kube101.us-south.cf.cloud.ibm.com/)
-
-## Clone the repository
-
-In this step, we'll clone the istio101 and guestbook repository. Istio101 holds istio related yaml files. Guestbook is the application we will deploy.
-
-```bash
-git clone https://github.com/IBM/istio101.git
-```
-
-```bash
-git clone https://github.com/IBM/guestbook.git
-```
+{% endtab %}
+{% endtabs %}
 
 ## Next Steps
 
