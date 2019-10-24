@@ -12,13 +12,17 @@ In this workshop we will see how istio can be used to manage traffic in a demo a
 
 ## Lab Instructors
 
-* Marek Sadowski, IBM Developer Advocate
-* Upkar Lidder, IBM Developer Advocate \([@lidderupk](https://twitter.com/lidderupk)\)
+* Mofizur Rahman, IBM Developer Advocate \([@moficodes](https://twitter.com/moficodes)\)
+* JJ Asghar, IBM Developer Advocate \([@jjasghar](https://twitter.com/jjasghar)\)
 
 ## Agenda
 
-* 1:00 PM \(Setup\)
-* 1:10 PM \(Install Istio\)
-* 1:20 PM \(Traffic Management with Istio\)
-* 1:45 PM \(Q/A\)
+* 2:00 PM \(Setup\)
+* 2:15 PM \(Kubernetes Shallow Dive\)
+* 2:30 PM \(Why Istio\)
+* 2:50 PM \(Install Istio\)
+* 3:00 PM \(Traffic Management\)
+* 3:25 PM \(Observability\)
+* 3:40 PM \(Policy\)
+* 1:50 PM \(Q/A\)
 
