@@ -114,7 +114,6 @@ Kiali is an open-source project that installs on top of Istio to visualize your 
 
    ```text
     kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=kiali -o jsonpath='{.items[0].metadata.name}') 20001:20001
-
    ```
 
 2. Go to [http://localhost:20001/kiali/console](http://localhost:20001/kiali/console) to access kiali dashboard. Use admin/admin as username and password.
@@ -123,12 +122,6 @@ Kiali is an open-source project that installs on top of Istio to visualize your 
 ![](../.gitbook/assets/image.png)
 
 4. On the terminal ctrl-c to close connection.
-
-## Understand what happened
-
-Although Istio proxies are able to automatically send spans, they need some hints to tie together the entire trace. Apps need to propagate the appropriate HTTP headers so that when the proxies send span information to Zipkin or Jaeger, the spans can be correlated correctly into a single trace.
-
-In the example, when a user visits the Guestbook app, the HTTP request is sent from the guestbook service to Watson Tone Analyzer. In order for the individual spans of guestbook service and Watson Tone Analyzer to be tied together, we have modified the guestbook service to extract the required headers \(x-request-id, x-b3-traceid, x-b3-spanid, x-b3-parentspanid, x-b3-sampled, x-b3-flags, x-ot-span-context\) and forward them onto the analyzer service when calling the analyzer service from the guestbook service. The change is in the `v2/guestbook/main.go`. By using the `getForwardHeaders()` method, we are able to extract the required headers, and then we use the required headers further when calling the analyzer service via the `getPrimaryTone()` method.
 
 ## Questions
 

@@ -1,5 +1,15 @@
 # Traffic Management
 
+## Clone the Demo Repo
+
+```text
+git clone https://github.com/moficodes/istio-demo.git
+```
+
+```text
+cd istio-demo
+```
+
 ## Using rules to manage traffic
 
 The core component used for traffic management in Istio is Pilot, which manages and configures all the Envoy proxy instances deployed in a particular Istio service mesh. It lets you specify what rules you want to use to route traffic between Envoy proxies, which run as sidecars to each service in the mesh. Each service consists of any number of instances running on pods, containers, VMs etc. Each service can have any number of versions \(a.k.a. subsets\). There can be distinct subsets of service instances running different variants of the app binary. These variants are not necessarily different API versions. They could be iterative changes to the same service, deployed in different environments \(prod, staging, dev, etc.\). Pilot translates high-level rules into low-level configurations and distributes this config to Envoy instances. Pilot uses three types of configuration resources to manage traffic within its service mesh: Virtual Services, Destination Rules, and Service Entries.
@@ -52,7 +62,7 @@ There are 3 versions of the `reviews` microservice:
 ## Deploying the app
 
 ```bash
-kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+kubectl apply -f 01-setup/01-bookinfo.yaml
 ```
 
 The command above deploys following pods
@@ -70,7 +80,7 @@ reviews-v3-dd846cc78-fgxzx       2/2       Running   0          5m
 We would like to access the app from outside the cluster like from our browser or curl from terminal. We define a Istio Gateway for that.
 
 ```bash
-kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+kubectl apply -f 01-setup/02-bookinfo-gateway.yaml
 ```
 
 Confirm the gateway was created by running `kubectl get gateway`
@@ -101,7 +111,7 @@ We can also go to our browser and go to our `http://$GATEWAY_URL/productpage` we
 Before you can use Istio to control the Bookinfo version routing, you need to define the available versions, called _subsets_, in destination rules.
 
 ```bash
-kubectl apply -f samples/bookinfo/networking/destination-rule-all.yaml
+kubectl apply -f 01-setup/03-destination-rule-all.yaml
 ```
 
 ### Apply a virtual service <a id="apply-a-virtual-service"></a>
@@ -109,7 +119,7 @@ kubectl apply -f samples/bookinfo/networking/destination-rule-all.yaml
 To route to one version only, you apply virtual services that set the default version for the microservices. In this case, the virtual services will route all traffic to `v1` of each microservice.
 
 ```text
-kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
+kubectl apply -f 02-routing/01-virtual-service-all-v1.yaml
 ```
 
 Now if we go to our browser and refresh we won't see the rating change. Because we are only seeing `v1` of the rating app.
@@ -123,7 +133,7 @@ We will see how we can set some routing rules.
 We can also route based on other things like user name. In our app header there is a field that is injected called `end-user` we can match and route based on that. 
 
 ```bash
-kubectl apply -f samples/bookinfo/networking/virtual-service-reviews-test-v2.yaml
+kubectl apply -f 02-routing/02-jason-to-v2.yaml
 ```
 
 This is what the virtualservice rule says
@@ -171,7 +181,37 @@ To test the Bookinfo application microservices for resiliency, inject a 7s delay
 Note that the `reviews:v2` service has a 10s hard-coded connection timeout for calls to the ratings service. Even with the 7s delay that you introduced, you still expect the end-to-end flow to continue without any errors.
 
 ```text
-kubectl apply -f samples/bookinfo/networking/virtual-service-ratings-test-delay.yaml
+kubectl apply -f 03-fault-injection/03-jason-7s-delay.yaml
+```
+
+This is what the rule contains
+
+```text
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ratings
+spec:
+  hosts:
+  - ratings
+  http:
+  - match:
+    - headers:
+        end-user:
+          exact: jason
+    fault:
+      delay:
+        percentage:
+          value: 100.0
+        fixedDelay: 7s
+    route:
+    - destination:
+        host: ratings
+        subset: v1
+  - route:
+    - destination:
+        host: ratings
+        subset: v1
 ```
 
 ### Testing the delay configuration <a id="testing-the-delay-configuration"></a>
@@ -230,7 +270,7 @@ When a new service is created we sometimes want to test the service by allowing 
 1. To get started, run this command to route all traffic to the `v1` version of each microservice. 
 
    ```text
-   kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
+   kubectl apply -f 04-traffic-shifting/01-all-v1.yaml
    ```
 
 2. Open the Bookinfo site in your browser. The URL is `http://$GATEWAY_URL/productpage`, where `$GATEWAY_URL` is the External IP address of the ingress, as explained in the [Bookinfo](https://istio.io/docs/examples/bookinfo/#determining-the-ingress-ip-and-port) doc.
