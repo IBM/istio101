@@ -280,7 +280,7 @@ When a new service is created we sometimes want to test the service by allowing 
 3. Transfer 50% of the traffic from `reviews:v1` to `reviews:v3` with the following command:
 
    ```text
-   kubectl apply -f samples/bookinfo/networking/virtual-service-reviews-50-v3.yaml
+   kubectl apply -f 04-traffic-shifting/02-v1-v3-50-50.yaml
    ```
 
    Wait a few seconds for the new rules to propagate. Now if you refresh a few times, you should see it change between no stars and red stars.
@@ -292,7 +292,7 @@ When a new service is created we sometimes want to test the service by allowing 
 5. Assuming you decide that the `reviews:v3` microservice is stable, you can route 100% of the traffic to `reviews:v3` by applying this virtual service:
 
 ```text
-kubectl apply -f samples/bookinfo/networking/virtual-service-reviews-v3.yaml
+kubectl apply -f 04-traffic-shifting/03-all-v3.yaml
 ```
 
 Now when you refresh the `/productpage` you will always see book reviews with _red_ colored star ratings for each review.
@@ -309,58 +309,20 @@ For more information about version routing with autoscaling, check out the blog 
 
 We can set request timeouts to service. Microservices take a fail fast approach to application development. So it is suggested that every service have a timeout set so that we can avoid any hanging of resources. We will see that in action next.
 
-Initialize the application version routing by running the following command:
-
-```text
-kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
-```
-
 ### Request timeouts <a id="request-timeouts"></a>
-
-
 
 A timeout for http requests can be specified using the _timeout_ field of the [route rule](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#HTTPRoute). By default, the timeout is 15 seconds, but in this task you override the `reviews` service timeout to 1 second. To see its effect, however, you also introduce an artificial 2 second delay in calls to the `ratings` service.
 
 1. Route requests to v2 of the `reviews` service, i.e., a version that calls the `ratings` service:
 
    ```text
-   cat <<EOF | kubectl apply -f -
-   apiVersion: networking.istio.io/v1alpha3
-   kind: VirtualService
-   metadata:
-     name: reviews
-   spec:
-     hosts:
-       - reviews
-     http:
-     - route:
-       - destination:
-           host: reviews
-           subset: v2
-   EOF
+   kubectl apply -f 05-request-timeouts/01-all-v2.yaml
    ```
 
 2. Add a 2 second delay to calls to the `ratings` service:
 
    ```text
-   cat <<EOF | kubectl apply -f -
-   apiVersion: networking.istio.io/v1alpha3
-   kind: VirtualService
-   metadata:
-     name: ratings
-   spec:
-     hosts:
-     - ratings
-     http:
-     - fault:
-         delay:
-           percent: 100
-           fixedDelay: 2s
-       route:
-       - destination:
-           host: ratings
-           subset: v1
-   EOF
+   kubectl apply -f 05-request-timeouts/02-2s-delay-to-rating.yaml
    ```
 
 3. Open the Bookinfo URL `http://$GATEWAY_URL/productpage` in your browser.
@@ -370,21 +332,7 @@ A timeout for http requests can be specified using the _timeout_ field of the [r
 4. Now add a half second request timeout for calls to the `reviews` service:
 
    ```text
-   cat <<EOF | kubectl apply -f -
-   apiVersion: networking.istio.io/v1alpha3
-   kind: VirtualService
-   metadata:
-     name: reviews
-   spec:
-     hosts:
-     - reviews
-     http:
-     - route:
-       - destination:
-           host: reviews
-           subset: v2
-       timeout: 0.5s
-   EOF
+   kubectl apply -f 05-request-timeouts/03-half-second-timeout.yaml
    ```
 
 5. Refresh the Bookinfo web page.
@@ -406,18 +354,6 @@ If you examine the [fault injection task](https://istio.io/docs/tasks/traffic-ma
 Istio `DestinationRules` allow users to configure Envoy's implementation of [circuit breakers](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/circuit_breaking). Circuit breakers are critical for defining the behavior for service-to-service communication in the service mesh. In the event of a failure for a particular service, circuit breakers allow users to set global defaults for failure recovery on a per service and/or per service version basis. Users can apply a [traffic policy](https://istio.io/docs/reference/config/istio.networking.v1alpha3.html#TrafficPolicy) at the top level of the `DestinationRule` to create circuit breaker settings for an entire service, or it can be defined at the subset level to create settings for a particular version of a service.
 
 Depending on whether a service handles [HTTP](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ConnectionPoolSettings.HTTPSettings) requests or [TCP](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ConnectionPoolSettings.TCPSettings) connections, `DestinationRules` expose a number of ways for Envoy to limit traffic to a particular service as well as define failure recovery behavior for services initiating the connection to an unhealthy service.
-
-## Clean Up
-
-For the rest of the workshop we won't use the Bookinfo app. So it might be a good idea to cleanup.
-
-Delete the routing rules and terminate the application pods, run the following shell script from `istio-1.1.2`
-
-folder.
-
-```text
-./samples/bookinfo/platform/kube/cleanup.sh
-```
 
 ## Further reading
 
