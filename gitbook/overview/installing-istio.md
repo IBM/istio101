@@ -5,7 +5,7 @@ In this module, you download and install Istio.
 1. Either download Istio directly from [https://github.com/istio/istio/releases](https://github.com/istio/istio/releases) or get the latest version by using curl:
 
    ```text
-   curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.3.2 sh -
+   curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.3.3 sh -
    ```
 
 > Note : At the time of testing this workshop the latest version of Istio was 1.1.2 If the latest version of Istio updates \(which is very possible\) it should still work. But in case it doesn't, contact the instructor or download 1.1.2 from the releases.
@@ -15,13 +15,13 @@ In this module, you download and install Istio.
 1. Add the `istioctl` client to your PATH. The `<version-number>` is in the directory name. For example, run the following command on a MacOS or Linux system:
 
    ```text
-   export PATH="$PATH:$PWD/istio-1.3.2/bin"
+   export PATH="$PATH:$PWD/istio-1.3.3/bin"
    ```
 
 2. Change the directory to the Istio file location.
 
    ```text
-   cd istio-1.3.2
+   cd istio-1.3.3
    ```
 
 3. Install Istio’s Custom Resource Definitions via kubectl apply, and wait a few seconds for the CRDs to be committed in the kube-apiserver:
@@ -43,24 +43,23 @@ In this module, you download and install Istio.
    ```
 
    ```text
-    NAME                       TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                                                                                                                   AGE
-    grafana                    ClusterIP      172.21.44.128    <none>           3000/TCP                                                                                                                  5d
-    istio-citadel              ClusterIP      172.21.62.12     <none>           8060/TCP,9093/TCP                                                                                                         5d
-    istio-egressgateway        ClusterIP      172.21.115.236   <none>           80/TCP,443/TCP                                                                                                            5d
-    istio-galley               ClusterIP      172.21.7.201     <none>           443/TCP,9093/TCP                                                                                                          5d
-    istio-ingressgateway       LoadBalancer   172.21.19.202    169.61.151.162   80:31380/TCP,443:31390/TCP,31400:31400/TCP,15011:32440/TCP,8060:32156/TCP,853:30932/TCP,15030:32259/TCP,15031:31292/TCP   5d
-    istio-pilot                ClusterIP      172.21.115.9     <none>           15010/TCP,15011/TCP,8080/TCP,9093/TCP                                                                                     5d
-    istio-policy               ClusterIP      172.21.165.123   <none>           9091/TCP,15004/TCP,9093/TCP                                                                                               5d
-    istio-sidecar-injector     ClusterIP      172.21.164.224   <none>           443/TCP                                                                                                                   5d
-    istio-statsd-prom-bridge   ClusterIP      172.21.57.144    <none>           9102/TCP,9125/UDP                                                                                                         5d
-    istio-telemetry            ClusterIP      172.21.165.71    <none>           9091/TCP,15004/TCP,9093/TCP,42422/TCP                                                                                     5d
-    jaeger-agent               ClusterIP      None             <none>           5775/UDP,6831/UDP,6832/UDP                                                                                                5d
-    jaeger-collector           ClusterIP      172.21.154.138   <none>           14267/TCP,14268/TCP                                                                                                       5d
-    jaeger-query               ClusterIP      172.21.224.97    <none>           16686/TCP                                                                                                                 5d
-    prometheus                 ClusterIP      172.21.173.167   <none>           9090/TCP                                                                                                                  5d
-    servicegraph               ClusterIP      172.21.190.31    <none>           8088/TCP                                                                                                                  5d
-    tracing                    ClusterIP      172.21.2.208     <none>           80/TCP                                                                                                                    5d
-    zipkin                     ClusterIP      172.21.76.162    <none>           9411/TCP                                                                                                                  5d
+   NAME                     TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)                                                                                                                                      AGE
+   grafana                  ClusterIP      172.21.52.105    <none>          3000/TCP                                                                                                                                     40s
+   istio-citadel            ClusterIP      172.21.219.187   <none>          8060/TCP,15014/TCP                                                                                                                           39s
+   istio-egressgateway      ClusterIP      172.21.145.44    <none>          80/TCP,443/TCP,15443/TCP                                                                                                                     40s
+   istio-galley             ClusterIP      172.21.207.240   <none>          443/TCP,15014/TCP,9901/TCP                                                                                                                   41s
+   istio-ingressgateway     LoadBalancer   172.21.183.182   169.61.84.238   15020:30711/TCP,80:31380/TCP,443:31390/TCP,31400:31400/TCP,15029:32724/TCP,15030:30567/TCP,15031:30282/TCP,15032:32408/TCP,15443:30723/TCP   40s
+   istio-pilot              ClusterIP      172.21.255.172   <none>          15010/TCP,15011/TCP,8080/TCP,15014/TCP                                                                                                       39s
+   istio-policy             ClusterIP      172.21.109.44    <none>          9091/TCP,15004/TCP,15014/TCP                                                                                                                 40s
+   istio-sidecar-injector   ClusterIP      172.21.106.20    <none>          443/TCP,15014/TCP                                                                                                                            39s
+   istio-telemetry          ClusterIP      172.21.196.129   <none>          9091/TCP,15004/TCP,15014/TCP,42422/TCP                                                                                                       40s
+   jaeger-agent             ClusterIP      None             <none>          5775/UDP,6831/UDP,6832/UDP                                                                                                                   36s
+   jaeger-collector         ClusterIP      172.21.162.67    <none>          14267/TCP,14268/TCP                                                                                                                          36s
+   jaeger-query             ClusterIP      172.21.41.237    <none>          16686/TCP                                                                                                                                    36s
+   kiali                    ClusterIP      172.21.230.5     <none>          20001/TCP                                                                                                                                    40s
+   prometheus               ClusterIP      172.21.69.254    <none>          9090/TCP                                                                                                                                     39s
+   tracing                  ClusterIP      172.21.200.30    <none>          80/TCP                                                                                                                                       36s
+   zipkin                   ClusterIP      172.21.11.17     <none>          9411/TCP         9411/TCP                                                                                                                  5d
    ```
 
 6. Ensure the corresponding pods `istio-citadel-*`, `istio-ingressgateway-*`, `istio-pilot-*`, and `istio-policy-*` are all in `Running` state before you continue.
@@ -70,22 +69,21 @@ In this module, you download and install Istio.
    ```
 
    ```text
-    grafana-85dbf49c94-gccvp                    1/1       Running     0          5d
-    istio-citadel-545f49c58b-j8tm5              1/1       Running     0          5d
-    istio-cleanup-secrets-smtxn                 0/1       Completed   0          5d
-    istio-egressgateway-79f4b99d6f-t2lvk        1/1       Running     0          5d
-    istio-galley-5b6449c48f-sc92j               1/1       Running     0          5d
-    istio-grafana-post-install-djzm9            0/1       Completed   0          5d
-    istio-ingressgateway-6894bd895b-tvklg       1/1       Running     0          5d
-    istio-pilot-cb58b65c9-sj8zb                 2/2       Running     0          5d
-    istio-policy-69cc5c74d5-gz8kt               2/2       Running     0          5d
-    istio-sidecar-injector-75b9866679-sldhs     1/1       Running     0          5d
-    istio-statsd-prom-bridge-549d687fd9-hrhfs   1/1       Running     0          5d
-    istio-telemetry-d8898f9bd-2gl49             2/2       Running     0          5d
-    istio-telemetry-d8898f9bd-9r9jz             2/2       Running     0          5d
-    istio-tracing-7596597bd7-tqwkr              1/1       Running     0          5d
-    prometheus-6ffc56584f-6jqhg                 1/1       Running     0          5d
-    servicegraph-5d64b457b4-z2ctz               1/1       Running     0          5d
+   NAME                                      READY   STATUS      RESTARTS   AGE
+   grafana-59d57c5c56-9l2nz                  1/1     Running     0          44s
+   istio-citadel-66f699cf68-l225h            1/1     Running     0          43s
+   istio-egressgateway-7fbcf68b68-78tbm      0/1     Running     0          45s
+   istio-galley-fd94bc888-l7kv7              1/1     Running     0          45s
+   istio-grafana-post-install-1.3.3-8fl97    0/1     Completed   0          50s
+   istio-ingressgateway-587c9fbc85-hzxvq     0/1     Running     0          45s
+   istio-pilot-74cb5d88bc-p4kt7              2/2     Running     0          43s
+   istio-policy-5865b8c696-df8vn             2/2     Running     1          43s
+   istio-security-post-install-1.3.3-q9ttx   0/1     Completed   0          49s
+   istio-sidecar-injector-d8856c48f-bqbdp    1/1     Running     0          43s
+   istio-telemetry-95689668-qr56h            2/2     Running     2          43s
+   istio-tracing-6bbdc67d6c-67nbt            1/1     Running     0          42s
+   kiali-8c9d6fbf6-md58d                     1/1     Running     0          44s
+   prometheus-7d7b9f7844-5rpbn               1/1     Running     0          43s          5d
    ```
 
    Before you continue, make sure all the pods are deployed and are either in the `Running` or `Completed` state. If they're in `pending` state, wait a few minutes to let the deployment finish.
@@ -105,13 +103,14 @@ In this module, you download and install Istio.
    Output:
 
    ```text
-    NAME             STATUS    AGE       LABELS
-    default          Active    23d       istio-injection=enabled
-    ibm-cert-store   Active    23d       <none>
-    ibm-system       Active    23d       <none>
-    istio-system     Active    2d        istio-injection=disabled
-    kube-public      Active    23d       <none>
-    kube-system      Active    23d       <none>
+   NAME              STATUS   AGE    LABELS
+   default           Active   25d    istio-injection=enabled
+   ibm-cert-store    Active   25d    <none>
+   ibm-system        Active   25d    <none>
+   istio-system      Active   108s   istio-injection=disabled
+   kube-node-lease   Active   25d    <none>
+   kube-public       Active   25d    <none>
+   kube-system       Active   25d    <none>
    ```
 
 Congratulations! You successfully installed Istio into your cluster.
