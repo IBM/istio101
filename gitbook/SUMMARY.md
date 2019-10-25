@@ -10,8 +10,4 @@
   * [Traffic Management](overview/traffic-management.md)
   * [Metrics and Tracing](overview/observe-telemetry.md)
   * [Enforce Policies](overview/enforce-policy.md)
-* [Optional Steps](lab-2/README.md)
-  * [Deploy Guestbook](lab-2/deploy-guestbook.md)
-  * [Expose with Istio Gateway](lab-2/expose-service.md)
-  * [Secure Service](lab-2/secure-service.md)
 

@@ -12,83 +12,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 ### Configure Istio to receive telemetry data
 
-1. Verify that the Grafana, Prometheus, ServiceGraph and Jaeger add-ons were installed successfully. All add-ons are installed into the `istio-system` namespace.
-
-   ```text
-    kubectl get pods -n istio-system
-    kubectl get services -n istio-system
-   ```
-
-2. Configure Istio to automatically gather telemetry data for services that run in the service mesh.
-
-   a. Create a rule to collect telemetry data.
-
-   ```text
-    kubectl create -f guestbook-telemetry.yaml
-   ```
-
-3. Obtain the guestbook endpoint to access the guestbook.
-
-   For a standard cluster, you can access the guestbook via the external IP for your service as guestbook is deployed as a load balancer service. Get the EXTERNAL-IP of the guestbook service via output below:
-
-   ```text
-    kubectl get service guestbook -n default
-   ```
-
-   ```bash
-   export GUESTBOOK_URL=$(kl get svc guestbook -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
-   ```
-
-4.  Go to this external ip address in the browser to try out your guestbook.
-
-![](../.gitbook/assets/browser-app%20%281%29.png)
-
-5. Generate a small load to the app.
-
-```text
- for i in {1..50}; do sleep 0.5; curl -s $GUESTBOOK_URL | grep "<title>" ; done
-```
-
-We did a grep on the `<title>` from the curl response to show that the loadbalancer was sending the traffic to both `v1` and `v2` of the app.
-
-## View guestbook telemetry data
-
-### Jaeger
-
-1. Establish port forwarding from local port 16686 to the Tracing instance:
-
-   ```text
-    kubectl port-forward -n istio-system \
-      $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath='{.items[0].metadata.name}') \
-      16686:16686
-   ```
-
-2. In your browser, go to `http://127.0.0.1:16686`
-
-![jaeger](../.gitbook/assets/jaegar%20%281%29.png)
-
-1. From the **Services** menu, select either the **guestbook** or **analyzer** service.
-2. Scroll to the bottom and click on **Find Traces** button to see traces.
-
-![jaeger-trace](../.gitbook/assets/jaegar-trace%20%281%29.png)
-
-1. ctrl-c on the terminal when you are done looking at the traces.
-
-### Grafana
-
-1. Establish port forwarding from local port 3000 to the Grafana instance:
-
-   ```text
-    kubectl -n istio-system port-forward \
-      $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') \
-      3000:3000
-   ```
-
-2. Browse to [http://localhost:3000](http://localhost:3000) and navigate to the Istio Mesh Dashboard by clicking on the Home menu on the top left.
-
-![grafana](../.gitbook/assets/graphana.png)
-
-1. ctrl-c on the terminal when you are done looking at the graph.
+Istio collects metrics data automatically.
 
 ### Prometheus
 
@@ -97,14 +21,64 @@ We did a grep on the `<title>` from the curl response to show that the loadbalan
    ```text
     kubectl -n istio-system port-forward \
       $(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') \
-      9090:9090
+      9090:9090 &
    ```
 
 2. Browse to [http://localhost:9090/graph](http://localhost:9090/graph), and in the “Expression” input box, enter: `istio_request_bytes_count`. Click Execute.
 
-![prometheus](../.gitbook/assets/prometheus%20%281%29.png)
+![](../.gitbook/assets/prometheus%20%281%29.png)
 
-1. ctrl-c on the terminal when you are done looking at the logs.
+3. 
+
+```text
+kill <process-id>
+```
+
+### Jaeger
+
+1. Establish port forwarding from local port 16686 to the Tracing instance:
+
+   ```text
+    kubectl port-forward -n istio-system \
+      $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath='{.items[0].metadata.name}') \
+      16686:16686 &
+   ```
+
+2. In your browser, go to `http://127.0.0.1:16686`
+
+![Jaeger UI](../.gitbook/assets/image%20%287%29.png)
+
+3. From the **Services** menu, select either the **guestbook** or **analyzer** service.
+
+4. Scroll to the bottom and click on **Find Traces** button to see traces.
+
+![Jaeger UI](../.gitbook/assets/image%20%2812%29.png)
+
+5. 
+
+```text
+kill <process-id>
+```
+
+### Grafana
+
+1. Establish port forwarding from local port 3000 to the Grafana instance:
+
+   ```text
+    kubectl -n istio-system port-forward \
+      $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') \
+      3000:3000 &
+   ```
+
+2. Browse to [http://localhost:3000](http://localhost:3000) and navigate to the Istio Mesh Dashboard by clicking on the Home menu on the top left.
+
+![](../.gitbook/assets/image%20%2814%29.png)
+
+3. 
+
+```text
+kill <process-id>
+```
 
 ### Kiali
 
@@ -119,9 +93,13 @@ Kiali is an open-source project that installs on top of Istio to visualize your 
 2. Go to [http://localhost:20001/kiali/console](http://localhost:20001/kiali/console) to access kiali dashboard. Use admin/admin as username and password.
 3. Click the "Graph" tab on the left side to see the a visual service graph of the various services in your Istio mesh. You can see request rates as well by clicking the "Edge Labels" tab and choosing "Traffic rate per second".
 
-![](../.gitbook/assets/image.png)
+![](../.gitbook/assets/image%20%289%29.png)
 
-4. On the terminal ctrl-c to close connection.
+4. 
+
+```text
+kill <process-id>
+```
 
 ## Questions
 

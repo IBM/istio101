@@ -18,7 +18,7 @@ At its core, Kubernetes is a data store \(etcd\). The declarative model is store
 
 As shown, API server is a simple HTTP server handling create/read/update/delete\(CRUD\) operations on the data store. Then the controller picks up the change you wanted and makes that happen. Controllers are responsible for instantiating the actual resource represented by any Kubernetes resource. These actual resources are what your application needs to allow it to run successfully
 
-![](../.gitbook/assets/image%20%288%29.png)
+![](../.gitbook/assets/image%20%2810%29.png)
 
 
 
@@ -44,7 +44,7 @@ Kubernetes Infrastructure defines a resource for every purpose. Each resource is
 * Stateful Sets is the workload API object used to manage stateful applications.
 * and more...
 
-![](../.gitbook/assets/image%20%289%29.png)
+![](../.gitbook/assets/image%20%2811%29.png)
 
 #### Hardware <a id="baff"></a>
 
