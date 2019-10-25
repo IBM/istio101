@@ -8,64 +8,77 @@ Given that individual infrastructure backends each have different interfaces and
 
 In this exercise we'll use the denier adapter.
 
-## Service isolation with the denier adapter
+## Rate Limiting
 
-1. Block access to Guestbook service:
+We can add a a rate limiting logic that will stop more that 2 request going into the productpage in a 5s time window.
 
-   ```text
-    kubectl create -f mixer-rule-denial.yaml
-   ```
+1. Send every request to `v1` of all the services.
 
-   Let's examine the rule:
+```text
+kubectl apply -f 06-rate-limit-policy/01-all-v1.yaml
+```
 
-   ```yaml
-        apiVersion: "config.istio.io/v1alpha2"
-        kind: denier
-        metadata:
-          name: denyall
-          namespace: istio-system
-        spec:
-          status:
-            code: 7
-            message: Not allowed
-        ---
-        # The (empty) data handed to denyall at run time
-        apiVersion: "config.istio.io/v1alpha2"
-        kind: checknothing
-        metadata:
-          name: denyrequest
-          namespace: istio-system
-        spec:
-        ---
-        # The rule that uses denier to deny requests to the guestbook service
-        apiVersion: "config.istio.io/v1alpha2"
-        kind: rule
-        metadata:
-          name: deny-hello-world
-          namespace: istio-system
-        spec:
-          match: destination.service=="guestbook.default.svc.cluster.local"
-          actions:
-          - handler: denyall.denier
-            instances:
-            - denyrequest.checknothing
-   ```
+2. Apply the rate limiting policy.
 
-2. Verify that the service is denied:
+```text
+kubectl apply -f 06-rate-limit-policy/02-productpage-ratelimit.yaml
+```
 
-   In a previous exercise \(Expose with Istio Gateway\) we created the Ingress resource. Make sure the $INGRESS\_IP environment variable is still present. Then in the terminal, try:
+3. On your browser go to the productpage url and quickly refresh a few times.
 
-   ```text
-    curl http://$INGRESS_IP/
-   ```
+![](../.gitbook/assets/image%20%2814%29.png)
 
-   You should see the error message `PERMISSION_DENIED:denyall.denier.istio-system:Not allowed`.
+4. Lets delete this policy 
 
-3. Clean up the rule.
+```text
+kubectl delete -f 06-rate-limit-policy/02-productpage-ratelimit.yaml
+```
 
-   ```text
-    kubectl delete -f mixer-rule-denial.yaml
-   ```
+## Denials and White/Black Listing
+
+We can also apply cluster wide denials or white/black listing
+
+### Denials
+
+1. Send traffic to `v3` of reviews and `v2` if user name is `jason`
+
+```text
+kubectl apply -f 07-denials-white-black-policy/01-jason-v2-all-v3.yaml
+```
+
+2.  Apply the policy.
+
+```text
+kubectl apply -f 07-denials-white-black-policy/02-label-denial.yaml
+```
+
+3. Refresh the page a few times. You should see denial for regular user. Log in as Jason to see black stars just fine.
+
+> The policy can take a second to propagate.
+
+4. Delete this policy
+
+```text
+kubectl apply -f 07-denials-white-black-policy/02-label-denial.yaml
+```
+
+### White/Black Listing
+
+We can accomplish similar task with white listing certain labels as well.
+
+1. Apply the policy
+
+```text
+kubectl apply -f 07-denials-white-black-policy/03-whitelist.yaml
+```
+
+2. Refresh the page a few times. You should see denial for regular user. Log in as Jason to see black stars just fine.
+
+3. Delete the policy
+
+```text
+kubectl delete -f 07-denials-white-black-policy/03-whitelist.yaml
+```
 
 ## Quiz
 

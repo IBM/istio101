@@ -120,7 +120,7 @@ A _replica_ is a copy of a pod that contains a running service. By having multip
 
 **Tip:** Another way to improve availability is to [add clusters and regions](https://console.bluemix.net/docs/containers/cs_planning.html#cs_planning_cluster_config) to your deployment, as shown in the following diagram
 
-![](../.gitbook/assets/image%20%2815%29.png)
+![](../.gitbook/assets/image%20%2816%29.png)
 
 ## 2. Update and roll back apps
 
