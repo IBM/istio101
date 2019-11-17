@@ -18,36 +18,36 @@ In this exercise we'll use the denier adapter.
 
     Let's examine the rule:
     ```yaml
-        apiVersion: "config.istio.io/v1alpha2"
-        kind: denier
-        metadata:
-          name: denyall
-          namespace: istio-system
-        spec:
-          status:
-            code: 7
-            message: Not allowed
-        ---
-        # The (empty) data handed to denyall at run time
-        apiVersion: "config.istio.io/v1alpha2"
-        kind: checknothing
-        metadata:
-          name: denyrequest
-          namespace: istio-system
-        spec:
-        ---
-        # The rule that uses denier to deny requests to the guestbook service
-        apiVersion: "config.istio.io/v1alpha2"
-        kind: rule
-        metadata:
-          name: deny-hello-world
-          namespace: istio-system
-        spec:
-          match: destination.service=="guestbook.default.svc.cluster.local"
-          actions:
-          - handler: denyall.denier
-            instances:
-            - denyrequest.checknothing
+    apiVersion: "config.istio.io/v1alpha2"
+    kind: handler
+    metadata:
+      name: denyall
+    spec:
+      compiledAdapter: denier
+      params:
+        status:
+          code: 7
+          message: Not allowed
+    ---
+    # The (empty) data handed to denyall at run time
+    apiVersion: "config.istio.io/v1alpha2"
+    kind: instance
+    metadata:
+      name: denyrequest
+    spec:
+      compiledTemplate: checknothing
+    ---
+    # The rule that uses denier to deny requests to the guestbook service
+    apiVersion: "config.istio.io/v1alpha2"
+    kind: rule
+    metadata:
+      name: deny-guestbook
+    spec:
+      match: destination.service.name == "guestbook"
+      actions:
+      - handler: denyall
+        instances:
+        - denyrequest
     ```
 
 2. Verify that the service is denied:
