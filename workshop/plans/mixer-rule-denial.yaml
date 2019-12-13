@@ -23,8 +23,8 @@ kind: rule
 metadata:
   name: deny-guestbook
 spec:
-  match: destination.service.name=="guestbook"
+  match: destination.service.name == "guestbook"
   actions:
-  - handler: denyall.denier
+  - handler: denyall
     instances:
-    - denyrequest.checknothing
+    - denyrequest
