@@ -4,6 +4,8 @@ The components deployed on the service mesh by default are not exposed outside t
 
 An Ingress Gateway resource can be created to allow external requests through the Istio Ingress Gateway to the backing services.
 
+![](../README_images/istio2.jpg)
+
 ### Expose the Guestbook app with Ingress Gateway
 
 1. Configure the guestbook default route with the Istio Ingress Gateway. The `guestbook-gateway.yaml` file is in this repository (istio101) in the `workshop/plans` directory.
@@ -76,16 +78,17 @@ Let's leverage this feature with Istio ingress gateway:
     mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud   ["169.1.1.1"]   None             created           mycluster-85f044fc29ce613c264409c04a76c95d-0001   
     ```
 
-5. Make note of the NLB host name (<nlb_host_name>), as it will be used to access your Guestbook app in later parts of the course. Create an environment variable for it and test using curl
+1. Make note of the NLB host name (<nlb_host_name>), as it will be used to access your Guestbook app in later parts of the course. Create an environment variable for it and test using curl or visit in your browser.
 
     Example:
     ```
     export NLB_HOSTNAME=mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud
-    
+    ```
+    ```
     curl $NLB_HOSTNAME
     ```
 
-6. Enable health check of the NLB host for Istio ingress gateway:
+1. Enable health check of the NLB host for Istio ingress gateway:
 
     ```shell
     ibmcloud ks nlb-dns-monitor-configure --cluster $MYCLUSTER --nlb-host $NLB_HOSTNAME --type HTTP --description "Istio ingress gateway health check" --path "/healthz/ready" --port 15020 --enable

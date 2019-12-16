@@ -14,9 +14,9 @@ After you complete this course, you'll be able to:
 - Enforce policies for your microservices
 
 ## Prerequisites
-You must you must have a Pay-As-You-Go, or Subscription [IBM Cloud account](https://console.bluemix.net/registration/) to complete all the modules in this course.
+You must you must have a Pay-As-You-Go, or Subscription [IBM Cloud account](https://cloud.ibm.com/registration/) to complete all the modules in this course.
 
-You must have [already created a Standard cluster](https://console.bluemix.net/docs/containers/container_index.html#container_index) in IBM Cloud Kubernetes Service. **FREE Cluster is not supported for this lab**
+You must have [already created a Standard 1.16+ cluster](https://cloud.ibm.com/docs/containers?topic=containers-clusters#clusters_standard) in IBM Cloud Kubernetes Service. **FREE Cluster is not supported for this lab**
 
 You should have a basic understanding of containers, IBM Cloud Kubernetes Service, and Istio. If you have no experience with those, take the following courses:
 1. [Get started with Kubernetes and IBM Cloud Kubernetes Service](https://cognitiveclass.ai/courses/kubernetes-course/)
@@ -26,7 +26,7 @@ You should have a basic understanding of containers, IBM Cloud Kubernetes Servic
 ## Workshop setup
 - [Exercise 1 - Accessing a Kubernetes cluster with IBM Cloud Kubernetes Service](exercise-1/README.md)
 - [Exercise 2 - Installing Istio](exercise-2/README.md)
-- [Exercise 3 - Deploying Guestbook with Istio Proxy](exercise-3/README.md)
+- [Exercise 3 - Deploying Guestbook sample application](exercise-3/README.md)
 
 ## Creating a service mesh with Istio
 
@@ -34,14 +34,10 @@ You should have a basic understanding of containers, IBM Cloud Kubernetes Servic
 - [Exercise 5 - Expose the service mesh with the Istio Ingress Gateway](exercise-5/README.md)
 - [Exercise 6 - Perform traffic management](exercise-6/README.md)
 - [Exercise 7 - Secure your service mesh](exercise-7/README.md)
-- [Exercise 8 - Enforce policies for microservices](exercise-8/README.md)
 
 ## Cleaning up the Workshop
 
-We have a script that will remove [ibmcloud](https://console.bluemix.net/docs/cli/index.html#overview) at [here](cleanup/clean_your_local_machine.sh) and unset your `KUBECONFIG` for you.
+Script to uninstall `ibmcloud` CLI: [clean_your_local_machine.sh](cleanup/clean_your_local_machine.sh) and unset `KUBECONFIG`.
 
-We have given you a [script](cleanup/clean_your_k8s_cluster.sh) as a conveant way to remove Istio and the guestbook
-application from your instance.
+Script to delete Istio and Guestbook: [clean_your_k8s_cluster.sh](cleanup/clean_your_k8s_cluster.sh).
 
-**NOTE**: This puts your kubernetes cluster in a empty state, so do not run this on anything other then
-a place you are willing to loose everything.

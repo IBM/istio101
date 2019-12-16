@@ -24,7 +24,7 @@ When an application microservice connects to another microservice, the communica
 
 When Envoy proxies establish a connection, they exchange and validate certificates to confirm that each is indeed connected to a valid and expected peer. The established identities can later be used as basis for policy checks (e.g., access authorization).
 
-## Enforce mTLS between guestbook and analyzer services
+## Enforce mTLS between all Istio services
 
 1. Ensure Citadel is running
 
@@ -44,66 +44,138 @@ When Envoy proxies establish a connection, they exchange and validate certificat
 
 2. Define mTLS Authentication Policy
 
-   Define mTLS authentication policy for the analyzer service:
+   First, we create a `MeshPolicy` for configuring the receiving end to use mTLS. The following two destination rules will then configure the client side to use mTLS. We'll update the previously created DestinationRule to include mTLS and create a new blanket rule (`*.local`) for all other services. Run the following command to enable mTLS across your cluster:
 
 ```shell
-cat <<EOF | kubectl create -f -
-apiVersion: authentication.istio.io/v1alpha1
-kind: Policy
+cat <<EOF | kubectl apply -f -
+apiVersion: "authentication.istio.io/v1alpha1"
+kind: "MeshPolicy"
 metadata:
-  name: mtls-to-analyzer
-  namespace: default
+  name: "default"
 spec:
-  targets:
-  - name: analyzer
   peers:
-  - mtls:
+  - mtls: {}
+---
+apiVersion: "networking.istio.io/v1alpha3"
+kind: "DestinationRule"
+metadata:
+  name: "destination"
+spec:
+  host: "*.local"
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: destination-rule-guestbook
+spec:
+  host: guestbook
+  subsets:
+  - name: v1
+    labels:
+      version: "1.0"
+  - name: v2
+    labels:
+      version: "2.0"
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
 EOF
 ```
    
    You should see:
     
    ```shell
-   policy.authentication.istio.io/mtls-to-analyzer created
+    meshpolicy.authentication.istio.io/default created
+    destinationrule.networking.istio.io/destination created
+    destinationrule.networking.istio.io/destination-rule-guestbook configured
    ```
 
-   Confirm the policy has been created:
+   Confirm the policy for the receiving services to use mTLS has been created:
     
    ```shell
-   kubectl get policies.authentication.istio.io
+   kubectl get meshpolicies
    ```
    
    Output:
    
    ```shell
    NAME              AGE
-   mtls-to-analyzer  1m
+   default           1m
    ```
 
-3. Enable mTLS from guestbook using a Destination rule
-
-```shell
-cat <<EOF | kubectl create -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: route-with-mtls-for-analyzer
-  namespace: default
-spec:
-  host: "analyzer.default.svc.cluster.local"
-  trafficPolicy:
-    tls:
-      mode: ISTIO_MUTUAL
-EOF
-```
-    Output:
-    ```
-    destinationrule.networking.istio.io/route-with-mtls-for-analyzer created
-    ```
+   Confirm the destination rules for client-side mTLS has been created:
+     
+   ```shell
+   kubectl get destinationrules
+   ```
+   
+   Output:
+    
+   ```shell
+   NAME                         HOST        AGE
+   destination                  *.local     3m21s
+   destination-rule-guestbook   guestbook   3m21s
+   ```
 
 ## Verifying the Authenticated Connection
 
 If mTLS is working correctly, the Guestbook app should continue to operate as expected, without any user visible impact. Istio will automatically add (and manage) the required certificates and private keys. 
+
+To verify this, you can use an experimental `istioctl` feature to describe pods.
+
+<!-- First, ensure you are using the latest version of `istioctl`:
+
+```shell
+curl -sL https://istio.io/downloadIstioctl | sh -
+export PATH=$HOME/.istioctl/bin:$PATH
+```
+
+Verify it's installed properly:
+
+```shell
+istioctl version --remote=false
+```
+
+Output:
+```shell
+1.4.2
+``` -->
+
+1. First, get your pods:
+
+    ```shell
+    kubectl get pods
+    ```
+
+2. Copy the name of the guestbook v2 pod, for exmaple: `guestbook-v2-f9f597d8d-zbhkt`.
+
+    ```shell
+    istioctl x describe pod guestbook-v2-f9f597d8d-zbhkt
+    ```
+
+3. You should see something like this:
+
+    ```shell
+    Pod: guestbook-v2-f9f597d8d-zbhkt
+      Pod Ports: 3000 (guestbook), 15090 (istio-proxy)
+    --------------------
+    Service: guestbook
+      Port: http 80/HTTP targets pod port 3000
+    DestinationRule: destination-rule-guestbook for "guestbook"
+      Matching subsets: v2
+          (Non-matching subsets v1)
+      Traffic Policy TLS Mode: ISTIO_MUTUAL
+    Pod is STRICT and clients are ISTIO_MUTUAL
+
+    Exposed on Ingress Gateway http://159.23.74.230
+    VirtualService: virtual-service-guestbook
+      1 HTTP route(s)
+    ```
+
+You'll see that the pod policy is "STRICT" and clients are "ISTIO_MUTUAL". In addition, note `Traffic Policy TLS Mode: ISTIO_MUTUAL`.
 
 ## Control Access to the Analyzer Service
 
@@ -111,11 +183,10 @@ Istio support Role Based Access Control(RBAC) for HTTP services in the service m
 
 1. Create service accounts for the guestbook and analyzer services.
 
-
-```shell
-kubectl create sa guestbook
-kubectl create sa analyzer
-```
+    ```shell
+    kubectl create sa guestbook
+    kubectl create sa analyzer
+    ```
 
 2. Modify guestbook and analyzer deployments to use leverage the service accounts.
 
@@ -126,70 +197,65 @@ cd ../../../guestbook
 
 * Add serviceaccount to your guestbook and analyzer deployments
 
-```shell
-echo "      serviceAccountName: guestbook" >> v1/guestbook-deployment.yaml
-echo "      serviceAccountName: guestbook" >> v2/guestbook-deployment.yaml
-echo "      serviceAccountName: analyzer" >> v2/analyzer-deployment.yaml
-```
+  ```shell
+  echo "      serviceAccountName: guestbook" >> v1/guestbook-deployment.yaml
+  echo "      serviceAccountName: guestbook" >> v2/guestbook-deployment.yaml
+  echo "      serviceAccountName: analyzer" >> v2/analyzer-deployment.yaml
+  ```
 
 * redeploy the guestbook and analyzer deployments
-```shell
-kubectl replace -f v1/guestbook-deployment.yaml
-kubectl replace -f v2/guestbook-deployment.yaml
-kubectl replace -f v2/analyzer-deployment.yaml
-```
+  ```shell
+  kubectl replace -f v1/guestbook-deployment.yaml
+  kubectl replace -f v2/guestbook-deployment.yaml
+  kubectl replace -f v2/analyzer-deployment.yaml
+  ```
 
-3. Create a RBAC configuration to disable all access to analyzer service.  This will effectively not allow guestbook or any services to access it.
+3. Create a `AuthorizationPolicy` to disable all access to analyzer service.  This will effectively not allow guestbook or any services to access it.
 
 ```shell
 cat <<EOF | kubectl create -f -
-apiVersion: "rbac.istio.io/v1alpha1"
-kind: RbacConfig
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
 metadata:
-  name: default
+  name: analyzeraccess
 spec:
-  mode: 'ON_WITH_INCLUSION'
-  inclusion:
-    services: ["analyzer.default.svc.cluster.local"]
+  selector:
+    matchLabels:
+      app: analyzer
 EOF
 ```
 
 Output:
-```
-rbacconfig.rbac.istio.io/default created
-```
-   
-4.  Visit the Guestbook app from your favorite browser and validate that Guestbook V1 continue to work while Guestbook V2 will not run correctly.   For every message you wrote on the Guestbook v2 app, you will get a message such as "Error - unable to detect Tone from the Analyzer service".  It can take up to 15 seconds for the change to propogate to the envoy sidecar(s) so you may not see the error right away.
-
-5. Configure the Analyzer service to only allow access from the Guestbook service using service role and service role binding:
 
 ```shell
+authorizationpolicy.security.istio.io/analyzeraccess created
+```
+    
+4.  Visit the Guestbook app from your favorite browser and validate that Guestbook V1 continues to work while Guestbook V2 will not run correctly. For every new message you write on the Guestbook v2 app, you will get a message such as "Error - unable to detect Tone from the Analyzer service".  It can take up to 15 seconds for the change to propogate to the envoy sidecar(s) so you may not see the error right away.
+
+5. Configure the Analyzer service to only allow access from the Guestbook service using the added `rules` section:
+
+```
 cat <<EOF | kubectl apply -f -
-apiVersion: "rbac.istio.io/v1alpha1"
-kind: ServiceRole
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
 metadata:
-  name: analyzer-viewer
-  namespace: default
+  name: analyzeraccess
 spec:
+  selector:
+    matchLabels:
+      app: analyzer
   rules:
-  - services: ["analyzer.default.svc.cluster.local"]
-    methods: ["POST"]
----
-apiVersion: "rbac.istio.io/v1alpha1"
-kind: ServiceRoleBinding
-metadata:
-  name: bind-analyzer
-  namespace: default
-spec:
-  subjects:
-  - user: "cluster.local/ns/default/sa/guestbook"
-  roleRef:
-    kind: ServiceRole
-    name: "analyzer-viewer"
+  - from:
+    - source:
+        principals: ["cluster.local/ns/default/sa/guestbook"]
+    to:
+    - operation:
+        methods: ["POST"]
 EOF
 ```
 
-6.  Visit the Guestbook app from your favorite browser and validate that Guestbook V1 and V2 both work now.  It can take up to 15 seconds for the change to propogate to the envoy sidecar(s) so you may not observe Guestbook V2 to function right away.
+6.  Visit the Guestbook app from your favorite browser and validate that Guestbook V2 works now.  It can take a few seconds for the change to propogate to the envoy sidecar(s) so you may not observe Guestbook V2 to function right away.
 
 ## Cleanup
 

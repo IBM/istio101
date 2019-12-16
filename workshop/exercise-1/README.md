@@ -1,54 +1,24 @@
 # Exercise 1 - Accessing a Kubernetes cluster with IBM Cloud Kubernetes Service
 
-You must already have a [cluster created](https://console.bluemix.net/docs/containers/container_index.html#container_index). Here are the steps to access your cluster.
+You must already have a [cluster created](https://cloud.ibm.com/docs/containers?topic=containers-clusters#clusters_standard). Your cluster must have **3 or more worker nodes** with at least **4 cores and 16GB RAM**, and run Kubernetes version 1.16 or later.
 
 ## Install IBM Cloud Kubernetes Service command line utilities
 
-1. Install the IBM Cloud [command line interface](https://console.bluemix.net/docs/cli/reference/bluemix_cli/get_started.html#getting-started).
+1. Install the IBM Cloud [command line interface](https://cloud.ibm.com/docs/cli?topic=cloud-cli-install-ibmcloud-cli).
 
-2.  Log in to the IBM Cloud CLI.
+2.  Log in to the IBM Cloud CLI. (If you have a federated account, include the `--sso` flag.)
 
     ```shell
     ibmcloud login
     ```
 
-    If you have a federated account, include the `--sso` flag.
+3.  Download and install a few CLI tools and the Kubernetes Service plug-in..
 
     ```shell
-    ibmcloud login --sso
-    ```
-
-    If you have an api key, use:
-
-    ```shell
-    ibmcloud login --apikey <apikey>
-    ```
-
-3.  Install the IBM Cloud Kubernetes Service plug-in.
-
-    ```shell
-    ibmcloud plugin install container-service
+    curl -sL https://ibm.biz/idt-installer | bash
     ```
 
 4. To verify that the plug-in is installed properly, run `ibmcloud plugin list`. The Container Service plug-in is displayed in the results as `container-service/kubernetes-service`.
-
-5.  Initialize the Container Service plug-in and point the endpoint to your region. For example when prompted, enter `5` for `us-east`.
-
-    Example:
-
-    ```shell
-    ibmcloud ks region-set
-    Choose a region:
-    1. ap-north
-    2. ap-south
-    3. eu-central
-    4. uk-south
-    5. us-east
-    6. us-south
-    Enter a number> 5
-    ```
-
-6. Install the `kubectl` Kubernetes CLI. Go to the [Kubernetes page](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl), and follow the steps to install the CLI.
 
 ## Access your cluster
 Learn how to set the context to work with your cluster by using the `kubectl` CLI, access the Kubernetes dashboard, and gather basic information about your cluster.

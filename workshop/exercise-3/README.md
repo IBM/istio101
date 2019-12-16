@@ -2,6 +2,8 @@
 
 The Guestbook app is a sample app for users to leave comments. It consists of a web front end, Redis master for storage, and a replicated set of Redis slaves. We will also integrate the app with Watson Tone Analyzer which detects the sentiment in users' comments and replies with emoticons.
 
+![](../README_images/istio1.jpg)
+
 ### Download the Guestbook app
 1. Clone the Guestbook app into the `workshop` directory.
 
@@ -96,7 +98,7 @@ The Redis database is a service that you can use to persist the data of your app
     kubectl apply -f guestbook-deployment.yaml
     ```
 
-These commands will inject the Istio Envoy sidecar into the guestbook pods, as well as deploy the Guestbook app on to the Kubernetes cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
+These commands deploy the Guestbook app on to the Kubernetes cluster. Since we enabled automation sidecar injection, these pods will be also include an Envoy sidecar as they are started in the cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
 
 2. Create the guestbook service.
 
