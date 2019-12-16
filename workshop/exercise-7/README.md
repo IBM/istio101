@@ -59,7 +59,7 @@ spec:
 apiVersion: "networking.istio.io/v1alpha3"
 kind: "DestinationRule"
 metadata:
-  name: "destination"
+  name: "default"
 spec:
   host: "*.local"
   trafficPolicy:
@@ -192,7 +192,7 @@ Istio support Role Based Access Control(RBAC) for HTTP services in the service m
 
 * Navigate to your guestbook dir first, for example:
 ```shell
-cd ../../../guestbook
+cd ../guestbook
 ```
 
 * Add serviceaccount to your guestbook and analyzer deployments
@@ -262,11 +262,11 @@ EOF
 Run the following commands to clean up the Istio configuration resources as part of this exercise:
 
 ```shell
-kubectl delete policy mtls-to-analyzer
-kubectl delete dr route-with-mtls-for-analyzer
-kubectl delete rbacconfig default
-kubectl delete servicerole analyzer-viewer 
-kubectl delete servicerolebinding bind-analyzer
+kubectl delete MeshPolicy default
+kubectl delete dr default
+kubectl delete dr destination-rule-guestbook
+kubectl delete sa guestbook analyzer
+kubectl delete AuthorizationPolicy analyzeraccess
 ```
 
 ## Quiz

@@ -27,30 +27,28 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     kubectl get service guestbook -n default
     ```
 
-    Go to this external ip address in the browser to try out your guestbook. This service will route you to either v1 or v2, at random. If you wish to see a different version, you'll need to do a hard refresh (`cmd + shift + r` on a mac, or `ctrl + f5` on a PC). Alternatively, you can `curl` the address.
+    Go to this EXTERNAL-IP address in the browser to try out your guestbook. This service will route you to either v1 or v2, at random. If you wish to see a different version, you'll need to do a hard refresh (`cmd + shift + r` on a mac, or `ctrl + f5` on a PC).
 
 ![](../README_images/guestbook1.png)
 
-1. Generate a small load to the app, replacing guestbook_IP with your own IP.
+1. Generate a small load to the app, replacing guestbook_IP with the EXTERNAL-IP.
 
     ```shell
-    for i in {1..40}; do sleep 0.2; curl http://<guestbook_IP>/; done
+    for i in {1..40}; do sleep 0.2; curl -I http://<guestbook_IP>/; done
     ```
 
 ## View guestbook telemetry data
 
 #### Jaeger
 
-1. Establish port forwarding from local port 16686 to the Tracing instance:
+1. Launch the Jaeger dashboard:
 
     ```shell
-    kubectl port-forward -n istio-system \
-      $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath='{.items[0].metadata.name}') \
-      16686:16686 &
+    istioctl dashboard jaeger
     ```
-2. In your browser, go to `http://127.0.0.1:16686`
-3. From the **Services** menu, select either the **guestbook** or **analyzer** service.
-4. Scroll to the bottom and click on **Find Traces** button to see traces.
+2. From the **Services** menu, select either the **guestbook** or **analyzer** service.
+3. Scroll to the bottom and click on **Find Traces** button to see traces.
+4. Use Ctrl-C in the terminal to exit the port-foward when you are done.
 
 Read more about [Jaeger](https://www.jaegertracing.io/docs/)
 
@@ -59,16 +57,16 @@ Read more about [Jaeger](https://www.jaegertracing.io/docs/)
 1. Establish port forwarding from local port 3000 to the Grafana instance:
 
     ```shell
-    kubectl -n istio-system port-forward \
-      $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') \
-      3000:3000 &
+    istioctl dashboard grafana
     ```
 
-2. Browse to http://localhost:3000 and navigate to the `Istio Service Dashboard` by clicking on the Home menu on the top left, then Istio, then Istio Service Dashboard.
+2. Navigate to the `Istio Service Dashboard` by clicking on the Home menu on the top left, then Istio, then Istio Service Dashboard.
 
 3. Select guestbook in the Service drop down.
 
 4. In a different tab, visit the guestbook application and refresh the page multiple times to generate some load, or run the load script you used previously. Switch back to the Grafana tab.
+   
+5. Use Ctrl-C in the terminal to exit the port-foward when you are done.
 
 This Grafana dashboard provides metrics for each workload. Explore the other dashboard provided as well. 
 
@@ -79,30 +77,44 @@ Read more about [Grafana](http://docs.grafana.org/).
 1. Establish port forwarding from local port 9090 to the Prometheus instance.
 
     ```shell
-    kubectl -n istio-system port-forward \
-      $(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') \
-      9090:9090 &
+    istioctl dashboard prometheus
     ```
-2. Browse to http://localhost:9090/graph, and in the “Expression” input box, enter: `istio_request_bytes_count`. Click Execute and then select Graph.
+2. In the “Expression” input box, enter: `istio_request_bytes_count`. Click Execute and then select Graph.
 
 3. Then try another query: `istio_requests_total{destination_service="guestbook.default.svc.cluster.local", destination_version="2.0"}`
+
+4. Use Ctrl-C in the terminal to exit the port-foward when you are done.
 
 #### Kiali
 
 Kiali is an open-source project that installs on top of Istio to visualize your service mesh. It provides deeper insight into how your microservices interact with one another, and provides features such as circuit breakers and request rates for your services
 
-1. Establish port forwarding from local port 20001 to the Kiali instance.
+1. Create a secret which will be used to set the login credentials for Kiali
+    ```
+    cat <<EOF | kubectl apply -f -
+    apiVersion: v1
+    kind: Secret
+    metadata:
+    name: kiali
+    namespace:
+    labels:
+        app: kiali
+    type: Opaque
+    data:
+    username: YWRtaW4=
+    passphrase: YWRtaW4=
+    EOF
+    ```
+2. Establish port forwarding from local port 20001 to the Kiali instance.
 
     ```shell
-    kubectl -n istio-system port-forward \
-    $(kubectl -n istio-system get pod -l app=kiali -o jsonpath='{.items[0].metadata.name}') \
-    20001:20001 &
+    istioctl dashboard kiali
     ```
 
-2. Browse to [http://localhost:20001/kiali/](http://localhost:20001/kiali/), and login with `admin` for both username and password.
-3. Select Graph and then choose `default` namespace. You should see a visual service graph of the various services in your Istio mesh.
-4. Use the `Edge Labels` dropdown and select `Traffic rate per second` to see the request rates as well.
-5. Kiali has a number of views to help you visualize your services. Click through the vairous tabs to explore the service graph, and the various views for workloads, applications, and services.
+3. Login with `admin` for both username and password.
+4. Select Graph and then choose `default` namespace. You should see a visual service graph of the various services in your Istio mesh.
+5. Use the `Edge Labels` dropdown and select `Traffic rate per second` to see the request rates as well.
+6. Kiali has a number of views to help you visualize your services. Click through the vairous tabs to explore the service graph, and the various views for workloads, applications, and services.
 
 ## Understand what happened
 

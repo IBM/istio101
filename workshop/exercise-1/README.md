@@ -4,21 +4,17 @@ You must already have a [cluster created](https://cloud.ibm.com/docs/containers?
 
 ## Install IBM Cloud Kubernetes Service command line utilities
 
-1. Install the IBM Cloud [command line interface](https://cloud.ibm.com/docs/cli?topic=cloud-cli-install-ibmcloud-cli).
+1.  Download and install the required CLI tools.
+
+    ```shell
+    curl -sL https://ibm.biz/idt-installer | bash
+    ```
 
 2.  Log in to the IBM Cloud CLI. (If you have a federated account, include the `--sso` flag.)
 
     ```shell
     ibmcloud login
     ```
-
-3.  Download and install a few CLI tools and the Kubernetes Service plug-in..
-
-    ```shell
-    curl -sL https://ibm.biz/idt-installer | bash
-    ```
-
-4. To verify that the plug-in is installed properly, run `ibmcloud plugin list`. The Container Service plug-in is displayed in the results as `container-service/kubernetes-service`.
 
 ## Access your cluster
 Learn how to set the context to work with your cluster by using the `kubectl` CLI, access the Kubernetes dashboard, and gather basic information about your cluster.
@@ -40,7 +36,7 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
     c. Download the configuration file and certificates for your cluster using the `cluster-config` command.
 
     ```shell
-    ibmcloud ks cluster-config $MYCLUSTER
+    ibmcloud ks cluster config $MYCLUSTER
     ```
 
     d. Copy and paste the output command from the previous step to set the `KUBECONFIG` environment variable and configure your CLI to run `kubectl` commands against your cluster.
@@ -55,28 +51,19 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
     a.  View details of your cluster.
 
     ```shell
-    ibmcloud ks cluster-get $MYCLUSTER
+    ibmcloud ks cluster get $MYCLUSTER
     ```
 
     b.  Verify the worker nodes in the cluster.
 
     ```shell
     ibmcloud ks workers $MYCLUSTER
-    ibmcloud ks worker-get <worker_ID>
     ```
 
-3.  Validate access to your cluster.
-
-    a.  View nodes in the cluster.
+3.  Validate access to your cluster by viewing the nodes in the cluster.
 
     ```shell
     kubectl get node
-    ```
-
-    b.  View services, deployments, and pods.
-
-    ```shell
-    kubectl get svc,deploy,po --all-namespaces
     ```
 
 ## Clone the lab repo
