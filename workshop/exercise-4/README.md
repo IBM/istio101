@@ -59,6 +59,7 @@ Read more about [Jaeger](https://www.jaegertracing.io/docs/)
     ```shell
     istioctl dashboard grafana
     ```
+![](../README_images/grafana.png)
 
 2. Navigate to the `Istio Service Dashboard` by clicking on the Home menu on the top left, then Istio, then Istio Service Dashboard.
 
@@ -79,6 +80,8 @@ Read more about [Grafana](http://docs.grafana.org/).
     ```shell
     istioctl dashboard prometheus
     ```
+![](../README_images/prometheus.jpg)
+
 2. In the “Expression” input box, enter: `istio_request_bytes_count`. Click Execute and then select Graph.
 
 3. Then try another query: `istio_requests_total{destination_service="guestbook.default.svc.cluster.local", destination_version="2.0"}`
@@ -110,6 +113,7 @@ Kiali is an open-source project that installs on top of Istio to visualize your 
     ```shell
     istioctl dashboard kiali
     ```
+![](../README_images/kiali.png) 
 
 3. Login with `admin` for both username and password.
 4. Select Graph and then choose `default` namespace. You should see a visual service graph of the various services in your Istio mesh.
