@@ -93,21 +93,21 @@ Read more about [Grafana](http://docs.grafana.org/).
 Kiali is an open-source project that installs on top of Istio to visualize your service mesh. It provides deeper insight into how your microservices interact with one another, and provides features such as circuit breakers and request rates for your services
 
 1. Create a secret which will be used to set the login credentials for Kiali
-    ```
-    cat <<EOF | kubectl apply -f -
-    apiVersion: v1
-    kind: Secret
-    metadata:
-    name: kiali
-    namespace:
-    labels:
-        app: kiali
-    type: Opaque
-    data:
-    username: YWRtaW4=
-    passphrase: YWRtaW4=
-    EOF
-    ```
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kiali
+  namespace: istio-system
+  labels:
+    app: kiali
+type: Opaque
+data:
+  username: "YWRtaW4="
+  passphrase: "YWRtaW4="
+EOF
+```
 2. Establish port forwarding from local port 20001 to the Kiali instance.
 
     ```shell
