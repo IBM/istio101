@@ -2,17 +2,19 @@
 
 The Guestbook app is a sample app for users to leave comments. It consists of a web front end, Redis master for storage, and a replicated set of Redis slaves. We will also integrate the app with Watson Tone Analyzer which detects the sentiment in users' comments and replies with emoticons.
 
+![](../README_images/istio1.jpg)
+
 ### Download the Guestbook app
 1. Clone the Guestbook app into the `workshop` directory.
 
     ```shell
-    git clone https://github.com/IBM/guestbook.git ../guestbook
+    git clone https://github.com/IBM/guestbook.git
     ```
 
 2. Navigate into the app directory.
 
     ```shell
-    cd ../guestbook/v2
+    cd guestbook/v2
     ```
 
 ### Enable the automatic sidecar injection for the default namespace
@@ -57,9 +59,9 @@ The Redis database is a service that you can use to persist the data of your app
     ```
     Output:
     ```shell
-    NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-    redis-master   1         1         1            1           5d
-    redis-slave    2         2         2            2           5d
+    NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+    redis-master   1/1     1            1           2m16s
+    redis-slave    2/2     2            2           2m15s
     ```
 
 3. Verify that the Redis services for the master and the slave are created.
@@ -96,7 +98,7 @@ The Redis database is a service that you can use to persist the data of your app
     kubectl apply -f guestbook-deployment.yaml
     ```
 
-These commands will inject the Istio Envoy sidecar into the guestbook pods, as well as deploy the Guestbook app on to the Kubernetes cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
+These commands deploy the Guestbook app on to the Kubernetes cluster. Since we enabled automation sidecar injection, these pods will be also include an Envoy sidecar as they are started in the cluster. Here we have two versions of deployments, a new version (`v2`) in the current directory, and a previous version (`v1`) in a sibling directory. They will be used in future sections to showcase the Istio traffic routing capabilities.
 
 2. Create the guestbook service.
 
@@ -113,6 +115,7 @@ These commands will inject the Istio Envoy sidecar into the guestbook pods, as w
     ```shell
     NAME           TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
     guestbook      LoadBalancer   172.21.36.181   169.61.37.140   80:32149/TCP   5d
+    ...
     ```
 
 4. Verify that the pods are up and running.
@@ -122,9 +125,16 @@ These commands will inject the Istio Envoy sidecar into the guestbook pods, as w
     ```
     Sample output:
     ```shell
-    NAME                            READY     STATUS    RESTARTS   AGE
-    guestbook-v1-89cd4b7c7-frscs    2/2       Running   0          5d
-    guestbook-v2-56d98b558c-mzbxk   2/2       Running   0          5d
+    NAME                            READY   STATUS    RESTARTS   AGE
+    guestbook-v1-98dd9c654-dz8dq    2/2     Running   0          30s
+    guestbook-v1-98dd9c654-mgfv6    2/2     Running   0          30s
+    guestbook-v1-98dd9c654-x8gxx    2/2     Running   0          30s
+    guestbook-v2-8689f6c559-5ntgv   2/2     Running   0          28s
+    guestbook-v2-8689f6c559-fpzb7   2/2     Running   0          28s
+    guestbook-v2-8689f6c559-wqbnl   2/2     Running   0          28s
+    redis-master-577bc6fbb-zh5v8    2/2     Running   0          4m47s
+    redis-slave-7779c6f75b-bshvs    2/2     Running   0          4m46s
+    redis-slave-7779c6f75b-nvsd6    2/2     Running   0          4m46s
     ```
 
     Note that each guestbook pod has 2 containers in it. One is the guestbook container, and the other is the Envoy proxy sidecar.
