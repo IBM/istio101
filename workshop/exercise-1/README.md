@@ -36,7 +36,7 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
     c. Download the configuration file and certificates for your cluster using the `cluster-config` command.
 
     ```shell
-    ibmcloud ks cluster config $MYCLUSTER
+    ibmcloud ks cluster config --cluster $MYCLUSTER
     ```
 
     d. Copy and paste the output command from the previous step to set the `KUBECONFIG` environment variable and configure your CLI to run `kubectl` commands against your cluster.
