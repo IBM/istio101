@@ -34,7 +34,7 @@ Let's examine the rule:
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: destination-guestbook
+  name: destination-rule-guestbook
 spec:
   host: guestbook
   subsets:
