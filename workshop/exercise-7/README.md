@@ -26,169 +26,41 @@ When Envoy proxies establish a connection, they exchange and validate certificat
 
 ## Enforce mTLS between all Istio services
 
-1. Ensure Citadel is running
 
-    Citadel is Istio's in-cluster Certificate Authority (CA) and is required for generating and managing cryptographic identities in the cluster.
-    Verify Citadel is running:
+1.  To enforce a mesh-wide authentication policy that requires mutual TLS, submit the following policy. This policy specifies that all workloads in the mesh will only accept encrypted requests using TLS.
 
-    ```shell
-    kubectl get deployment -l istio=citadel -n istio-system
-    ```
-
-    Expected output:
-
-    ```shell
-    NAME            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-    istio-citadel   1         1         1            1           15h
-    ```
-
-1. Define mTLS Authentication Policy
-
-   First, we create a `MeshPolicy` for configuring the receiving end to use mTLS. The following two destination rules will then configure the client side to use mTLS. We'll update the previously created DestinationRule to include mTLS and create a new blanket rule (`*.local`) for all other services. Run the following command to enable mTLS across your cluster:
 
 ```shell
-cat <<EOF | kubectl apply -f -
-apiVersion: "authentication.istio.io/v1alpha1"
-kind: "MeshPolicy"
+kubectl apply -f - <<EOF
+apiVersion: "security.istio.io/v1beta1"
+kind: "PeerAuthentication"
 metadata:
   name: "default"
+  namespace: "istio-system"
 spec:
-  peers:
-  - mtls: {}
----
-apiVersion: "networking.istio.io/v1alpha3"
-kind: "DestinationRule"
-metadata:
-  name: "default"
-spec:
-  host: "*.local"
-  trafficPolicy:
-    tls:
-      mode: ISTIO_MUTUAL
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: destination-rule-guestbook
-spec:
-  host: guestbook
-  subsets:
-  - name: v1
-    labels:
-      version: "1.0"
-  - name: v2
-    labels:
-      version: "2.0"
-  trafficPolicy:
-    tls:
-      mode: ISTIO_MUTUAL
+  mtls:
+    mode: STRICT
 EOF
 ```
 
-   You should see:
+1. Visit your guestbook application by going to it in your browser. Everything should be working as expected! To confirm mTLS is infact enabled, you can run:
 
-   ```shell
-    meshpolicy.authentication.istio.io/default created
-    destinationrule.networking.istio.io/destination created
-    destinationrule.networking.istio.io/destination-rule-guestbook configured
-   ```
+  ```shell
+  istioctl x describe service guestbook
+  ```
+  Example output:
+  ```
+  Service: guestbook
+    Port: http 80/HTTP targets pod port 3000
+  DestinationRule: destination-rule-guestbook for "guestbook"
+    Matching subsets: v1,v2
+    No Traffic Policy
+  Pod is STRICT, clients configured automatically
+  ```
 
-   Confirm the policy for the receiving services to use mTLS has been created:
+## Configure access control for workloads using HTTP traffic
 
-   ```shell
-   kubectl get meshpolicies
-   ```
-
-   Output:
-
-   ```shell
-   NAME              AGE
-   default           1m
-   ```
-
-   Confirm the destination rules for client-side mTLS has been created:
-
-   ```shell
-   kubectl get destinationrules
-   ```
-
-   Output:
-
-   ```shell
-   NAME                         HOST        AGE
-   destination                  *.local     3m21s
-   destination-rule-guestbook   guestbook   3m21s
-   ```
-
-## Verifying the Authenticated Connection
-
-If mTLS is working correctly, the Guestbook app should continue to operate as expected, without any user visible impact. Istio will automatically add (and manage) the required certificates and private keys.
-
-To verify this, you can use an experimental `istioctl` feature to describe pods.
-
-<!-- First, ensure you are using the latest version of `istioctl`:
-
-```shell
-curl -sL https://istio.io/downloadIstioctl | sh -
-export PATH=$HOME/.istioctl/bin:$PATH
-```
-
-Verify it's installed properly:
-
-```shell
-istioctl version --remote=false
-```
-
-Output:
-```shell
-1.4.2
-``` -->
-
-1. First, get your pods:
-
-    ```shell
-    kubectl get pods
-    ```
-
-1. Copy the name of the guestbook v2 pod, for exmaple: `guestbook-v2-f9f597d8d-zbhkt`.
-
-    ```shell
-    istioctl x describe pod guestbook-v2-f9f597d8d-zbhkt
-    ```
-
-1. You should see something like this:
-
-    ```shell
-    Pod: guestbook-v2-f9f597d8d-zbhkt
-      Pod Ports: 3000 (guestbook), 15090 (istio-proxy)
-    --------------------
-    Service: guestbook
-      Port: http 80/HTTP targets pod port 3000
-    DestinationRule: destination-rule-guestbook for "guestbook"
-      Matching subsets: v2
-          (Non-matching subsets v1)
-      Traffic Policy TLS Mode: ISTIO_MUTUAL
-    Pod is STRICT and clients are ISTIO_MUTUAL
-
-    Exposed on Ingress Gateway http://159.23.74.230
-    VirtualService: virtual-service-guestbook
-      1 HTTP route(s)
-    ```
-
-You'll see that the pod policy is "STRICT" and clients are "ISTIO_MUTUAL". In addition, note `Traffic Policy TLS Mode: ISTIO_MUTUAL`.
-
-## Control Access to the Analyzer Service
-
-Istio support Role Based Access Control(RBAC) for HTTP services in the service mesh.  Let's leverage this to configure access among guestbook and analyzer services.
-
-1. Create service accounts for the guestbook and analyzer services.
-
-    ```shell
-    kubectl create sa guestbook
-    kubectl create sa analyzer
-    ```
-
-1. Modify guestbook and analyzer deployments to use leverage the service accounts.
+2. Modify guestbook and analyzer deployments to use leverage the service accounts.
 
     * Navigate to your guestbook dir first, for example:
 
@@ -212,7 +84,7 @@ Istio support Role Based Access Control(RBAC) for HTTP services in the service m
     kubectl replace -f v2/analyzer-deployment.yaml
     ```
 
-1. Create a `AuthorizationPolicy` to disable all access to analyzer service.  This will effectively not allow guestbook or any services to access it.
+3. Create a `AuthorizationPolicy` to disable all access to analyzer service.  This will effectively not allow guestbook or any services to access it.
 
 ```shell
 cat <<EOF | kubectl create -f -
@@ -264,7 +136,7 @@ EOF
 Run the following commands to clean up the Istio configuration resources as part of this exercise:
 
 ```shell
-kubectl delete MeshPolicy default
+kubectl delete PeerAuthentication default
 kubectl delete dr default
 kubectl delete dr destination-rule-guestbook
 kubectl delete sa guestbook analyzer

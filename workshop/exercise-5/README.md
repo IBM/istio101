@@ -68,7 +68,7 @@ Let's leverage this feature with Istio ingress gateway:
 1. Create the NLB host with the Istio ingress gateway's public IP address:
 
     ```shell
-    ibmcloud ks nlb-dns create nlb-dns-create --cluster $MYCLUSTER --ip $INGRESS_IP
+    ibmcloud ks nlb-dns create classic --cluster $MYCLUSTER --ip $INGRESS_IP
     ```
 
 1. List the NLB host names for your cluster:

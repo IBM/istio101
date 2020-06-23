@@ -12,14 +12,21 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 ### Configure Istio to receive telemetry data
 
+3. Enable Istio monitoring dashboards, by running these two commands:
+   ```shell
+   kubectl patch cm managed-istio-custom -n ibm-operators --type='json' -p='[{"op": "add", "path": "/data/istio-monitoring", "value":"true"}]'
+   ```
+   ```
+   kubectl annotate iop -n ibm-operators managed-istio --overwrite version="custom-applied-at: $(date)"
+   ```
+
 1. Verify that the Grafana, Prometheus, Kiali and Jaeger add-ons were installed successfully. All add-ons are installed into the `istio-system` namespace.
 
     ```shell
-    kubectl get pods -n istio-system
     kubectl get services -n istio-system
     ```
 
-1. Obtain the guestbook endpoint to access the guestbook.
+2. Obtain the guestbook endpoint to access the guestbook.
 
     You can access the guestbook via the external IP for your service as guestbook is deployed as a load balancer service. Get the EXTERNAL-IP of the guestbook service via output below:
 
@@ -27,7 +34,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     kubectl get service guestbook -n default
     ```
 
-    Go to this EXTERNAL-IP address in the browser to try out your guestbook. This service will route you to either v1 or v2, at random. If you wish to see a different version, you'll need to do a hard refresh (`cmd + shift + r` on a mac, or `ctrl + f5` on a PC).
+    Go to this external ip address in the browser to try out your guestbook. This service will route you to either v1 or v2, at random. If you wish to see a different version, you'll need to do a hard refresh (`cmd + shift + r` on a mac, or `ctrl + f5` on a PC). Alternatively, you can `curl` the address.
 
 ![Guestbook app screenshot](../README_images/guestbook1.png)
 
@@ -55,7 +62,24 @@ Read more about [Jaeger](https://www.jaegertracing.io/docs/)
 
 ### Grafana
 
-1. Establish port forwarding from local port 3000 to the Grafana instance:
+1. Create a secret which will be used to set the login credentials for Grafana
+
+
+```shell
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana
+  namespace: istio-system
+type: Opaque
+data:
+  username: "YWRtaW4="
+  passphrase: "YWRtaW4="
+EOF
+```
+
+1. Wait 2 minutes for the secret to be picked up and then launch the dashboard:
 
     ```shell
     istioctl dashboard grafana
@@ -63,6 +87,7 @@ Read more about [Jaeger](https://www.jaegertracing.io/docs/)
 
 ![Grafana dashboard](../README_images/grafana.png)
 
+1. Log in using `admin` for both username and password.
 1. Navigate to the `Istio Service Dashboard` by clicking on the Home menu on the top left, then Istio, then Istio Service Dashboard.
 
 1. Select guestbook in the Service drop down.
