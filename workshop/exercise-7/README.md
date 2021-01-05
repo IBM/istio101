@@ -26,9 +26,7 @@ When Envoy proxies establish a connection, they exchange and validate certificat
 
 ## Enforce mTLS between all Istio services
 
-
-1.  To enforce a mesh-wide authentication policy that requires mutual TLS, submit the following policy. This policy specifies that all workloads in the mesh will only accept encrypted requests using TLS.
-
+1. To enforce a mesh-wide authentication policy that requires mutual TLS, submit the following policy. This policy specifies that all workloads in the mesh will only accept encrypted requests using TLS.
 
 ```shell
 kubectl apply -f - <<EOF
@@ -48,8 +46,10 @@ EOF
   ```shell
   istioctl x describe service guestbook
   ```
+
   Example output:
-  ```
+
+  ```yaml
   Service: guestbook
     Port: http 80/HTTP targets pod port 3000
   DestinationRule: destination-rule-guestbook for "guestbook"
@@ -60,7 +60,7 @@ EOF
 
 ## Configure access control for workloads using HTTP traffic
 
-2. Modify guestbook and analyzer deployments to use leverage the service accounts.
+1. Modify guestbook and analyzer deployments to use leverage the service accounts.
 
     * Navigate to your guestbook dir first, for example:
 
@@ -84,7 +84,7 @@ EOF
     kubectl replace -f v2/analyzer-deployment.yaml
     ```
 
-3. Create a `AuthorizationPolicy` to disable all access to analyzer service.  This will effectively not allow guestbook or any services to access it.
+1. Create a `AuthorizationPolicy` to disable all access to analyzer service.  This will effectively not allow guestbook or any services to access it.
 
 ```shell
 cat <<EOF | kubectl create -f -
@@ -105,9 +105,9 @@ Output:
 authorizationpolicy.security.istio.io/analyzeraccess created
 ```
 
-4. Visit the Guestbook app from your favorite browser and validate that Guestbook V1 continues to work while Guestbook V2 will not run correctly. For every new message you write on the Guestbook v2 app, you will get a message such as "Error - unable to detect Tone from the Analyzer service".  It can take up to 15 seconds for the change to propogate to the envoy sidecar(s) so you may not see the error right away.
+1. Visit the Guestbook app from your favorite browser and validate that Guestbook V1 continues to work while Guestbook V2 will not run correctly. For every new message you write on the Guestbook v2 app, you will get a message such as "Error - unable to detect Tone from the Analyzer service".  It can take up to 15 seconds for the change to propogate to the envoy sidecar(s) so you may not see the error right away.
 
-5. Configure the Analyzer service to only allow access from the Guestbook service using the added `rules` section:
+1. Configure the Analyzer service to only allow access from the Guestbook service using the added `rules` section:
 
 ```shell
 cat <<EOF | kubectl apply -f -
@@ -129,7 +129,7 @@ spec:
 EOF
 ```
 
-6. Visit the Guestbook app from your favorite browser and validate that Guestbook V2 works now.  It can take a few seconds for the change to propogate to the envoy sidecar(s) so you may not observe Guestbook V2 to function right away.
+1. Visit the Guestbook app from your favorite browser and validate that Guestbook V2 works now.  It can take a few seconds for the change to propogate to the envoy sidecar(s) so you may not observe Guestbook V2 to function right away.
 
 ## Cleanup
 
@@ -162,5 +162,3 @@ kubectl delete AuthorizationPolicy analyzeraccess
 * [Istio Task](https://istio.io/docs/tasks/security/mutual-tls.html)
 
 * [Istio Concept](https://istio.io/docs/concepts/security/mutual-tls.html)
-
-## [Continue to Exercise 8 - Policy Enforcement](../exercise-8/README.md)

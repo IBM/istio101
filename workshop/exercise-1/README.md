@@ -40,7 +40,6 @@ Learn how to set the context to work with your cluster by using the `kubectl` CL
     ibmcloud ks cluster config --cluster $MYCLUSTER
     ```
 
-
 1. Get basic information about your cluster and its worker nodes. This information can help you manage your cluster and troubleshoot issues.
 
     a.  View details of your cluster.

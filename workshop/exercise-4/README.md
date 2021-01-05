@@ -12,11 +12,13 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
 
 ### Configure Istio to receive telemetry data
 
-3. Enable Istio monitoring dashboards, by running these two commands:
+1. Enable Istio monitoring dashboards, by running these two commands:
+
    ```shell
    kubectl patch cm managed-istio-custom -n ibm-operators --type='json' -p='[{"op": "add", "path": "/data/istio-monitoring", "value":"true"}]'
    ```
-   ```
+
+   ```shell
    kubectl annotate iop -n ibm-operators managed-istio --overwrite version="custom-applied-at: $(date)"
    ```
 
@@ -26,7 +28,7 @@ You can read more about how [Istio mixer enables telemetry reporting](https://is
     kubectl get services -n istio-system
     ```
 
-2. Obtain the guestbook endpoint to access the guestbook.
+1. Obtain the guestbook endpoint to access the guestbook.
 
     You can access the guestbook via the external IP for your service as guestbook is deployed as a load balancer service. Get the EXTERNAL-IP of the guestbook service via output below:
 
@@ -63,7 +65,6 @@ Read more about [Jaeger](https://www.jaegertracing.io/docs/)
 ### Grafana
 
 1. Create a secret which will be used to set the login credentials for Grafana
-
 
 ```shell
 cat <<EOF | kubectl apply -f -
