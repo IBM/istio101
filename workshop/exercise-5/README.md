@@ -117,7 +117,7 @@ Let's leverage this feature with Istio ingress gateway:
     ```shell
     Retrieving health check monitor statuses for NLB pods...
     OK
-    Hostname                                                                             IP          Health Monitor   H.Monitor Status  
+    Hostname                                                                             IP          Health Monitor   H.Monitor Status
     mycluster-85f044fc29ce613c264409c04a76c95d-0001.us-east.containers.appdomain.cloud   169.1.1.1   Enabled          Healthy
     ```
 
@@ -127,7 +127,7 @@ Congratulations! You extended the base Ingress features by providing a DNS entry
 
 * [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 
-* [Istio Ingress](https://istio.io/docs/tasks/traffic-management/ingress.html)
+* [Istio Ingress](https://istio.io/latest/docs/tasks/traffic-management/ingress/)
 
 * [Bring your own ALB](https://www.ibm.com/blogs/bluemix/2019/04/bring-your-own-alb-dns-with-health-checks-and-ssl-certificates-beta/)
 
