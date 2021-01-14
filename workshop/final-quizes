@@ -12,7 +12,7 @@ A. Yes B. No.  (Answer A)
 
 3. Which Istio function normally requires user to modify their application?
 
-A. Traffic Management   B. Metrics   C Distributed Tracing   D. Policy Enforcement. 
+A. Traffic Management   B. Metrics   C Distributed Tracing   D. Policy Enforcement.
 
 (Answer C)
 
@@ -41,10 +41,10 @@ A. Yes.  B. No
     2. It’s utility container in the pod
     3. It helps to speed up the cluster run time.
     4. None of the above
-    
+
     (Answer 2).
 
-9. What Istio component primarily manages telemetry ? 
+9. What Istio component primarily manages telemetry ?
     1. Pilot
     2. Istio-auth
     3. Mixer
@@ -58,36 +58,36 @@ A. Yes.  B. No
     2. It’s sidecar proxy
     3. Both
     4. None
-    
- (Answer 2).   
- 
+
+ (Answer 2).
+
 11. What component is primarily responsible for traffic management?
     1. Pilot
     2. Mixer
     3. Istio-auth
     4. Security
-    
- (Answer 1).  
-    
+
+ (Answer 1).
+
 12. A VirtualService defines policies that apply to traffic intended for a service after routing has occurred.
     1. Yes
     2. No
 
-(Answer 2). 
-    
+(Answer 2).
+
 13. ServiceEntry configuration enables services within the mesh to access a service not necessarily managed by Istio.
     1. Yes
     2. No
-    
+
 (Answer 1).
 
 
 14. A/B is a method of performing identical tests against two separate service versions in order to determine which performs better.
     1. Yes
     2. No
-    
-(Answer 1).   
-  
+
+(Answer 1).
+
 
 15. What is the default side car proxy in Istio?
     1. Nginx
