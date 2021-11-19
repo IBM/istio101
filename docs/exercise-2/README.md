@@ -7,11 +7,11 @@ Managed Istio is available as part of IBM Cloud™ Kubernetes Service. The servi
 1. Download the `istioctl` CLI and add it to your PATH:
 
    ```shell
-   curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.5.6 sh -
+   curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.11.4 sh -
    ```
 
    ```shell
-   export PATH=$PWD/istio-1.5.6/bin:$PATH
+   export PATH=$PWD/istio-1.11.4/bin:$PATH
    ```
 
 1. Enable Managed Istio on your IKS cluster:
@@ -50,9 +50,9 @@ istiod-cbb98c74d-kcr4d                  1/1     Running   0          67s
     Sample output:
 
     ```shell
-    client version: 1.5.6
-    control plane version: 1.5.6
-    data plane version: 1.5.6 (4 proxies)
+    client version: 1.11.4
+    control plane version: 1.11.4
+    data plane version: 1.11.4 (4 proxies)
     ```
 
     Congratulations! You successfully installed Istio into your cluster.
