@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: guestbook-ingress
+  namespace: istio-system
+spec:
+  rules:
+    - host: guestbook.cluster_name.region.containers.appdomain.cloud
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: istio-ingressgateway
+              servicePort: 80

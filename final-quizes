@@ -1,0 +1,105 @@
+## Final Quizes
+
+1. Which of the following are the features provided by Istio?
+
+A. Traffic Management   B. Telemtry   C. Policy Enforcement.   D. Machine Learning.  E. Mutual TLS.  F. API Connect
+
+(Answer A B C E)
+
+2. Can microservices deployed in Istio communicate to services outside of Istio?
+
+A. Yes B. No.  (Answer A)
+
+3. Which Istio function normally requires user to modify their application?
+
+A. Traffic Management   B. Metrics   C Distributed Tracing   D. Policy Enforcement.
+
+(Answer C)
+
+4. Which Istio component is always required when user chooses to only install certain Istio features?
+A. Mixer  B. Pilot.  C. Citadel.  D. Istioctl
+
+(Answer B)
+
+5. Which Istio components below are part of the Istio service mesh data plane?
+A. Mixer. B. Pilot C. Citadel D. Envoy side car
+
+(Answer D)
+
+6. Which Istio features allow user to configure per namespace?
+A. Policy enforcement B. Traffic Management C. Authentication Policy. D. Telemtry
+
+(Answer A, C, D)
+
+7. To leverage Istio, does my service have to run in Kubernetes?
+A. Yes.  B. No
+
+(Answer B).
+
+8. What’s the purpose of sidecar container in Kubernetes?
+    1. It’s a container with Istio installed
+    2. It’s utility container in the pod
+    3. It helps to speed up the cluster run time.
+    4. None of the above
+
+    (Answer 2).
+
+9. What Istio component primarily manages telemetry ?
+    1. Pilot
+    2. Istio-auth
+    3. Mixer
+    4. Istio data plane
+
+(Answer 3).
+
+
+10. What’s an Envoy?
+    1. It’s web server
+    2. It’s sidecar proxy
+    3. Both
+    4. None
+
+ (Answer 2).
+
+11. What component is primarily responsible for traffic management?
+    1. Pilot
+    2. Mixer
+    3. Istio-auth
+    4. Security
+
+ (Answer 1).
+
+12. A VirtualService defines policies that apply to traffic intended for a service after routing has occurred.
+    1. Yes
+    2. No
+
+(Answer 2).
+
+13. ServiceEntry configuration enables services within the mesh to access a service not necessarily managed by Istio.
+    1. Yes
+    2. No
+
+(Answer 1).
+
+
+14. A/B is a method of performing identical tests against two separate service versions in order to determine which performs better.
+    1. Yes
+    2. No
+
+(Answer 1).
+
+
+15. What is the default side car proxy in Istio?
+    1. Nginx
+    2. Linkerd
+    3. Envoy
+    4. None of the above
+(Answer 3)
+
+16. With what Istio components one can enable users to write custom adapters for tracing and metrics?
+    1. Istio-auth
+    2. Mixer
+    3. Pilot
+    4. Envoy
+
+(Answer 2).

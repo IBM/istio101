@@ -1,0 +1,12 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: watson-tone-analyzer
+spec:
+  hosts:
+  - "gateway.watsonplatform.net"
+  ports:
+  - number: 443
+    name: https
+    protocol: https
+  resolution: DNS

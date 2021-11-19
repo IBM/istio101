@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: iam-watson
+spec:
+  hosts:
+  - iam.bluemix.net
+  - "*.watsonplatform.net"
+  ports:
+  - number: 443
+    name: https
+    protocol: HTTPS
+  resolution: NONE
+  location: MESH_EXTERNAL

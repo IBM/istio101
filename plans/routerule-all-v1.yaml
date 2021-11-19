@@ -1,0 +1,12 @@
+apiVersion: config.istio.io/v1alpha2
+kind: RouteRule
+metadata:
+  name: guestbook-all-v1
+  namespace: default
+spec:
+  destination:
+    name: guestbook
+  precedence: 1
+  route:
+  - labels:
+      version: "1.0"
