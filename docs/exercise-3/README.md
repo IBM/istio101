@@ -9,7 +9,7 @@ The Guestbook app is a sample app for users to leave comments. It consists of a 
 1. Clone the Guestbook app into the `workshop` directory.
 
     ```shell
-    git clone -b kubecon2019 https://github.com/IBM/guestbook
+    git clone https://github.com/IBM/guestbook
     ```
 
 1. Navigate into the app directory.
