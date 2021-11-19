@@ -31,7 +31,7 @@ kubectl create -f guestbook-destination.yaml
 Let's examine the rule:
 
 ```yaml
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
   name: destination-rule-guestbook
@@ -55,7 +55,7 @@ kubectl replace -f virtualservice-all-v1.yaml
 Let's examine the rule:
 
 ```yaml
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: virtual-service-guestbook
@@ -88,7 +88,7 @@ kubectl replace -f virtualservice-test.yaml
 Let's examine the rule:
 
 ```yaml
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: virtual-service-guestbook
@@ -127,7 +127,7 @@ kubectl replace -f virtualservice-80-20.yaml
 Let's examine the rule:
 
 ```yaml
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: virtual-service-guestbook
@@ -158,7 +158,7 @@ For the following exercises, we'll be working with Guestbook v2. Route all traff
 
 ```shell
 cat <<EOF | kubectl replace -f -
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: virtual-service-guestbook

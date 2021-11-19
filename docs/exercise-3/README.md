@@ -9,7 +9,7 @@ The Guestbook app is a sample app for users to leave comments. It consists of a 
 1. Clone the Guestbook app into the `workshop` directory.
 
     ```shell
-    git clone -b kubecon2019 https://github.com/IBM/guestbook
+    git clone https://github.com/IBM/guestbook
     ```
 
 1. Navigate into the app directory.
@@ -153,7 +153,7 @@ The Redis database is a service that you can use to persist the data of your app
 
     Note that each guestbook pod has 2 containers in it. One is the guestbook container, and the other is the Envoy proxy sidecar.
 
-## Use Watson Tone Analyzer
+## Use Watson Tone Analyzer (Optional)
 
 Watson Tone Analyzer detects the tone from the words that users enter into the Guestbook app. The tone is converted to the corresponding emoticons.
 

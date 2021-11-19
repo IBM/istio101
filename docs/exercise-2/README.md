@@ -7,11 +7,11 @@ Managed Istio is available as part of IBM Cloud™ Kubernetes Service. The servi
 1. Download the `istioctl` CLI and add it to your PATH:
 
    ```shell
-   curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.5.6 sh -
+   curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.11.4 sh -
    ```
 
    ```shell
-   export PATH=$PWD/istio-1.5.6/bin:$PATH
+   export PATH=$PWD/istio-1.11.4/bin:$PATH
    ```
 
 1. Enable Managed Istio on your IKS cluster:
@@ -30,13 +30,9 @@ Managed Istio is available as part of IBM Cloud™ Kubernetes Service. The servi
 
     ```shell
     NAME                                     READY   STATUS    RESTARTS   AGE
-
-istio-egressgateway-6c966469cc-52t6f    1/1     Running   0          69s
-istio-egressgateway-6c966469cc-qq5qd    1/1     Running   0          55s
-istio-ingressgateway-7698c7b4f4-69c24   1/1     Running   0          68s
-istio-ingressgateway-7698c7b4f4-qttzh   1/1     Running   0          54s
-istiod-cbb98c74d-2wvql                  1/1     Running   0          54s
-istiod-cbb98c74d-kcr4d                  1/1     Running   0          67s
+    istio-egressgateway-6c966469cc-52t6f    1/1     Running   0          69s
+    istio-ingressgateway-7698c7b4f4-69c24   1/1     Running   0          68s
+    istiod-cbb98c74d-2wvql                  1/1     Running   0          54s
     ```
 
 > **NOTE** Before you continue, make sure all the pods are deployed and either in the **`Running`** or **`Completed`** state. If they're in `pending` state, wait a few minutes to let the installation and deployment finish.
@@ -50,9 +46,9 @@ istiod-cbb98c74d-kcr4d                  1/1     Running   0          67s
     Sample output:
 
     ```shell
-    client version: 1.5.6
-    control plane version: 1.5.6
-    data plane version: 1.5.6 (4 proxies)
+    client version: 1.11.4
+    control plane version: 1.11.4
+    data plane version: 1.11.4 (4 proxies)
     ```
 
     Congratulations! You successfully installed Istio into your cluster.
